@@ -1,6 +1,7 @@
-import { NgModule } from '@angular/core';
-import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './in/app.component';
+import {NgModule} from '@angular/core';
+import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
+import {AppComponent} from './in/app.component';
+import {EqualComponent} from './equal/equal.component';
 
 const routes: Routes = [
   /* routes specific to current app */
@@ -13,13 +14,15 @@ const routes: Routes = [
      */
     path: '',
     component: AppComponent
-  }
+  },
+  {path: 'equal', component: EqualComponent}
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, onSameUrlNavigation: 'reload', useHash: true })
+    RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules, onSameUrlNavigation: 'reload', useHash: true})
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

@@ -1,0 +1,61 @@
+<div class="input-transformer">
+  <ng-container *ngIf="mode === 'view'">
+    <mat-form-field
+      [ngClass]="'input-transformer__view-input'"
+    >
+      <textarea
+        (click)="onClick($event)"
+        [class]="setInputElementClass()"
+        class="input-transformer__view-input__textarea cursor-pointer"
+        matInput
+        [rows]="rowNumber"
+        [value]="value"></textarea>
+      <div
+
+      ></div>
+    </mat-form-field>
+  </ng-container>
+  <!--  <ng-content>-->
+  <!--  </ng-content>-->
+
+  <ng-container *ngIf="mode === 'edit'">
+    <mat-form-field
+      class="input-transformer__edit__input"
+    >
+      <textarea
+        [class]="setInputElementClass()"
+        class="input-transformer__edit__input__textarea"
+        matInput
+        [rows]="rowNumber"
+        [formControl]="text"
+        autofocus></textarea>
+    </mat-form-field>
+
+    <!--    <ng-template #elseInput>-->
+    <!--      <mat-form-field>-->
+    <!--        <textarea-->
+    <!--          matInput-->
+    <!--          [autofocus]="true"-->
+    <!--          [autocapitalize]="true"-->
+    <!--          [matTextareaAutosize]="true"-->
+    <!--          [formControl]="text"-->
+    <!--          type="text"-->
+    <!--          rows="1"-->
+    <!--        ></textarea>-->
+    <!--      </mat-form-field>-->
+    <!--    </ng-template>-->
+
+    <div class="input-transformer__edit__buttons">
+
+
+      <button mat-mini-fab color="primary" (click)="onSubmit($event)">
+        <mat-icon aria-hidden="false" aria-label="Validate">done</mat-icon>
+      </button>
+
+      <button mat-mini-fab color="warn" (click)="onCancel($event)">
+        <mat-icon aria-hidden="false" aria-label="Reset">close</mat-icon>
+      </button>
+    </div>
+
+  </ng-container>
+</div>

@@ -1,0 +1,20 @@
+{
+  "name": "YesBabylon e-learning platform menu",
+  "access": {
+    "groups": [
+      "users"
+    ]
+  },
+  "layout": {
+    "items": [
+      {
+        "id": "Equal test",
+        "type": "entry",
+        "label": "Equal test",
+        "description": "Accueil de YesBabylon e-learning platform",
+        "icon": "home",
+        "url": "/equal"
+      }
+    ]
+  }
+}

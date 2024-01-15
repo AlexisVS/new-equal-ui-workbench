@@ -1,0 +1,20 @@
+<mat-form-field #formField (click)="onEdit($event)" (focusout)="onFocusOut($event)">
+  <mat-label *ngIf="title">{{ title }}</mat-label>
+  <input
+    #input
+    [class.pointer-event-none]="!isEditable()"
+    [disabled]="!isEditable()"
+    matInput
+    [value]="value"
+    [placeholder]="placeholder"
+  />
+  <button
+    *ngIf="isEditable()"
+    mat-icon-button
+    matSuffix
+    (click)="onClear($event)"
+  >
+    <mat-icon>close</mat-icon>
+  </button>
+  <mat-error> {{ error }}</mat-error>
+</mat-form-field>
