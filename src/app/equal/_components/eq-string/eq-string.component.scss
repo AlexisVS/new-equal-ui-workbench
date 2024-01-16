@@ -1,3 +1,44 @@
 .pointer-event-none {
   pointer-events: none;
 }
+
+.eq-string {
+  width: min-content;
+  height: min-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &--view {
+    padding-right: calc(24px + 32px);
+  }
+
+  &__clear {
+    position: relative;
+    left: 4px;
+
+    & mat-icon {
+      line-height: 1;
+    }
+  }
+
+  &__check {
+    position: relative;
+    bottom: 4px;
+    width: 24px;
+    height: 24px;
+    display: block;
+    margin: auto auto auto 8px;
+    line-height: 1;
+    background-color: rgba(137, 137, 137, 0.45);
+
+    & mat-icon {
+      color: white;
+      line-height: 1;
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+
+    }
+  }
+}

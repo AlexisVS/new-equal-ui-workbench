@@ -1,11 +1,12 @@
 <mat-tab-group>
   <mat-tab label="eq-string">
     <div class="equal__layout">
-      <div style="width: min-content; height: min-content; border: 1px solid aqua">
 
+      <div style="width: min-content; height: min-content; border: 1px solid aqua">
         <app-eq-string
           hint="mon hint"
           [defaultValue]="littleText"
+          (valueChange)="littleText = $event"
           title="Mon titre"
           placeholder="mon placeholder"
           error="mon erreur"
@@ -13,16 +14,19 @@
         </app-eq-string>
 
       </div>
-      <br>
+
+      <br><br><br>
       <div style="width: min-content; height: min-content; border: 1px solid aqua">
         <app-eq-string
           hint="mon hint"
           [defaultValue]="littleText"
+          (valueChange)="littleText = $event"
           title="Mon titre"
           placeholder="mon placeholder"
           error="mon erreur"
         >
         </app-eq-string>
+
       </div>
     </div>
   </mat-tab>

@@ -1,20 +1,38 @@
-<mat-form-field #formField (click)="onEdit($event)" (focusout)="onFocusOut($event)">
-  <mat-label *ngIf="title">{{ title }}</mat-label>
-  <input
-    #input
-    [class.pointer-event-none]="!isEditable()"
-    [disabled]="!isEditable()"
-    matInput
-    [value]="value"
-    [placeholder]="placeholder"
-  />
-  <button
-    *ngIf="isEditable()"
-    mat-icon-button
-    matSuffix
-    (click)="onClear($event)"
+<div class="eq-string"
+     (click)="onEdit($event)"
+     (focusout)="onFocusOut($event)"
+    #eqString
+
+>
+  <mat-form-field
+    [class.eq-string--view]="!isEditable()"
   >
-    <mat-icon>close</mat-icon>
+    <mat-label *ngIf="title">{{ title }}</mat-label>
+    <input
+      #input
+      [class.pointer-event-none]="!isEditable()"
+      [disabled]="!isEditable()"
+      matInput
+      [value]="value"
+      [placeholder]="placeholder"
+    />
+    <button
+      class="eq-string__clear"
+      *ngIf="isEditable()"
+      mat-icon-button
+      matSuffix
+      (click)="onClear($event)"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+    <mat-error> {{ error }}</mat-error>
+  </mat-form-field>
+  <button
+    mat-icon-button
+    *ngIf="isEditable()"
+    (click)="onSave($event)"
+    class="eq-string__check"
+  >
+    <mat-icon>check_small</mat-icon>
   </button>
-  <mat-error> {{ error }}</mat-error>
-</mat-form-field>
+</div>
