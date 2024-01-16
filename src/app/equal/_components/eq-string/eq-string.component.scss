@@ -30,7 +30,11 @@
     display: block;
     margin: auto auto auto 8px;
     line-height: 1;
-    background-color: rgba(137, 137, 137, 0.45);
+    background-color: var(--mdc-theme-primary);
+
+    &--invalid {
+      background-color: rgba(137, 137, 137, 0.45);
+    }
 
     & mat-icon {
       color: white;

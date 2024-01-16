@@ -1,22 +1,20 @@
 <div class="eq-string"
      (click)="onEdit($event)"
      (focusout)="onFocusOut($event)"
-    #eqString
-
+     #eqString
 >
-  <mat-form-field
-    [class.eq-string--view]="!isEditable()"
-  >
+  <mat-form-field [class.eq-string--view]="!isEditable()">
     <mat-label *ngIf="title">{{ title }}</mat-label>
     <input
       #input
       [class.pointer-event-none]="!isEditable()"
       [disabled]="!isEditable()"
       matInput
-      [value]="value"
+      [formControl]="value"
       [placeholder]="placeholder"
     />
     <button
+      #clearButton
       class="eq-string__clear"
       *ngIf="isEditable()"
       mat-icon-button
@@ -25,9 +23,14 @@
     >
       <mat-icon>close</mat-icon>
     </button>
-    <mat-error> {{ error }}</mat-error>
+    <mat-error *ngIf="value.invalid">
+      {{ getErrorMessage() }}
+    </mat-error>
   </mat-form-field>
   <button
+    [disabled]="value.invalid"
+    [class.eq-string__check--invalid]="value.invalid"
+    [class.pointer-event-none]="value.invalid"
     mat-icon-button
     *ngIf="isEditable()"
     (click)="onSave($event)"

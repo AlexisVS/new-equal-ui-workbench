@@ -10,24 +10,25 @@
           title="Mon titre"
           placeholder="mon placeholder"
           error="mon erreur"
+          [required]="true"
+
         >
         </app-eq-string>
 
       </div>
 
       <br><br><br>
-      <div style="width: min-content; height: min-content; border: 1px solid aqua">
-        <app-eq-string
-          hint="mon hint"
-          [defaultValue]="littleText"
-          (valueChange)="littleText = $event"
-          title="Mon titre"
-          placeholder="mon placeholder"
-          error="mon erreur"
-        >
-        </app-eq-string>
+      <app-eq-string
+        hint="mon hint"
+        [defaultValue]="littleText"
+        (valueChange)="littleText = $event"
+        title="Mon titre"
+        placeholder="mon placeholder"
+        error="mon erreur"
+        [required]="true"
+      >
+      </app-eq-string>
 
-      </div>
     </div>
   </mat-tab>
   <mat-tab label="eq-m2o">
