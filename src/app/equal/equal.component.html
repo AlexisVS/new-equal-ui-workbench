@@ -1,4 +1,4 @@
-<mat-tab-group [selectedIndex]="1">
+<mat-tab-group [selectedIndex]="3">
   <mat-tab label="eq-string">
     <code>
       Can use maybe directive for the size with small, medium, large
@@ -52,26 +52,42 @@
         </app-eq-text>
 
       </div>
-        <br><br><br>
+      <br><br><br>
 
-        <app-eq-text
+      <app-eq-text
+        hint="mon hint"
+        [defaultValue]="bigText"
+        (valueChange)="bigText = $event"
+        title="Mon titre"
+        placeholder="mon placeholder"
+        error="mon erreur"
+        [required]="true"
+      >
+      </app-eq-text>
+    </div>
+  </mat-tab>
+  <mat-tab label="eq-m2o">
+  </mat-tab>
+  <mat-tab label="eq-date">
+    <code>Based on date: <strong>{{ dateIso8601Utc0 }}</strong></code>
+
+    <div class="equal__layout">
+      <div style="width: min-content; height: min-content; border: 1px solid aqua">
+        <app-eq-date
           hint="mon hint"
-          [defaultValue]="bigText"
-          (valueChange)="bigText = $event"
+          [defaultValue]="dateIso8601Utc0"
+          (valueChange)="dateIso8601Utc0 = $event"
           title="Mon titre"
           placeholder="mon placeholder"
           error="mon erreur"
           [required]="true"
         >
-        </app-eq-text>
+        </app-eq-date>
+      </div>
     </div>
   </mat-tab>
-  <mat-tab label="eq-m2o">
+  <mat-tab label="eq-date-range">
   </mat-tab>
-  <mat-tab label="eq-data">
-  </mat-tab>
-  <mat-tab label="eq-data-range">
-  </mat-tab>
-  <mat-tab label="eq-data-time">
+  <mat-tab label="eq-date-time">
   </mat-tab>
 </mat-tab-group>

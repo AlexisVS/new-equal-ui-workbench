@@ -1,0 +1,53 @@
+<div
+  class="eq-date"
+  #eqDate
+  (click)="onEdit($event)"
+  (focusout)="onFocusOut($event)"
+>
+  <mat-form-field
+    appearance="fill"
+  >
+    <mat-label
+      *ngIf="title"
+    >
+      {{ title }}
+    </mat-label>
+    <input
+      #input
+      matInput
+      [style.pointer-events]="!isEditable() ? 'none' : 'auto'"
+      [formControl]="value"
+      [matDatepicker]="datePicker"
+      [placeholder]="placeholder"
+      (dateChange)="edit()"
+    >
+    <mat-hint *ngIf="hint && !value.invalid">
+      {{ hint }}
+    </mat-hint>
+    <mat-datepicker-toggle
+      class="eq-date__schedule"
+      #scheduleButton
+      matSuffix
+      [for]="datePicker"
+    ></mat-datepicker-toggle>
+    <button
+      [disabled]="value.invalid || !isEditable()"
+      [class.eq-date__check--invalid]="!isEditable() || value.invalid"
+      [style.pointer-events]="value.invalid ? 'none' : 'auto'"
+      mat-icon-button
+      matSuffix
+      (click)="onSave($event)"
+      class="eq-date__check"
+    >
+      <!--    *ngIf="isEditable()"-->
+      <mat-icon>check_small</mat-icon>
+    </button>
+    <mat-datepicker
+      #datePicker
+    >
+    </mat-datepicker>
+    <mat-error *ngIf="value.invalid">
+      {{ getErrorMessage() }}
+    </mat-error>
+  </mat-form-field>
+</div>

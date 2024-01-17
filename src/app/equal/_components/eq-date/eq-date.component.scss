@@ -1,0 +1,46 @@
+.eq-date {
+  width: min-content;
+  height: min-content;
+  width: min-content;
+  height: min-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  transform-origin: top left;
+
+  &--small {
+    transform: scale(0.85);
+  }
+
+  &--medium {
+    transform: scale(1);
+  }
+
+  &--large {
+    transform: scale(1.15);
+  }
+
+  &__check {
+    position: relative;
+    bottom: 2px;
+    width: 18px;
+    height: 18px;
+    display: block;
+    margin: auto auto auto 8px;
+    line-height: 1;
+    background-color: var(--mdc-theme-primary);
+
+    &--invalid {
+      background-color: rgba(137, 137, 137, 0.45);
+    }
+
+    & mat-icon {
+      color: white;
+      line-height: 1;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+}

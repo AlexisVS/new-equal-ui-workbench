@@ -9,6 +9,8 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {ReactiveFormsModule} from '@angular/forms';
 import { EqTextComponent } from './_components/eq-text/eq-text.component';
+import { EqDateComponent } from './_components/eq-date/eq-date.component';
+import {MatDatepickerModule} from "@angular/material/datepicker";
 
 @NgModule({
   imports: [
@@ -18,12 +20,14 @@ import { EqTextComponent } from './_components/eq-text/eq-text.component';
     MatInputModule,
     MatIconModule,
     MatButtonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatDatepickerModule
   ],
   declarations: [
     EqualComponent,
     EqStringComponent,
-    EqTextComponent
+    EqTextComponent,
+    EqDateComponent
   ],
   exports: [
     InputTransformerModule,
