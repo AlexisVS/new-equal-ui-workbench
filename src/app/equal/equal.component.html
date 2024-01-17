@@ -1,5 +1,10 @@
-<mat-tab-group>
+<mat-tab-group [selectedIndex]="1">
   <mat-tab label="eq-string">
+    <code>
+      Can use maybe directive for the size with small, medium, large
+    </code>
+
+
     <div class="equal__layout">
 
       <div style="width: min-content; height: min-content; border: 1px solid aqua">
@@ -11,7 +16,7 @@
           placeholder="mon placeholder"
           error="mon erreur"
           [required]="true"
-
+          size="large"
         >
         </app-eq-string>
 
@@ -29,6 +34,36 @@
       >
       </app-eq-string>
 
+    </div>
+  </mat-tab>
+  <mat-tab label="eq-text">
+    <div class="equal__layout">
+      <div style="width: min-content; height: min-content; border: 1px solid aqua">
+
+        <app-eq-text
+          hint="mon hint"
+          [defaultValue]="bigText"
+          (valueChange)="bigText = $event"
+          title="Mon titre"
+          placeholder="mon placeholder"
+          error="mon erreur"
+          [required]="true"
+        >
+        </app-eq-text>
+
+      </div>
+        <br><br><br>
+
+        <app-eq-text
+          hint="mon hint"
+          [defaultValue]="bigText"
+          (valueChange)="bigText = $event"
+          title="Mon titre"
+          placeholder="mon placeholder"
+          error="mon erreur"
+          [required]="true"
+        >
+        </app-eq-text>
     </div>
   </mat-tab>
   <mat-tab label="eq-m2o">

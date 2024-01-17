@@ -1,22 +1,21 @@
 import {
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
   Input,
   OnInit,
   Output,
-  ViewChild,
-  OnDestroy, ChangeDetectorRef
+  ViewChild
 } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 
 @Component({
-  selector: 'app-eq-string',
-  templateUrl: './eq-string.component.html',
-  styleUrls: ['./eq-string.component.scss']
+  selector: 'app-eq-text',
+  templateUrl: './eq-text.component.html',
+  styleUrls: ['./eq-text.component.scss']
 })
-export class EqStringComponent implements OnInit, OnDestroy {
-
+export class EqTextComponent implements OnInit {
   // ? why not use value and valueChange ?
   @Input() defaultValue: string;
 
@@ -39,10 +38,12 @@ export class EqStringComponent implements OnInit, OnDestroy {
 
   @Input() error?: string;
 
+  @Input() rows?: number = 2;
+
   public mode: 'view' | 'edit' = 'view';
 
-  @ViewChild('eqString') eqString: ElementRef<HTMLDivElement>;
-  @ViewChild('input') input: ElementRef<HTMLInputElement>;
+  @ViewChild('eqText') eqText: ElementRef<HTMLDivElement>;
+  @ViewChild('textarea') textarea: ElementRef<HTMLTextAreaElement>;
   @ViewChild('clearButton') clearButton: ElementRef<HTMLButtonElement>;
 
   constructor(
@@ -54,9 +55,6 @@ export class EqStringComponent implements OnInit, OnDestroy {
     this.initFormControl();
 
     this.value.disable();
-  }
-
-  ngOnDestroy(): void {
   }
 
   public initFormControl(): void {
@@ -83,9 +81,8 @@ export class EqStringComponent implements OnInit, OnDestroy {
     return this.mode === 'edit';
   }
 
-
   public setSize(): string {
-    return `eq-string--${this.size}`;
+    return `eq-text--${this.size}`;
   }
 
   public onEdit(onEditEvent: MouseEvent): void {
@@ -93,12 +90,12 @@ export class EqStringComponent implements OnInit, OnDestroy {
       this.mode = 'edit';
       this.value.enable();
       this.changeDetectorRef.detectChanges();
-      this.input.nativeElement.focus();
+      this.textarea.nativeElement.focus();
     }
   }
 
   public onFocusOut(event: FocusEvent): void {
-    if (event.target instanceof Element && event.target.classList.contains('eq-string__clear')) {
+    if (event.target instanceof Element && event.target.classList.contains('eq-text__clear')) {
       return;
     }
 
@@ -111,9 +108,9 @@ export class EqStringComponent implements OnInit, OnDestroy {
 
   private checkIfClickedOutside(event: FocusEvent): boolean {
     return this.isEditable() &&
-      this.eqString.nativeElement instanceof Element &&
+      this.eqText.nativeElement instanceof Element &&
       // * event.relatedTarget is not a Node, but it works like this
-      !this.eqString.nativeElement.contains(event.relatedTarget as Node);
+      !this.eqText.nativeElement.contains(event.relatedTarget as Node);
   }
 
   public onClear(event: MouseEvent): void {
@@ -121,7 +118,7 @@ export class EqStringComponent implements OnInit, OnDestroy {
     event.preventDefault();
     this.updateValue('');
     this.value.markAsUntouched({onlySelf: true});
-    this.input.nativeElement.focus();
+    this.textarea.nativeElement.focus();
   }
 
   public onSave(event: MouseEvent): void {
@@ -132,5 +129,13 @@ export class EqStringComponent implements OnInit, OnDestroy {
       this.valueChange.emit(this.value.value);
       this.value.disable();
     }
+  }
+
+  public isFocus(): boolean {
+    if (document.activeElement) {
+      return (this.isEditable() && this.eqText.nativeElement.contains(document.activeElement as Node));
+    }
+
+    return false;
   }
 }

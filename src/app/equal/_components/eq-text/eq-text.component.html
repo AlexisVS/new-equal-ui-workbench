@@ -1,22 +1,25 @@
-<div class="eq-string"
+<div class="eq-text"
+     [ngClass]="setSize()"
+     #eqText
      (click)="onEdit($event)"
      (focusout)="onFocusOut($event)"
-     [ngClass]="setSize()"
-     #eqString
 >
-  <mat-form-field [class.eq-string--view]="!isEditable()">
+  <mat-form-field [class.eq-text--view]="!isEditable()" >
     <mat-label *ngIf="title">{{ title }}</mat-label>
-    <input
-      #input
+    <textarea
+      #textarea
       matInput
+      class="eq-text__textarea"
+      [class.eq-text__textarea--focus]="isFocus()"
+      [rows]="rows"
       [style.pointer-events]="!isEditable() ? 'none' : 'auto'"
       [disabled]="!isEditable()"
       [formControl]="value"
       [placeholder]="placeholder"
-    />
+    ></textarea>
     <button
       #clearButton
-      class="eq-string__clear"
+      class="eq-text__clear"
       *ngIf="isEditable()"
       mat-icon-button
       matSuffix
@@ -35,8 +38,8 @@
     [style.pointer-events]="value.invalid ? 'none' : 'auto'"
     mat-icon-button
     *ngIf="isEditable()"
+    class="eq-text__check"
     (click)="onSave($event)"
-    class="eq-string__check"
   >
     <mat-icon>check_small</mat-icon>
   </button>

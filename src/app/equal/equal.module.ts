@@ -8,6 +8,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {ReactiveFormsModule} from '@angular/forms';
+import { EqTextComponent } from './_components/eq-text/eq-text.component';
 
 @NgModule({
   imports: [
@@ -21,7 +22,8 @@ import {ReactiveFormsModule} from '@angular/forms';
   ],
   declarations: [
     EqualComponent,
-    EqStringComponent
+    EqStringComponent,
+    EqTextComponent
   ],
   exports: [
     InputTransformerModule,
