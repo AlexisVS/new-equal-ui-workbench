@@ -1,38 +1,134 @@
-<mat-tab-group [selectedIndex]="3">
+<mat-tab-group>
   <mat-tab label="eq-string">
-    <code>
-      Can use maybe directive for the size with small, medium, large
-    </code>
-
-
     <div class="equal__layout">
+      <br><br>
+      Modif mat-form-field underline line need to be showed only in edit mod
+      <br>
+      disabled need to shot the input text in black
 
-      <div style="width: min-content; height: min-content; border: 1px solid aqua">
-        <app-eq-string
-          hint="mon hint"
-          [defaultValue]="littleText"
-          (valueChange)="littleText = $event"
-          title="Mon titre"
-          placeholder="mon placeholder"
-          error="mon erreur"
-          [required]="true"
-          size="large"
-        >
-        </app-eq-string>
+      <div style="display: flex;">
+        <button style="margin-right: 1rem" mat-raised-button [color]="'primary'" (click)="disabled = !disabled">
+          property disabled = {{ disabled ? 'true' : 'false' }}
+        </button>
+        <button mat-raised-button color="accent" (click)="toggleMode()">
+          mode = {{ mode }}
+        </button>
+      </div>
+      <br><br>
 
+
+      <div style="display: flex">
+
+
+        <div style="width: min-content; height: min-content; border: 1px solid aqua">
+          <eq-string
+            hint="mon hint"
+            [defaultValue]="littleText"
+            (valueChange)="littleText = $event"
+            title="Mon titre"
+            [disabled]="disabled"
+            [mode]="mode"
+
+            placeholder="mon placeholder"
+            error="mon erreur"
+            [required]="true"
+            size="small"
+          >
+          </eq-string>
+
+        </div>
+
+        <!--      <br><br><br>-->
+        <div style="width: min-content; height: min-content; border: 1px solid aqua">
+          <eq-string
+            hint="mon hint"
+            [defaultValue]="littleText"
+            (valueChange)="littleText = $event"
+            title="Mon titre"
+            placeholder="mon placeholder"
+            error="mon erreur"
+            [required]="true"
+            size="normal"
+            [disabled]="disabled"
+            [mode]="mode"
+          >
+          </eq-string>
+        </div>
+
+        <div style="width: min-content; height: min-content; border: 1px solid aqua">
+          <eq-string
+            hint="mon hint"
+            [defaultValue]="littleText"
+            (valueChange)="littleText = $event"
+            title="Mon titre"
+            placeholder="mon placeholder"
+            error="mon erreur"
+            [required]="true"
+            size="large"
+            [disabled]="disabled"
+            [mode]="mode"
+          >
+          </eq-string>
+        </div>
       </div>
 
+
       <br><br><br>
-      <app-eq-string
-        hint="mon hint"
-        [defaultValue]="littleText"
-        (valueChange)="littleText = $event"
-        title="Mon titre"
-        placeholder="mon placeholder"
-        error="mon erreur"
-        [required]="true"
-      >
-      </app-eq-string>
+
+      <div style="display: flex">
+
+
+        <div style="width: min-content; height: min-content; border: 1px solid aqua">
+          <eq-string
+            hint="mon hint"
+            [defaultValue]="littleText"
+            (valueChange)="littleText = $event"
+            title="Mon titre"
+            placeholder="mon placeholder"
+            error="mon erreur"
+            [required]="true"
+            size="small"
+            [disabled]="disabled"
+            [mode]="mode"
+          >
+          </eq-string>
+
+        </div>
+
+        <!--      <br><br><br>-->
+        <div style="width: min-content; height: min-content; border: 1px solid aqua">
+          <eq-string
+            hint="mon hint"
+            [defaultValue]="littleText"
+            (valueChange)="littleText = $event"
+            title="Mon titre"
+            placeholder="mon placeholder"
+            error="mon erreur"
+            [required]="true"
+            size="normal"
+            [disabled]="disabled"
+            [mode]="mode"
+          >
+          </eq-string>
+        </div>
+
+        <div style="width: min-content; height: min-content; border: 1px solid aqua">
+          <eq-string
+            hint="mon hint"
+            [defaultValue]="littleText"
+            (valueChange)="littleText = $event"
+            title="Mon titre"
+            placeholder="mon placeholder"
+            error="mon erreur"
+            [required]="true"
+            size="large"
+            [disabled]="disabled"
+            [mode]="mode"
+          >
+          </eq-string>
+        </div>
+      </div>
+
 
     </div>
   </mat-tab>
@@ -40,7 +136,7 @@
     <div class="equal__layout">
       <div style="width: min-content; height: min-content; border: 1px solid aqua">
 
-        <app-eq-text
+        <eq-text
           hint="mon hint"
           [defaultValue]="bigText"
           (valueChange)="bigText = $event"
@@ -49,12 +145,12 @@
           error="mon erreur"
           [required]="true"
         >
-        </app-eq-text>
+        </eq-text>
 
       </div>
       <br><br><br>
 
-      <app-eq-text
+      <eq-text
         hint="mon hint"
         [defaultValue]="bigText"
         (valueChange)="bigText = $event"
@@ -63,17 +159,19 @@
         error="mon erreur"
         [required]="true"
       >
-      </app-eq-text>
+      </eq-text>
     </div>
   </mat-tab>
   <mat-tab label="eq-m2o">
   </mat-tab>
   <mat-tab label="eq-date">
-    <code>Based on date: <strong>{{ dateIso8601Utc0 }}</strong></code>
+    <code>Based on date: <strong>2024-01-17T12:38:46+0000</strong></code>
+    <br>
+    <code>Current date : <strong>{{ dateIso8601Utc0 }}</strong></code>
 
     <div class="equal__layout">
       <div style="width: min-content; height: min-content; border: 1px solid aqua">
-        <app-eq-date
+        <eq-date
           hint="mon hint"
           [defaultValue]="dateIso8601Utc0"
           (valueChange)="dateIso8601Utc0 = $event"
@@ -82,12 +180,28 @@
           error="mon erreur"
           [required]="true"
         >
-        </app-eq-date>
+        </eq-date>
       </div>
     </div>
   </mat-tab>
   <mat-tab label="eq-date-range">
+    <div class="equal__layout">
+      <div style="width: min-content; height: min-content; border: 1px solid aqua">
+        <!--        <eq-date-range-->
+
+        <!--        >-->
+        <!--        </eq-date-range>-->
+      </div>
+    </div>
   </mat-tab>
   <mat-tab label="eq-date-time">
+    <div class="equal__layout">
+      <div style="width: min-content; height: min-content; border: 1px solid aqua">
+        <!--        <eq-date-time-->
+
+        <!--        >-->
+        <!--        </eq-date-time>-->
+      </div>
+    </div>
   </mat-tab>
 </mat-tab-group>

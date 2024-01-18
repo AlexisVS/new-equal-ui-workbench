@@ -11,6 +11,12 @@ export class EqualComponent implements OnInit {
   public smallText = 'lorem ipsum dolor sit amet, consectetur adipiscing elit. sed non risus.';
   public littleText = 'lorem ipsum dolor.';
   public dateIso8601Utc0 = '2024-01-17T12:38:46+0000';
+  public disabled = true;
+  public mode: 'view' | 'edit' = 'view';
+
+  public toggleMode(): void {
+    this.mode = this.mode === 'view' ? 'edit' : 'view';
+  }
 
   constructor() {
   }

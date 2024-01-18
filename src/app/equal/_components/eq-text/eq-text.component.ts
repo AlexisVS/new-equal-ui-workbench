@@ -11,7 +11,7 @@ import {
 import {FormControl, Validators} from '@angular/forms';
 
 @Component({
-  selector: 'app-eq-text',
+  selector: 'eq-text',
   templateUrl: './eq-text.component.html',
   styleUrls: ['./eq-text.component.scss']
 })

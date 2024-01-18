@@ -3,18 +3,16 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  HostListener,
   Input,
   OnInit,
   Output,
   ViewChild
 } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import {MatCalendar, MatDatepicker, MatDatepickerInputEvent} from '@angular/material/datepicker';
-import {DateAdapter} from "@angular/material/core";
+import {MatCalendar, MatDatepicker} from '@angular/material/datepicker';
 
 @Component({
-  selector: 'app-eq-date',
+  selector: 'eq-date',
   templateUrl: './eq-date.component.html',
   styleUrls: ['./eq-date.component.scss']
 })
@@ -42,7 +40,7 @@ export class EqDateComponent implements OnInit {
   public mode: 'view' | 'edit' = 'view';
 
   @ViewChild('eqDate') eqDate: ElementRef<HTMLDivElement>;
-  @ViewChild(MatDatepicker) datePicker: MatDatepicker<any>;
+  @ViewChild(MatDatepicker) datePicker: MatDatepicker<Date>;
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
   @ViewChild('scheduleButton') scheduleButton: ElementRef<HTMLElement>;
   @ViewChild(MatCalendar) calendar: MatCalendar<Date>;
@@ -59,9 +57,11 @@ export class EqDateComponent implements OnInit {
   }
 
   public initFormControl(): void {
-    this.required
-      ? this.value = new FormControl(this.parseDate(this.defaultValue), Validators.required)
-      : this.value = new FormControl(this.parseDate(this.defaultValue));
+    this.value = new FormControl(this.parseDate(this.defaultValue));
+
+    if (this.required) {
+      this.value.addValidators(Validators.required);
+    }
   }
 
   private parseDate(date: string | Date): string {
@@ -83,7 +83,7 @@ export class EqDateComponent implements OnInit {
     return this.mode === 'edit';
   }
 
-  public onEdit(onEditEvent: MouseEvent): void {
+  public onEdit(): void {
     if (this.mode === 'view') {
       this.edit();
     }
@@ -123,40 +123,16 @@ export class EqDateComponent implements OnInit {
     event.stopPropagation();
     if (this.value.valid) {
       this.mode = 'view';
-      this.valueChange.emit(this.addOneHour(new Date(this.value.value)));
+      this.valueChange.emit(this.sanitizeDate(this.value.value));
       this.value.disable();
     }
   }
 
-  /**
-   * Add one hour to the date, thanks ChatGPT
-   */
-  private addOneHour(date: Date): string {
-    // Clone the date to avoid modifying the original
+  private sanitizeDate(date: string): string {
     const newDate: Date = new Date(date);
-
-    // Add one hour to the date
-    newDate.setHours(newDate.getHours() + 1);
-
-    // Check if the hour increment goes into the next day
-    if (newDate.getDate() !== date.getDate()) {
-      // Incremented to the next day, update day
-      newDate.setDate(newDate.getDate() + 1);
-
-      // Check if the day increment goes into the next month
-      if (newDate.getMonth() !== date.getMonth()) {
-        // Incremented to the next month, update month
-        newDate.setMonth(newDate.getMonth() + 1);
-
-        // Check if the month increment goes into the next year
-        if (newDate.getFullYear() !== date.getFullYear()) {
-          // Incremented to the next year, update year
-          newDate.setFullYear(newDate.getFullYear() + 1);
-        }
-      }
-    }
-
-    return newDate.toISOString();
+    const timestamp: number = newDate.getTime();
+    const offsetTz: number = newDate.getTimezoneOffset() * 60 * 1000;
+    return new Date(timestamp + offsetTz).toISOString().substring(0, 10) + 'T00:00:00Z';
   }
 
 }

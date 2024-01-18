@@ -1,17 +1,11 @@
 <div
   class="eq-date"
   #eqDate
-  (click)="onEdit($event)"
+  (click)="onEdit()"
   (focusout)="onFocusOut($event)"
 >
-  <mat-form-field
-    appearance="fill"
-  >
-    <mat-label
-      *ngIf="title"
-    >
-      {{ title }}
-    </mat-label>
+  <mat-form-field appearance="fill">
+    <mat-label *ngIf="title">{{ title }}</mat-label>
     <input
       #input
       matInput
@@ -20,10 +14,9 @@
       [matDatepicker]="datePicker"
       [placeholder]="placeholder"
       (dateChange)="edit()"
+      date
     >
-    <mat-hint *ngIf="hint && !value.invalid">
-      {{ hint }}
-    </mat-hint>
+    <mat-hint *ngIf="hint && !value.invalid">{{ hint }}</mat-hint>
     <mat-datepicker-toggle
       class="eq-date__schedule"
       #scheduleButton
@@ -42,12 +35,8 @@
       <!--    *ngIf="isEditable()"-->
       <mat-icon>check_small</mat-icon>
     </button>
-    <mat-datepicker
-      #datePicker
-    >
-    </mat-datepicker>
-    <mat-error *ngIf="value.invalid">
-      {{ getErrorMessage() }}
-    </mat-error>
+    <mat-datepicker #datePicker></mat-datepicker>
+    <mat-error *ngIf="value.invalid">{{ getErrorMessage() }}</mat-error>
   </mat-form-field>
 </div>
+{{value.value}}

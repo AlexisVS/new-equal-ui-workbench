@@ -1,43 +1,55 @@
-<div class="eq-string"
-     (click)="onEdit($event)"
-     (focusout)="onFocusOut($event)"
-     [ngClass]="setSize()"
-     #eqString
->
-  <mat-form-field [class.eq-string--view]="!isEditable()">
-    <mat-label *ngIf="title">{{ title }}</mat-label>
-    <input
-      #input
-      matInput
-      [style.pointer-events]="!isEditable() ? 'none' : 'auto'"
-      [disabled]="!isEditable()"
-      [formControl]="value"
-      [placeholder]="placeholder"
-    />
-    <button
-      #clearButton
-      class="eq-string__clear"
-      *ngIf="isEditable()"
-      mat-icon-button
-      matSuffix
-      (click)="onClear($event)"
-    >
-      <mat-icon>close</mat-icon>
-    </button>
-    <mat-hint *ngIf="hint && !value.invalid">{{ hint }}</mat-hint>
-    <mat-error *ngIf="value.invalid">
-      {{ getErrorMessage() }}
-    </mat-error>
-  </mat-form-field>
-  <button
-    [disabled]="value.invalid"
-    [class.eq-string__check--invalid]="value.invalid"
-    [style.pointer-events]="value.invalid ? 'none' : 'auto'"
-    mat-icon-button
-    *ngIf="isEditable()"
-    (click)="onSave($event)"
-    class="eq-string__check"
+<div class="wrapper">
+  <div class="eq-string"
+       (click)="onEdit()"
+       #eqString
   >
-    <mat-icon>check_small</mat-icon>
-  </button>
+    <!--       (focusout)="onFocusOut($event)"-->
+    <mat-form-field [class.eq-string--view]="mode === 'view' || !contentEditable">
+      <mat-label *ngIf="title && mode === 'edit'">{{ title }}</mat-label>
+      <input
+        #input
+        matInput
+        class="eq-string__input"
+        [class]="'eq-string__input--' + size"
+        [style.pointer-events]="!isEditable() ? 'none' : 'auto'"
+        [disabled]="!isEditable()"
+        [formControl]="value"
+        [placeholder]="mode === 'edit' ? placeholder: ''"
+        (blur)="onBlur($event)"
+      />
+      <button
+        #clearButton
+        class="eq-string__clear"
+        *ngIf="isEditable()"
+        mat-icon-button
+        matSuffix
+        (click)="onClear($event)"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+      <mat-hint *ngIf="hint && mode === 'edit'">{{ hint }}</mat-hint>
+      <mat-error *ngIf="mode === 'edit' && value.invalid">
+        {{ getErrorMessage() }}
+      </mat-error>
+    </mat-form-field>
+    <button
+      [disabled]="value.invalid"
+      [class.eq-string__action__check--invalid]="value.invalid"
+      [style.pointer-events]="value.invalid ? 'none' : 'auto'"
+      mat-icon-button
+      *ngIf="isEditable()"
+      (click)="onSave($event)"
+      class="eq-string__action eq-string__action__check"
+    >
+      <mat-icon>check_small</mat-icon>
+    </button>
+    <button
+      mat-icon-button
+      *ngIf="isEditable()"
+      (click)="onCancel($event)"
+      class="eq-string__action eq-string__action__cancel"
+    >
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
 </div>

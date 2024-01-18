@@ -1,26 +1,41 @@
+.wrapper {
+  display: inline;
+  vertical-align: baseline;
+  width: max-content;
+  height: 65px;
+  max-height: 65px;
+  overflow: hidden;
+}
+
 .eq-string {
-  width: min-content;
-  height: min-content;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  box-sizing: border-box;
-  transform-origin: top left;
+  align-items: baseline;
+  box-sizing: content-box;
 
-  &--small {
-    transform: scale(0.85);
-  }
+  &__input {
+    position: relative;
+    transform-origin: bottom left;
 
-  &--medium {
-    transform: scale(1);
-  }
+    &--small {
+      transform: scale(0.85);
+    }
 
-  &--large {
-    transform: scale(1.15);
+    &--medium {
+      transform: scale(1);
+    }
+
+    &--large {
+      transform: scale(1.15);
+    }
   }
 
   &--view {
-    padding-right: calc(24px + 32px);
+    padding-right: calc(24px + 32px + 32px);
+
+    &::ng-deep .mat-form-field-underline {
+      background: transparent;
+    }
   }
 
   &__clear {
@@ -32,7 +47,7 @@
     }
   }
 
-  &__check {
+  &__action {
     position: relative;
     bottom: 4px;
     width: 24px;
@@ -40,18 +55,33 @@
     display: block;
     margin: auto auto auto 8px;
     line-height: 1;
-    background-color: var(--mdc-theme-primary);
-
-    &--invalid {
-      background-color: rgba(137, 137, 137, 0.45);
-    }
 
     & mat-icon {
-      color: white;
       line-height: 1;
       font-size: 16px;
       width: 16px;
       height: 16px;
+      color: white;
+    }
+
+    &__check {
+      background-color: var(--mdc-theme-primary);
+
+      &--invalid {
+        background-color: rgba(137, 137, 137, 0.45);
+      }
+    }
+
+    &__cancel {
+      background-color: var(--mdc-theme-secondary);
+
+      & mat-icon {
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
     }
   }
+
+
 }

@@ -9,8 +9,10 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {ReactiveFormsModule} from '@angular/forms';
 import { EqTextComponent } from './_components/eq-text/eq-text.component';
-import { EqDateComponent } from './_components/eq-date/eq-date.component';
-import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {EqDateModule} from './_components/eq-date/eq-date.module';
+import { EqDateRangeComponent } from './_components/eq-date-range/eq-date-range.component';
+import { EqDateTimeComponent } from './_components/eq-date-time/eq-date-time.component';
 
 @NgModule({
   imports: [
@@ -21,13 +23,15 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
     MatIconModule,
     MatButtonModule,
     ReactiveFormsModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    EqDateModule
   ],
   declarations: [
     EqualComponent,
     EqStringComponent,
     EqTextComponent,
-    EqDateComponent
+    EqDateRangeComponent,
+    EqDateTimeComponent,
   ],
   exports: [
     InputTransformerModule,
