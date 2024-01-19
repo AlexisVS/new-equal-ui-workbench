@@ -1,24 +1,30 @@
-<div class="wrapper">
+<div
+  class="wrapper"
+  [style.cursor]="mode === 'edit' && !disabled ? 'pointer' : 'default'"
+>
   <div class="eq-string"
        (click)="onEdit()"
        #eqString
   >
-    <!--       (focusout)="onFocusOut($event)"-->
-    <mat-form-field [class.eq-string--view]="mode === 'view' || !contentEditable">
+    <mat-form-field
+      #matFormField
+      [class.eq-string--view]="mode === 'view' || !is_active"
+      [class.eq-string--no-underline]="mode === 'view'"
+    >
       <mat-label *ngIf="title && mode === 'edit'">{{ title }}</mat-label>
       <input
         #input
         matInput
         class="eq-string__input"
-        [class]="'eq-string__input--' + size"
         [style.pointer-events]="!isEditable() ? 'none' : 'auto'"
-        [disabled]="!isEditable()"
+        [class]="'eq-string__input--' + size"
+        [class.eq-string__input--view]="mode === 'view' || (mode === 'edit' && !disabled)"
+        [disabled]="disabled"
         [formControl]="value"
         [placeholder]="mode === 'edit' ? placeholder: ''"
         (blur)="onBlur($event)"
       />
       <button
-        #clearButton
         class="eq-string__clear"
         *ngIf="isEditable()"
         mat-icon-button
@@ -27,10 +33,8 @@
       >
         <mat-icon>close</mat-icon>
       </button>
-      <mat-hint *ngIf="hint && mode === 'edit'">{{ hint }}</mat-hint>
-      <mat-error *ngIf="mode === 'edit' && value.invalid">
-        {{ getErrorMessage() }}
-      </mat-error>
+      <mat-hint class="eq-string__hint" #matHint *ngIf="hint && mode === 'edit'">{{ hint }}</mat-hint>
+      <mat-error *ngIf="mode === 'edit' && value.invalid">{{ getErrorMessage() }}</mat-error>
     </mat-form-field>
     <button
       [disabled]="value.invalid"

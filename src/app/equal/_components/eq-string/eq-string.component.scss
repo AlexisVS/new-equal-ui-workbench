@@ -13,9 +13,22 @@
   align-items: baseline;
   box-sizing: content-box;
 
+  &--view {
+    padding-right: calc(24px + 32px + 32px);
+  }
+
+  // remove dotted line on the input
+  &--no-underline::ng-deep .mat-form-field-underline {
+    background: transparent;
+  }
+
   &__input {
     position: relative;
     transform-origin: bottom left;
+
+    &--view {
+      color: var(--mdc-theme-text-primary-on-background);
+    }
 
     &--small {
       transform: scale(0.85);
@@ -26,16 +39,14 @@
     }
 
     &--large {
-      transform: scale(1.15);
+      transform: scale(1.2);
+      box-sizing: border-box;
+      padding-right: 20%;
     }
   }
 
-  &--view {
-    padding-right: calc(24px + 32px + 32px);
-
-    &::ng-deep .mat-form-field-underline {
-      background: transparent;
-    }
+  &__hint {
+    overflow: hidden;
   }
 
   &__clear {
@@ -73,15 +84,17 @@
     }
 
     &__cancel {
-      background-color: var(--mdc-theme-secondary);
+      bottom: 7px;
+      background-color: transparent;
+      margin-right: 4px;
+      margin-left: 4px;
 
       & mat-icon {
-        font-size: 24px;
-        width: 24px;
-        height: 24px;
+        font-size: 30px;
+        width: 30px;
+        height: 30px;
+        color: var(--mdc-theme-secondary);
       }
     }
   }
-
-
 }

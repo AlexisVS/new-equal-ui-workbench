@@ -2,9 +2,8 @@
   <mat-tab label="eq-string">
     <div class="equal__layout">
       <br><br>
-      Modif mat-form-field underline line need to be showed only in edit mod
-      <br>
-      disabled need to shot the input text in black
+      Afficher lorsque le hint dépasse une ligne un text-ellipsis avec un tooltip ( icon info en rounded tout petit gris
+      couleur background overlay ...
 
       <div style="display: flex;">
         <button style="margin-right: 1rem" mat-raised-button [color]="'primary'" (click)="disabled = !disabled">
@@ -22,13 +21,12 @@
 
         <div style="width: min-content; height: min-content; border: 1px solid aqua">
           <eq-string
-            hint="mon hint"
+            [hint]="bigText"
             [defaultValue]="littleText"
             (valueChange)="littleText = $event"
             title="Mon titre"
             [disabled]="disabled"
             [mode]="mode"
-
             placeholder="mon placeholder"
             error="mon erreur"
             [required]="true"
@@ -41,7 +39,7 @@
         <!--      <br><br><br>-->
         <div style="width: min-content; height: min-content; border: 1px solid aqua">
           <eq-string
-            hint="mon hint"
+            [hint]="bigText"
             [defaultValue]="littleText"
             (valueChange)="littleText = $event"
             title="Mon titre"
@@ -57,7 +55,7 @@
 
         <div style="width: min-content; height: min-content; border: 1px solid aqua">
           <eq-string
-            hint="mon hint"
+            [hint]="bigText"
             [defaultValue]="littleText"
             (valueChange)="littleText = $event"
             title="Mon titre"
@@ -71,66 +69,9 @@
           </eq-string>
         </div>
       </div>
-
-
-      <br><br><br>
-
-      <div style="display: flex">
-
-
-        <div style="width: min-content; height: min-content; border: 1px solid aqua">
-          <eq-string
-            hint="mon hint"
-            [defaultValue]="littleText"
-            (valueChange)="littleText = $event"
-            title="Mon titre"
-            placeholder="mon placeholder"
-            error="mon erreur"
-            [required]="true"
-            size="small"
-            [disabled]="disabled"
-            [mode]="mode"
-          >
-          </eq-string>
-
-        </div>
-
-        <!--      <br><br><br>-->
-        <div style="width: min-content; height: min-content; border: 1px solid aqua">
-          <eq-string
-            hint="mon hint"
-            [defaultValue]="littleText"
-            (valueChange)="littleText = $event"
-            title="Mon titre"
-            placeholder="mon placeholder"
-            error="mon erreur"
-            [required]="true"
-            size="normal"
-            [disabled]="disabled"
-            [mode]="mode"
-          >
-          </eq-string>
-        </div>
-
-        <div style="width: min-content; height: min-content; border: 1px solid aqua">
-          <eq-string
-            hint="mon hint"
-            [defaultValue]="littleText"
-            (valueChange)="littleText = $event"
-            title="Mon titre"
-            placeholder="mon placeholder"
-            error="mon erreur"
-            [required]="true"
-            size="large"
-            [disabled]="disabled"
-            [mode]="mode"
-          >
-          </eq-string>
-        </div>
-      </div>
-
 
     </div>
+
   </mat-tab>
   <mat-tab label="eq-text">
     <div class="equal__layout">
