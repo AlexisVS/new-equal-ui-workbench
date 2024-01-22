@@ -81,7 +81,7 @@ export class EqStringComponent implements OnInit, DoCheck {
         return '';
     }
 
-    private updateValue(value: any): void {
+    private updateValue(value: string | null): void {
         if (value === null) {
             this.is_null = true;
             this.formControl.setValue('[null]');
@@ -102,7 +102,6 @@ export class EqStringComponent implements OnInit, DoCheck {
     public activate(): void {
         if (this.mode === 'edit' && !this.disabled) {
             this.toggleActive(true);
-            // this.changeDetectorRef.detectChanges();
             this.input.nativeElement.focus();
         }
     }

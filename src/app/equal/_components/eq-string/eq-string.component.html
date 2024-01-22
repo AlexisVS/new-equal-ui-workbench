@@ -2,13 +2,13 @@
     <div #eqString
         class="eq-string"
         (click)="activate()"
-        [class.cursor]="mode == 'edit' && !disabled"
+        [class.cursor]="mode === 'edit' && !disabled"
     >
-        <span class="text" [class]="size" *ngIf="mode == 'view' && !is_null">
+        <span class="text" [class]="size" *ngIf="mode === 'view' && !is_null">
             <span>{{formControl.value}}</span>
         </span>
         <mat-form-field *ngIf="mode == 'edit'" [class.disabled]="disabled">
-            <mat-label *ngIf="title && mode == 'edit'">{{ title }}</mat-label>
+            <mat-label *ngIf="title && mode === 'edit'">{{ title }}</mat-label>
             <input #input
                 matInput
                 [class]="size"
