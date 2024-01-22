@@ -3,7 +3,9 @@
 Input component which have multiple actions, like: clear, reset, cancel and save the value as null or empty string.
 
 <br>
-<img src="./doc/eq-string.gif" alt="eq-string preview">
+<p align="center" width="100%">
+<img align="center" src="./doc/eq-string.gif" alt="eq-string preview">
+</p>
 
 ## Usage
 
