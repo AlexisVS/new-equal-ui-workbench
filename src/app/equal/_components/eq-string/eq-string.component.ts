@@ -1,174 +1,157 @@
 import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  ViewChild,
-  DoCheck, AfterViewInit, Renderer2
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+    DoCheck
 } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
-import {MatFormField, MatHint} from "@angular/material/form-field";
 
 @Component({
-  selector: 'eq-string',
-  templateUrl: './eq-string.component.html',
-  styleUrls: ['./eq-string.component.scss']
+    selector: 'eq-string',
+    templateUrl: './eq-string.component.html',
+    styleUrls: ['./eq-string.component.scss']
 })
-export class EqStringComponent implements OnInit, DoCheck, AfterViewInit {
+export class EqStringComponent implements OnInit, DoCheck {
+    @Output() valueChange: EventEmitter<string | null> = new EventEmitter<string | null>();
 
-  @Input() defaultValue: string;
+    @Input() value: string | null;
 
-  public value: FormControl;
-  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
+    @Input() nullable: boolean = false;
 
-  @Input() placeholder: string = '';
+    @Input() placeholder: string = '';
 
-  // * Disabled is used on edit mode for force the component to be disabled
-  @Input() disabled: boolean = false;
+    // used for forcing the component as disabled
+    @Input() disabled: boolean = false;
 
-  // * ContentEditable is used on edit mode for toggle the contentEditable property of the component
-  public is_active: boolean = false;
+    @Input() required: boolean = false;
 
-  @Input() required: boolean = false;
+    @Input() mode: 'view' | 'edit' = 'view';
 
-  @Input() mode: 'view' | 'edit' = 'view';
+    @Input() title?: string;
 
-  @Input() title?: string;
+    @Input() hint: string = '';
 
-  @Input() hint?: string;
+    @Input() size?: 'small' | 'normal' | 'large' | 'extra' = 'normal';
 
-  @Input() size?: 'small' | 'normal' | 'large' = 'normal';
+    @Input() error?: string;
 
-  @Input() error?: string;
+    @ViewChild('eqString') eqString: ElementRef<HTMLDivElement>;
+    @ViewChild('input') input: ElementRef<HTMLInputElement>;
 
-  @ViewChild('eqString') eqString: ElementRef<HTMLDivElement>;
-  @ViewChild('input') input: ElementRef<HTMLInputElement>;
-  @ViewChild('matFormField') matFormField: ElementRef<Element>;
-  @ViewChild('matHint') matHint: ElementRef<Element>;
+    // used for marking the input as being edited
+    public is_active: boolean = false;
 
-  // constructor(
-  //   // private changeDetectorRef: ChangeDetectorRef
-  // ) {
-  // }
+    public formControl: FormControl;
 
-  ngOnInit(): void {
-    this.initFormControl();
-  }
+    public is_null: boolean = false;
 
-  ngDoCheck(): void {
-    if (this.mode === 'view' || this.disabled) {
-      this.value.disable();
+    ngOnInit(): void {
+        this.initFormControl();
     }
 
-    if (this.mode === 'edit' && !this.disabled) {
-      this.value.enable();
+    ngDoCheck(): void {
+        if (this.mode === 'view' || this.disabled) {
+            this.formControl.disable();
+        }
+
+        if (this.mode === 'edit' && !this.disabled) {
+            this.formControl.enable();
+        }
     }
-  }
 
-  public initFormControl(): void {
-    this.value = new FormControl(this.defaultValue);
+    public initFormControl(): void {
+        this.formControl = new FormControl(this.value);
 
-    if (this.required) {
-      this.value.setValidators([
-        Validators.required,
-        Validators.minLength(1)
-      ]);
+        if (this.required) {
+            this.formControl.setValidators([
+                Validators.required,
+                Validators.minLength(1)
+            ]);
+        }
     }
-  }
 
-  public getErrorMessage(): string {
-    if (this.error && this.value.invalid) {
-      return this.error;
+    public getErrorMessage(): string {
+        if (this.error && this.formControl.invalid) {
+            return this.error;
+        }
+        return '';
     }
-    return '';
-  }
 
-  public updateValue(value: string): void {
-    this.value.setValue(value);
-  }
-
-  public isEditable(): boolean {
-    return this.is_active && !this.disabled && this.mode === 'edit';
-  }
-
-  public onClear(event: MouseEvent): void {
-    event.stopImmediatePropagation();
-    event.preventDefault();
-    this.updateValue('');
-    this.value.markAsPending({onlySelf: true});
-    this.input.nativeElement.focus();
-  }
-
-  public onEdit(): void {
-    if (this.mode === 'edit' && !this.disabled
-    ) {
-      this.toggleActive(true);
-      // this.changeDetectorRef.detectChanges();
-      this.input.nativeElement.focus();
+    private updateValue(value: any): void {
+        if (value === null) {
+            this.is_null = true;
+            this.formControl.setValue('[null]');
+        } else {
+            this.is_null = false;
+            this.formControl.setValue(value);
+        }
     }
-  }
 
-  public onCancel(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    this.updateValue(this.defaultValue);
-    this.toggleActive(false);
-  }
-
-  public onSave(event: MouseEvent): void {
-    event.preventDefault();
-    event.stopPropagation();
-    if (this.value.valid) {
-      this.valueChange.emit(this.value.value);
-      this.toggleActive(false);
+    public onClear(event: MouseEvent): void {
+        event.stopImmediatePropagation();
+        event.preventDefault();
+        this.updateValue('');
+        this.formControl.markAsPending({onlySelf: true});
+        this.input.nativeElement.focus();
     }
-  }
 
-  public onBlur(event: FocusEvent): void {
-    event.preventDefault();
-    console.log('blur');
-    if (
-      this.eqString.nativeElement instanceof Element &&
-      !this.eqString.nativeElement.contains(event.relatedTarget as Node)
-    ) {
-      this.updateValue(this.defaultValue);
-      this.toggleActive(false);
+    public activate(): void {
+        if (this.mode === 'edit' && !this.disabled) {
+            this.toggleActive(true);
+            // this.changeDetectorRef.detectChanges();
+            this.input.nativeElement.focus();
+        }
     }
-  }
 
-  private toggleActive(editable: boolean): void {
-    this.is_active = editable;
-    if (editable) {
-      this.input.nativeElement.focus();
+    public onCancel(event: MouseEvent): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.toggleIsNull(false);
+        this.updateValue(this.value);
+        this.toggleActive(false);
     }
-  }
 
-  constructor(private renderer: Renderer2) {
-  }
+    public onSave(event: MouseEvent): void {
+        event.preventDefault();
+        event.stopPropagation();
+        if (this.is_null) {
+            this.valueChange.emit(null);
+        } else if (this.formControl.valid) {
+            this.valueChange.emit(this.formControl.value);
+        }
+        this.toggleActive(false);
+    }
 
-  ngAfterViewInit(): void {
-    this.setHintOverlay();
-    console.log('ngAfterViewInit');
-  }
+    public onBlur(event: FocusEvent): void {
+        event.preventDefault();
+        // we need to discard current instance because onblur event occurs before onSave
+        if (
+            this.eqString.nativeElement instanceof Element &&
+            !this.eqString.nativeElement.contains(event.relatedTarget as Node)
+        ) {
+            this.toggleIsNull(false);
+            this.updateValue(this.value);
+            this.toggleActive(false);
+        }
+    }
 
-  private setHintOverlay(): void {
-    console.log(this.matHint);
-    // if (
-    //   this.matFormField._elementRef.nativeElement instanceof Element &&
-    //   this.matHint._elementRef.nativeElement instanceof Element
-    // ) {
-    //   const matFormFieldWidth: number = this.matFormField.nativeElement.offsetWidth;
-    //   const matHintWidth: number = this.matHint.nativeElement.scrollWidth;
-    //
-    //
-    //   if (matHintWidth > matFormFieldWidth) {
-    //     this.renderer.setProperty(this.matFormField.nativeElement, 'title', this.matHint.nativeElement.innerText);
-    //   } else {
-    //     this.renderer.removeAttribute(this.matFormField.nativeElement, 'title');
-    //   }
-    // }
-  }
+    private toggleActive(editable: boolean): void {
+        this.is_active = editable;
+        if (editable) {
+            this.input.nativeElement.focus();
+        }
+    }
 
+    public toggleIsNull(is_null: boolean): void {
+        this.is_null = is_null;
+        if (this.is_null) {
+            this.updateValue(null);
+        } else {
+            this.updateValue('');
+        }
+    }
 }

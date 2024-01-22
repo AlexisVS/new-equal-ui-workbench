@@ -1,27 +1,28 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-equal',
-  templateUrl: './equal.component.html',
-  styleUrls: ['./equal.component.scss']
+    selector: 'app-equal',
+    templateUrl: './equal.component.html',
+    styleUrls: ['./equal.component.scss']
 })
 export class EqualComponent implements OnInit {
 
-  public bigText = 'lorem ipsum dolor sit amet, consectetur adipiscing elit. sed non risus. suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.';
-  public smallText = 'lorem ipsum dolor sit amet, consectetur adipiscing elit. sed non risus.';
-  public littleText = 'lorem ipsum dolor.';
-  public dateIso8601Utc0 = '2024-01-17T12:38:46+0000';
-  public disabled: boolean = false;
-  public mode: 'view' | 'edit' = 'edit';
+    public bigText = 'lorem ipsum dolor sit amet, consectetur adipiscing elit. sed non risus. suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.';
+    public smallText = 'lorem ipsum dolor sit amet, consectetur adipiscing elit. sed non risus.';
+    public littleText: string | null = 'lorem ipsum dolor.';
+    public dateIso8601Utc0 = '2024-01-17T12:38:46+0000';
+    public disabled: boolean = false;
+    public mode: 'view' | 'edit' = 'edit';
 
-  public toggleMode(): void {
-    this.mode = this.mode === 'view' ? 'edit' : 'view';
-  }
+    public toggleMode(): void {
+        this.mode = this.mode === 'view' ? 'edit' : 'view';
+    }
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
+    public void() {}
 }

@@ -1,34 +1,31 @@
+<br>
+<div style="display: flex; align-items: center; justify-content: center">
+  <button style="margin-right: 1rem" mat-raised-button [color]="'primary'" (click)="disabled = !disabled">
+    property disabled = {{ disabled ? 'true' : 'false' }}
+  </button>
+  <button mat-raised-button color="accent" (click)="toggleMode()">
+    mode = {{ mode }}
+  </button>
+</div>
+<br>
+
 <mat-tab-group>
   <mat-tab label="eq-string">
     <div class="equal__layout">
-      <br><br>
-      Afficher lorsque le hint dépasse une ligne un text-ellipsis avec un tooltip ( icon info en rounded tout petit gris
-      couleur background overlay ...
-
-      <div style="display: flex;">
-        <button style="margin-right: 1rem" mat-raised-button [color]="'primary'" (click)="disabled = !disabled">
-          property disabled = {{ disabled ? 'true' : 'false' }}
-        </button>
-        <button mat-raised-button color="accent" (click)="toggleMode()">
-          mode = {{ mode }}
-        </button>
-      </div>
-      <br><br>
-
 
       <div style="display: flex">
 
 
-        <div style="width: min-content; height: min-content; border: 1px solid aqua">
+        <div style="width: 250px; border: 1px solid aqua">
           <eq-string
-            [hint]="bigText"
-            [defaultValue]="littleText"
-            (valueChange)="littleText = $event"
-            title="Mon titre"
+            [hint]="'My hint'"
+            [value]="littleText"
+            (valueChange)="void()"
+            title="My title"
             [disabled]="disabled"
             [mode]="mode"
-            placeholder="mon placeholder"
-            error="mon erreur"
+            placeholder="My placeholder"
+            error="My error"
             [required]="true"
             size="small"
           >
@@ -37,11 +34,11 @@
         </div>
 
         <!--      <br><br><br>-->
-        <div style="width: min-content; height: min-content; border: 1px solid aqua">
+        <div style="width: 250px; border: 1px solid aqua">
           <eq-string
             [hint]="bigText"
-            [defaultValue]="littleText"
-            (valueChange)="littleText = $event"
+            [value]="littleText"
+            (valueChange)="void()"
             title="Mon titre"
             placeholder="mon placeholder"
             error="mon erreur"
@@ -53,16 +50,50 @@
           </eq-string>
         </div>
 
-        <div style="width: min-content; height: min-content; border: 1px solid aqua">
+        <div style="width: 250px; border: 1px solid aqua">
           <eq-string
             [hint]="bigText"
-            [defaultValue]="littleText"
-            (valueChange)="littleText = $event"
+            [value]="littleText"
+            (valueChange)="void()"
             title="Mon titre"
             placeholder="mon placeholder"
             error="mon erreur"
             [required]="true"
             size="large"
+            [disabled]="disabled"
+            [mode]="mode"
+          >
+          </eq-string>
+        </div>
+
+        <div style="width: 250px; border: 1px solid aqua">
+          <eq-string
+            [hint]="bigText"
+            [value]="littleText"
+            (valueChange)="void()"
+            title="Mon titre"
+            placeholder="mon placeholder"
+            error="mon erreur"
+            [required]="true"
+            size="extra"
+            [disabled]="disabled"
+            [mode]="mode"
+          >
+          </eq-string>
+        </div>
+
+      </div>
+      <div>
+        <div style="width: 750px; border: 1px solid aqua">
+          <eq-string
+            [hint]="bigText"
+            [value]="littleText"
+            (valueChange)="void()"
+            title="Mon titre"
+            placeholder="mon placeholder"
+            error="mon erreur"
+            [required]="true"
+            size="extra"
             [disabled]="disabled"
             [mode]="mode"
           >
@@ -104,6 +135,24 @@
     </div>
   </mat-tab>
   <mat-tab label="eq-m2o">
+    <div class="equal__layout">
+      <br><br><br><br><br>
+      <div style="width: 250px">
+        <eq-string
+          [hint]="'My hint'"
+          [(value)]="littleText"
+          title="My title"
+          [disabled]="disabled"
+          [mode]="mode"
+          placeholder="My placeholder"
+          error="My error"
+          [required]="true"
+          size="small"
+          [nullable]="true"
+        >
+        </eq-string>
+      </div>
+    </div>
   </mat-tab>
   <mat-tab label="eq-date">
     <code>Based on date: <strong>2024-01-17T12:38:46+0000</strong></code>

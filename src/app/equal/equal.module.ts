@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {InputTransformerModule} from './_components/input-transformer/input-transformer.module';
 import {EqualComponent} from './equal.component';
 import {EqStringComponent} from './_components/eq-string/eq-string.component';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -16,7 +15,6 @@ import { EqDateTimeComponent } from './_components/eq-date-time/eq-date-time.com
 
 @NgModule({
   imports: [
-    InputTransformerModule,
     MatTabsModule,
     CommonModule,
     MatInputModule,
@@ -34,7 +32,6 @@ import { EqDateTimeComponent } from './_components/eq-date-time/eq-date-time.com
     EqDateTimeComponent,
   ],
   exports: [
-    InputTransformerModule,
     EqualComponent
   ]
 })
