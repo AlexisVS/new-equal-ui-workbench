@@ -3,6 +3,8 @@
 ## Overview
 
 The `eq-string` component is an Angular Material input component with extended functionality. It supports various actions such as clearing the input, resetting to the original value, and saving the value as null or an empty string. This component is designed to provide a flexible and interactive user experience for handling string values.
+<br><br>
+<img src="./doc/eq-string.gif" alt="eq-string preview">
 
 ## Usage
 
