@@ -20,8 +20,6 @@ export class EqStringComponent implements OnInit, DoCheck {
 
     @Input() value: string | null;
 
-    @Input() nullable: boolean = false;
-
     @Input() placeholder: string = '';
 
     // used for forcing the component as disabled

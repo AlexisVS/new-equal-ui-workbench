@@ -27,7 +27,7 @@
                 <mat-icon>close</mat-icon>
             </button>
             <button
-                *ngIf="nullable && (is_active && !formControl.value.length && !is_null)"
+                *ngIf="required && (is_active && !formControl.value.length && !is_null)"
                 color="accent"
                 mat-icon-button
                 matSuffix
@@ -36,7 +36,7 @@
                 <mat-icon>toggle_off</mat-icon>
             </button>
             <button
-                *ngIf="nullable && (is_active && is_null)"
+                *ngIf="required && (is_active && is_null)"
                 mat-icon-button
                 matSuffix
                 (click)="toggleIsNull(false)"

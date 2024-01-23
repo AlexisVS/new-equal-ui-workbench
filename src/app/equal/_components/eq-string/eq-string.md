@@ -19,7 +19,6 @@ To use the `eq-string` component, include the following code in your Angular tem
   [title]="'My title'"
   [placeholder]="'My placeholder'"
   [hint]="'My hint'"
-  [nullable]="true"
   [disabled]="false"
   [required]="true"
   [mode]="'edit'"
@@ -35,10 +34,9 @@ To use the `eq-string` component, include the following code in your Angular tem
 | Property      | Required | Type                                              | Default    | Description                                                                                                 |
 |---------------|----------|---------------------------------------------------|------------|-------------------------------------------------------------------------------------------------------------|
 | `value`       | Required | `string` \| `null`                                |            | The value to be handled by the component.                                                                   |
-| `nullable`    | Optional | `boolean`                                         | `false`    | Indicates whether the component can have a value of `[null]`.                                               |
 | `placeholder` | Optional | `string`                                          | `''`       | The placeholder attribute of the input.                                                                     |
 | `disabled`    | Optional | `boolean`                                         | `false`    | Disables the input field.                                                                                   |
-| `required`    | Optional | `boolean`                                         | `false`    | **Approval pending from CEDRIC**.                                                                           |
+| `required`    | Optional | `boolean`                                         | `false`    | Indicates whether the component can have a value of `[null]`.                                               |
 | `mode`        | Optional | `'view'` \| `'edit'`                              | `'view'`   | Specifies the context; whether the input is editable (`'edit'`) or only used for viewing (`'view'`).        |
 | `title`       | Required | `string`                                          |            | The label for the input.                                                                                    |
 | `hint`        | Optional | `string`                                          | `''`       | Describes the expected value for the input.                                                                 |
