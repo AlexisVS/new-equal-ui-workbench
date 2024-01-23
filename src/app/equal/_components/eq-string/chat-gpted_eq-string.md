@@ -7,6 +7,7 @@ The `eq-string` component is an Angular Material input component with extended f
 <p align="center" width="100%">
 <img align="center" src="./doc/eq-string.gif" alt="eq-string preview">
 </p>
+
 ## Usage
 
 To use the `eq-string` component, include the following code in your Angular template:
