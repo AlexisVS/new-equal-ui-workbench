@@ -1,13 +1,16 @@
-# eq-string
+# eq-string component Documentation
 
-Input component which have multiple actions, like: clear, reset, cancel and save the value as null or empty string.
+## Overview
 
-<br>
+The `eq-string` component is an Angular Material input component with extended functionality. It supports various actions such as clearing the input, resetting to the original value, and saving the value as null or an empty string. This component is designed to provide a flexible and interactive user experience for handling string values.
+<br><br>
 <p align="center" width="100%">
 <img align="center" src="./doc/eq-string.gif" alt="eq-string preview">
 </p>
 
 ## Usage
+
+To use the `eq-string` component, include the following code in your Angular template:
 
 ```html
 
@@ -25,18 +28,31 @@ Input component which have multiple actions, like: clear, reset, cancel and save
 ></eq-string>
 ```
 
-## Properties
+## API Reference
 
-| Property    | Required |                           Type                            | Default      | Description                                                                                                                                                                           |
-|-------------|:--------:|:---------------------------------------------------------:|--------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| value       | Required |                 ``'string'`` \| ``null``                  |              | Value to handle                                                                                                                                                                       |
-| nullable    | Optional |                        ``boolean``                        | ``false``    | Can have a value to ``[null]``                                                                                                                                                        |
-| placeholder | Optional |                        ``string``                         | ``''``       | The placeholder attribute of the input                                                                                                                                                |
-| disabled    | Optional |                        ``boolean``                        | ``false``    | Disable the field                                                                                                                                                                     |
-| required    | Optional |                        ``boolean``                        | ``false``    | **EN ATTENDE D'APPROBATION PAR CEDRIC**                                                                                                                                               |
-| mode        | Optional |                 ``'view'`` \| ``'edit'``                  | ``'view'``   | Used for the context, is the input can be editable or it's purpose is only used for looking the value.<br><br>The view mode show only the value of the input without label, hint, ... |
-| title       | Required |                        ``string``                         |              | Used for the input label                                                                                                                                                              |
-| hint        | Optional |                        ``string``                         | ``''``       | Used for a describe the value attempted by the input value                                                                                                                            |
-| size        | Optional | ``'small'`` \| ``'normal'`` \| ``'large'`` \| ``'extra'`` | ``'normal'`` | For styling purpose, the component's sizing                                                                                                                                           |
-| error       | Required |                       ``'string'``                        |              | Error message when the input value is wrong  <br><br>The error message can be trigger only if the required property is set to ``'true'``                                              |
+### Properties
 
+| Property      | Required | Type                                              | Default    | Description                                                                                                 |
+|---------------|----------|---------------------------------------------------|------------|-------------------------------------------------------------------------------------------------------------|
+| `value`       | Required | `string` \| `null`                                |            | The value to be handled by the component.                                                                   |
+| `nullable`    | Optional | `boolean`                                         | `false`    | Indicates whether the component can have a value of `[null]`.                                               |
+| `placeholder` | Optional | `string`                                          | `''`       | The placeholder attribute of the input.                                                                     |
+| `disabled`    | Optional | `boolean`                                         | `false`    | Disables the input field.                                                                                   |
+| `required`    | Optional | `boolean`                                         | `false`    | **Approval pending from CEDRIC**.                                                                           |
+| `mode`        | Optional | `'view'` \| `'edit'`                              | `'view'`   | Specifies the context; whether the input is editable (`'edit'`) or only used for viewing (`'view'`).        |
+| `title`       | Required | `string`                                          |            | The label for the input.                                                                                    |
+| `hint`        | Optional | `string`                                          | `''`       | Describes the expected value for the input.                                                                 |
+| `size`        | Optional | `'small'` \| `'normal'` \| `'large'` \| `'extra'` | `'normal'` | The sizing for styling purposes (small, normal, large, or extra).                                           |
+| `error`       | Required | `string`                                          |            | Error message displayed when the input value is invalid. Can only trigger if `required` is set to `'true'`. |
+
+### Methods
+
+- **onClear(event: MouseEvent):** Clears the input value.
+- **activate():** Activates the input for editing.
+- **onCancel(event: MouseEvent):** Cancels the editing and reverts to the original value.
+- **onSave(event: MouseEvent):** Saves the input value.
+- **onBlur(event: FocusEvent):** Handles the blur event, discarding changes if needed.
+
+### Events
+
+- **valueChange:** Emitted when the value changes.
