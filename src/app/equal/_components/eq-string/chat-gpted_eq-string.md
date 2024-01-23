@@ -11,7 +11,7 @@ The `eq-string` component is an Angular Material input component with extended f
 
 To use the `eq-string` component, include the following code in your Angular template:
 
-```angular2html
+```angular17html
 
 <eq-string
   [value]="'My value'"
