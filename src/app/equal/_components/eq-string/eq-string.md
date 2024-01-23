@@ -9,7 +9,7 @@ Input component which have multiple actions, like: clear, reset, cancel and save
 
 ## Usage
 
-```angular2html
+```html
 
 <eq-string
   [value]="'My value'"
