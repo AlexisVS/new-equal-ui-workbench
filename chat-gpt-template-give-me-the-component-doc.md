@@ -25,7 +25,7 @@ Additional Information (if applicable):
 
 component selector integration:
 
-  ```angular2html
+  ```html
   [Provide the component selector integration]
   ```
 
