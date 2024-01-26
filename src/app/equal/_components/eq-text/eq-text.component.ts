@@ -1,6 +1,7 @@
 import {
+  AfterViewChecked,
   ChangeDetectorRef,
-  Component,
+  Component, DoCheck,
   ElementRef,
   EventEmitter,
   Input,
@@ -8,134 +9,291 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {FormControl, Validators} from '@angular/forms';
+import {FormControl, ValidatorFn, Validators} from '@angular/forms';
+
+type size = 'small' | 'normal' | 'large' | 'extra';
 
 @Component({
   selector: 'eq-text',
   templateUrl: './eq-text.component.html',
   styleUrls: ['./eq-text.component.scss']
 })
-export class EqTextComponent implements OnInit {
-  // ? why not use value and valueChange ?
-  @Input() defaultValue: string;
+export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked {
+  @Output() valueChange: EventEmitter<string | null> = new EventEmitter<string | null>();
 
-  public value: FormControl;
-  @Output() valueChange: EventEmitter<string> = new EventEmitter<string>();
+  @Input() value: string | null;
 
   @Input() placeholder: string = '';
 
-  // // ? For what purpose
-  // @Input() disabled: boolean = false;
+  // used for forcing the component as disabled
+  @Input() disabled: boolean = false;
 
-  // ? How do you want validation ?
   @Input() required: boolean = false;
+
+  @Input() nullable: boolean = false;
+
+  @Input() mode: 'view' | 'edit' = 'view';
 
   @Input() title?: string;
 
-  @Input() hint?: string = '';
+  @Input() hint: string = '';
 
-  @Input() size?: 'small' | 'normal' | 'large' = 'normal';
+
+  @Input() size: size = 'normal';
 
   @Input() error?: string;
+  @Input() hasError: boolean = false;
 
-  @Input() rows?: number = 2;
+  @Input() minHeight: number;
 
-  public mode: 'view' | 'edit' = 'view';
+  @Input() maxHeight?: number;
+
+  @Input() autoGrow: boolean = false;
 
   @ViewChild('eqText') eqText: ElementRef<HTMLDivElement>;
   @ViewChild('textarea') textarea: ElementRef<HTMLTextAreaElement>;
-  @ViewChild('clearButton') clearButton: ElementRef<HTMLButtonElement>;
+  @ViewChild('text') text: ElementRef<HTMLSpanElement>;
+
+  // used for marking the textarea as being edited
+  public is_active: boolean = false;
+
+  public formControl: FormControl;
+
+  public is_null: boolean = false;
+
+  // // * For two lines of text if minHeight is not set
+  // public textMinHeightSizing: Record<size, number> = {
+  //   small: 35,
+  //   normal: 40,
+  //   large: 49,
+  //   extra: 58
+  // };
+
+  // ! Do i need to add padding bottom to the view mode for equal the height of the mode edit ?
+  public paddingBottomModeView: number = 66.83;
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private elementRef: ElementRef,
   ) {
+  }
+
+  ngAfterViewChecked(): void {
+    this.setTextHeight();
   }
 
   ngOnInit(): void {
     this.initFormControl();
+  }
 
-    this.value.disable();
+  ngDoCheck(): void {
+    this.setFormControlState();
+
+    if (this.elementRef.nativeElement.style instanceof CSSStyleDeclaration) {
+      this.setTextMinHeight();
+    }
+  }
+
+  private setFormControlState(): void {
+    if (this.mode === 'view' || this.disabled) {
+      this.formControl.disable();
+    }
+
+    if (this.mode === 'edit' && !this.disabled) {
+      this.formControl.enable();
+    }
+
+  }
+
+  public setTextHeight(): void {
+    // auto grow and max height
+    // * OK
+    if (this.autoGrow && typeof this.maxHeight === 'number') {
+      console.log('auto grow and max height');
+      this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', this.maxHeight + 'px');
+
+      this.changeDetector.detectChanges();
+      if (this.mode === 'edit') {
+        if (this.textarea.nativeElement.scrollHeight > this.maxHeight) {
+          this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
+        } else {
+          this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
+        }
+      }
+
+      if (this.mode === 'view') {
+        if (this.text.nativeElement.scrollHeight > this.maxHeight) {
+          this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
+        } else {
+          this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.scrollHeight + 'px');
+        }
+      }
+    }
+      // auto grow and no max height
+    // ! ERROR
+    else if (this.autoGrow && typeof this.maxHeight !== 'number') {
+      console.log('auto grow and no max height');
+      this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', 'none');
+      this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+
+      this.changeDetector.detectChanges();
+      if (this.mode === 'edit') {
+        this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
+        this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+        console.log(this.textarea.nativeElement.scrollHeight, this.textarea.nativeElement.clientHeight);
+        if (this.textarea.nativeElement.scrollHeight > this.textarea.nativeElement.clientHeight) {
+          this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
+        } else {
+          this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
+        }
+
+        this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'hidden');
+      }
+
+      if (this.mode === 'view') {
+        console.log('view');
+        this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
+        this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+        console.log('view ==> ', this.text.nativeElement.scrollHeight > this.text.nativeElement.clientHeight);
+        if (this.text.nativeElement.scrollHeight > this.text.nativeElement.clientHeight) {
+          this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.scrollHeight + 'px');
+        } else {
+          this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.clientHeight + 'px');
+        }
+        this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'hidden');
+      }
+    }
+      // no auto grow and max height
+    // * OK
+    else if (!this.autoGrow && typeof this.maxHeight === 'number') {
+      console.log('no auto grow and max height');
+
+      this.changeDetector.detectChanges();
+      this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
+      this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', this.maxHeight + 'px');
+      this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+    }
+    // no auto grow and no max height
+    else if (!this.autoGrow && typeof this.maxHeight !== 'number') {
+      console.log('no auto grow and no max height');
+
+      this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
+      this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', 'none');
+      this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+    }
+  }
+
+  private setTextMinHeight(): void {
+    if (this.elementRef.nativeElement.style instanceof CSSStyleDeclaration) {
+      this.elementRef.nativeElement.style.setProperty('--eq-text-min-height', this.minHeight + 'px');
+      // if (this.minHeight) {
+      // }
+      // else {
+      //   this.elementRef.nativeElement.style.setProperty('--eq-text-min-height', this.textMinHeightSizing[this.size] + 'px');
+      // }
+    }
+  }
+
+  private setFormControlToError(): void {
+    if (this.hasError && !this.formControl.dirty) {
+      this.formControl.setErrors({invalid: true});
+      this.formControl.markAsTouched({onlySelf: true});
+      this.formControl.markAsDirty({onlySelf: true});
+    }
   }
 
   public initFormControl(): void {
-    this.required
-      ? this.value = new FormControl(this.defaultValue, [
-        Validators.required,
-        Validators.minLength(1)
-      ])
-      : this.value = new FormControl(this.defaultValue);
+    this.formControl = new FormControl(this.value);
+    const validators: ValidatorFn[] = [];
+
+    if (this.required) {
+      validators.push(Validators.required);
+    }
+
+    if (!this.nullable) {
+      validators.push(Validators.minLength(1));
+    }
+
+    this.formControl.setValidators(validators);
   }
 
   public getErrorMessage(): string {
-    if (this.error && this.value.invalid) {
+    if (this.error && this.formControl.invalid) {
       return this.error;
     }
     return '';
   }
 
-  public updateValue(value: string): void {
-    this.value.setValue(value);
-  }
-
-  public isEditable(): boolean {
-    return this.mode === 'edit';
-  }
-
-  public setSize(): string {
-    return `eq-text--${this.size}`;
-  }
-
-  public onEdit(onEditEvent: MouseEvent): void {
-    if (this.mode === 'view') {
-      this.mode = 'edit';
-      this.value.enable();
-      this.changeDetectorRef.detectChanges();
-      this.textarea.nativeElement.focus();
+  private updateValue(value: string | null): void {
+    if (value === null) {
+      this.is_null = true;
+      this.formControl.setValue('[null]');
+    } else {
+      this.is_null = false;
+      this.formControl.setValue(value);
     }
-  }
-
-  public onFocusOut(event: FocusEvent): void {
-    if (event.target instanceof Element && event.target.classList.contains('eq-text__clear')) {
-      return;
-    }
-
-    if (this.checkIfClickedOutside(event) || this.value.invalid) {
-      this.mode = 'view';
-      this.updateValue(this.defaultValue);
-      this.value.disable();
-    }
-  }
-
-  private checkIfClickedOutside(event: FocusEvent): boolean {
-    return this.isEditable() &&
-      this.eqText.nativeElement instanceof Element &&
-      // * event.relatedTarget is not a Node, but it works like this
-      !this.eqText.nativeElement.contains(event.relatedTarget as Node);
   }
 
   public onClear(event: MouseEvent): void {
     event.stopImmediatePropagation();
     event.preventDefault();
     this.updateValue('');
-    this.value.markAsUntouched({onlySelf: true});
+    this.formControl.markAsPending({onlySelf: true});
     this.textarea.nativeElement.focus();
+  }
+
+  public activate(): void {
+    if (this.mode === 'edit' && !this.disabled) {
+      this.toggleActive(true);
+      this.textarea.nativeElement.focus();
+    }
+  }
+
+  public onCancel(event: MouseEvent): void {
+    event.preventDefault();
+    event.stopPropagation();
+    this.toggleIsNull(false);
+    this.updateValue(this.value);
+    this.toggleActive(false);
   }
 
   public onSave(event: MouseEvent): void {
     event.preventDefault();
     event.stopPropagation();
-    if (this.value.valid) {
-      this.mode = 'view';
-      this.valueChange.emit(this.value.value);
-      this.value.disable();
+    if (this.is_null) {
+      this.valueChange.emit(null);
+    } else if (this.formControl.valid) {
+      this.valueChange.emit(this.formControl.value);
+    }
+    this.toggleActive(false);
+  }
+
+  public onBlur(event: FocusEvent): void {
+    event.preventDefault();
+    // we need to discard current instance because onblur event occurs before onSave
+    if (
+      this.eqText.nativeElement instanceof Element &&
+      !this.eqText.nativeElement.contains(event.relatedTarget as Node)
+    ) {
+      this.toggleIsNull(false);
+      this.updateValue(this.value);
+      this.toggleActive(false);
     }
   }
 
-  public isFocus(): boolean {
-    if (document.activeElement) {
-      return (this.isEditable() && this.eqText.nativeElement.contains(document.activeElement as Node));
+  private toggleActive(editable: boolean): void {
+    this.is_active = editable;
+    if (editable) {
+      this.textarea.nativeElement.focus();
     }
+  }
 
-    return false;
+  public toggleIsNull(is_null: boolean): void {
+    this.is_null = is_null;
+    if (this.is_null) {
+      this.updateValue(null);
+    } else {
+      this.updateValue('');
+    }
   }
 }

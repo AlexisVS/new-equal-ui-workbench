@@ -1,46 +1,74 @@
-<div class="eq-text"
-     [ngClass]="setSize()"
-     #eqText
-     (click)="onEdit($event)"
-     (focusout)="onFocusOut($event)"
+<div
+  #eqText
+  class="eq-text"
+  (click)="activate()"
+  [class.cursor]="mode === 'edit' && !disabled"
 >
-  <mat-form-field [class.eq-text--view]="!isEditable()" >
-    <mat-label *ngIf="title">{{ title }}</mat-label>
-    <textarea
-      #textarea
-      matInput
-      class="eq-text__textarea"
-      [class.eq-text__textarea--focus]="isFocus()"
-      [rows]="rows"
-      [style.pointer-events]="!isEditable() ? 'none' : 'auto'"
-      [disabled]="!isEditable()"
-      [formControl]="value"
-      [placeholder]="placeholder"
+  <span #text class="text" [class]="size" *ngIf="mode == 'view' && !is_null">
+      <span>{{ formControl.value }}</span>
+  </span>
+  <mat-form-field
+    *ngIf="mode == 'edit'"
+    [class.disabled]="disabled || !is_active"
+    appearance="outline"
+  >
+    <mat-label *ngIf="title && mode === 'edit'">{{ title }}</mat-label>
+    <textarea #textarea
+              [readonly]="disabled"
+              matInput
+              rows="1"
+              [class]="size"
+              [style.padding-right.px]="is_active ? 40 : 0"
+              [class.is_null]="is_null"
+              [disabled]="disabled"
+              [formControl]="formControl"
+              [placeholder]="mode === 'edit' ? placeholder: ''"
+              (blur)="onBlur($event); setTextHeight()"
     ></textarea>
     <button
-      #clearButton
-      class="eq-text__clear"
-      *ngIf="isEditable()"
+      class="suffix-button"
+      *ngIf="is_active && formControl.value.length && !is_null"
       mat-icon-button
-      matSuffix
       (click)="onClear($event)"
     >
       <mat-icon>close</mat-icon>
     </button>
-    <mat-hint *ngIf="hint && !value.invalid">{{ hint }}</mat-hint>
-    <mat-error *ngIf="value.invalid">
-      {{ getErrorMessage() }}
-    </mat-error>
+    <button
+      class="suffix-button"
+      *ngIf="nullable && (is_active && !formControl.value.length && !is_null)"
+      color="accent"
+      mat-icon-button
+      (click)="toggleIsNull(true)"
+    >
+      <mat-icon>toggle_off</mat-icon>
+    </button>
+    <button
+      class="suffix-button"
+      *ngIf="nullable && (is_active && is_null)"
+      mat-icon-button
+      (click)="toggleIsNull(false)"
+    >
+      <mat-icon>toggle_on</mat-icon>
+    </button>
+    <mat-hint *ngIf="!formControl.invalid && mode == 'edit'" [title]="hint">{{ hint }}</mat-hint>
+    <mat-error *ngIf="formControl.invalid">{{ getErrorMessage() }}</mat-error>
   </mat-form-field>
+
   <button
-    [disabled]="value.invalid"
-    [class.eq-string__check--invalid]="value.invalid"
-    [style.pointer-events]="value.invalid ? 'none' : 'auto'"
     mat-icon-button
-    *ngIf="isEditable()"
-    class="eq-text__check"
-    (click)="onSave($event)"
+    color="primary"
+    [disabled]="formControl.invalid"
+    *ngIf="is_active"
+    (click)="onSave($event); setTextHeight()"
   >
     <mat-icon>check_small</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    color="accent"
+    *ngIf="is_active"
+    (click)="onCancel($event); setTextHeight()"
+  >
+    <mat-icon>cancel</mat-icon>
   </button>
 </div>

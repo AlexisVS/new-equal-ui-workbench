@@ -1,146 +1,137 @@
 <br>
-<div style="display: flex; align-items: center; justify-content: center">
-  <button style="margin-right: 1rem" mat-raised-button [color]="'primary'" (click)="disabled = !disabled">
+<div class="button__layout">
+  <button
+    mat-raised-button
+    [color]="'primary'"
+    (click)="disabled = !disabled"
+  >
     property disabled = {{ disabled ? 'true' : 'false' }}
   </button>
+
   <button mat-raised-button color="accent" (click)="toggleMode()">
     mode = {{ mode }}
   </button>
 </div>
 <br>
 
-<mat-tab-group>
+<mat-tab-group [selectedIndex]="1">
   <mat-tab label="eq-string">
     <div class="equal__layout">
-
-      <div style="display: flex">
-
-
-        <div style="width: 250px; border: 1px solid aqua">
-          <eq-string
-            [hint]="'My hint'"
-            [value]="littleText"
-            (valueChange)="void()"
-            title="My title"
-            [disabled]="disabled"
-            [mode]="mode"
-            placeholder="My placeholder"
-            error="My error"
-            [required]="true"
-            size="small"
-          >
-          </eq-string>
-
-        </div>
-
-        <!--      <br><br><br>-->
-        <div style="width: 250px; border: 1px solid aqua">
-          <eq-string
-            [hint]="bigText"
-            [value]="littleText"
-            (valueChange)="void()"
-            title="Mon titre"
-            placeholder="mon placeholder"
-            error="mon erreur"
-            [required]="true"
-            size="normal"
-            [disabled]="disabled"
-            [mode]="mode"
-          >
-          </eq-string>
-        </div>
-
-        <div style="width: 250px; border: 1px solid aqua">
-          <eq-string
-            [hint]="bigText"
-            [value]="littleText"
-            (valueChange)="void()"
-            title="Mon titre"
-            placeholder="mon placeholder"
-            error="mon erreur"
-            [required]="true"
-            size="large"
-            [disabled]="disabled"
-            [mode]="mode"
-          >
-          </eq-string>
-        </div>
-
-        <div style="width: 250px; border: 1px solid aqua">
-          <eq-string
-            [hint]="bigText"
-            [value]="littleText"
-            (valueChange)="void()"
-            title="Mon titre"
-            placeholder="mon placeholder"
-            error="mon erreur"
-            [required]="false"
-            size="extra"
-            [disabled]="disabled"
-            [mode]="mode"
-          >
-          </eq-string>
-        </div>
-
-      </div>
-      <div>
-        <div style="width: 750px; border: 1px solid aqua">
-          <eq-string
-            [hint]="bigText"
-            [value]="littleText"
-            (valueChange)="void()"
-            title="Mon titre"
-            placeholder="mon placeholder"
-            error="mon erreur"
-            [required]="false"
-            size="extra"
-            [disabled]="disabled"
-            [mode]="mode"
-          >
-          </eq-string>
-        </div>
+      <div style="width: 250px">
+        <eq-string
+          [hint]="'My hint'"
+          [value]="littleText"
+          (valueChange)="void()"
+          title="My title"
+          [disabled]="disabled"
+          [mode]="mode"
+          placeholder="My placeholder"
+          error="My error"
+          [required]="true"
+          [nullable]="true"
+          size="small"
+        >
+        </eq-string>
       </div>
 
-    </div>
-
-  </mat-tab>
-  <mat-tab label="eq-text">
-    <div class="equal__layout">
-      <div style="width: min-content; height: min-content; border: 1px solid aqua">
-
-        <eq-text
-          hint="mon hint"
-          [defaultValue]="bigText"
-          (valueChange)="bigText = $event"
+      <div style="width: 250px">
+        <eq-string
+          [hint]="'My hint'"
+          [value]="littleText"
+          (valueChange)="void()"
           title="Mon titre"
           placeholder="mon placeholder"
           error="mon erreur"
           [required]="true"
+          size="normal"
+          [disabled]="disabled"
+          [mode]="mode"
         >
-        </eq-text>
-
+        </eq-string>
       </div>
-      <br><br><br>
 
-      <eq-text
-        hint="mon hint"
-        [defaultValue]="bigText"
-        (valueChange)="bigText = $event"
-        title="Mon titre"
-        placeholder="mon placeholder"
-        error="mon erreur"
-        [required]="true"
-      >
-      </eq-text>
-    </div>
-  </mat-tab>
-  <mat-tab label="eq-m2o">
-    <div class="equal__layout">
-      <br><br><br><br><br>
       <div style="width: 250px">
         <eq-string
           [hint]="'My hint'"
-          [(value)]="littleText"
+          [value]="littleText"
+          (valueChange)="void()"
+          title="Mon titre"
+          placeholder="mon placeholder"
+          error="mon erreur"
+          [required]="true"
+          size="large"
+          [disabled]="disabled"
+          [mode]="mode"
+        >
+        </eq-string>
+      </div>
+
+      <div style="width: 250px">
+        <eq-string
+          [hint]="'My hint'"
+          [value]="littleText"
+          (valueChange)="void()"
+          title="Mon titre"
+          placeholder="mon placeholder"
+          error="mon erreur"
+          [required]="false"
+          size="extra"
+          [disabled]="disabled"
+          [mode]="mode"
+        >
+        </eq-string>
+      </div>
+
+    </div>
+    <div>
+      <div style="width: 750px">
+        <eq-string
+          [hint]="'My hint'"
+          [value]="littleText"
+          (valueChange)="void()"
+          title="Mon titre"
+          placeholder="mon placeholder"
+          error="mon erreur"
+          [required]="false"
+          size="extra"
+          [disabled]="disabled"
+          [mode]="mode"
+        >
+        </eq-string>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="eq-text">
+    <div class="command-panel">
+      <button mat-raised-button color="accent" (click)="eqTextAutoGrow = !eqTextAutoGrow">
+        autoGrow = {{ eqTextAutoGrow }}
+      </button>
+
+      <div>
+        <mat-form-field>
+          <mat-label>minHeight</mat-label>
+          <input matInput type="number" [(ngModel)]="eqTextMinHeight">
+        </mat-form-field>
+      </div>
+
+      <div>
+        <button mat-raised-button color="accent"
+                (click)="eqTextMaxHeight === undefined ? eqTextMaxHeight = 100 : eqTextMaxHeight = undefined">
+          eqTextMaxHeight = {{ eqTextMaxHeight === undefined ? 'undefined' : eqTextMaxHeight }}
+        </button>
+
+        <mat-form-field *ngIf="eqTextMaxHeight !== undefined">
+          <mat-label>maxHeight</mat-label>
+          <input matInput type="number" [(ngModel)]="eqTextMaxHeight">
+        </mat-form-field>
+      </div>
+
+    </div>
+    <div class="equal__layout">
+      <div style="width: 250px;">
+        <eq-text
+          [hint]="'My hint'"
+          [(value)]="bigText"
           title="My title"
           [disabled]="disabled"
           [mode]="mode"
@@ -148,9 +139,71 @@
           error="My error"
           [required]="true"
           size="small"
-        >
-        </eq-string>
+          [nullable]="true"
+          [hasError]="true"
+          [autoGrow]="eqTextAutoGrow"
+          [minHeight]="eqTextMinHeight"
+          [maxHeight]="eqTextMaxHeight"
+        ></eq-text>
       </div>
+
+      <!--      <div style="width: 180px;">-->
+      <!--        <eq-text-->
+      <!--          [hint]="'My hint'"-->
+      <!--          [(value)]="bigText"-->
+      <!--          title="My title"-->
+      <!--          [disabled]="disabled"-->
+      <!--          [mode]="mode"-->
+      <!--          placeholder="My placeholder"-->
+      <!--          error="My error"-->
+      <!--          [required]="true"-->
+      <!--          [nullable]="true"-->
+      <!--          size="normal"-->
+      <!--          [autoGrow]="eqTextAutoGrow"-->
+      <!--          [minHeight]="eqTextMinHeight"-->
+      <!--          [maxHeight]="eqTextMaxHeight"-->
+      <!--        ></eq-text>-->
+      <!--      </div>-->
+
+      <!--      <div style="width: 180px;">-->
+      <!--        <eq-text-->
+      <!--          [hint]="'My hint'"-->
+      <!--          [(value)]="bigText"-->
+      <!--          title="My title"-->
+      <!--          [disabled]="disabled"-->
+      <!--          [mode]="mode"-->
+      <!--          placeholder="My placeholder"-->
+      <!--          error="My error"-->
+      <!--          [required]="true"-->
+      <!--          size="large"-->
+      <!--          [nullable]="true"-->
+      <!--          [autoGrow]="eqTextAutoGrow"-->
+      <!--          [minHeight]="eqTextMinHeight"-->
+      <!--          [maxHeight]="eqTextMaxHeight"-->
+      <!--        ></eq-text>-->
+      <!--      </div>-->
+
+      <!--      <div style="width: 400px">-->
+      <!--        <eq-text-->
+      <!--          [hint]="'My hint'"-->
+      <!--          [(value)]="bigText"-->
+      <!--          title="My title"-->
+      <!--          [disabled]="disabled"-->
+      <!--          [mode]="mode"-->
+      <!--          placeholder="My placeholder"-->
+      <!--          error="My error"-->
+      <!--          [required]="true"-->
+      <!--          size="extra"-->
+      <!--          [nullable]="true"-->
+      <!--          [autoGrow]="eqTextAutoGrow"-->
+      <!--          [minHeight]="eqTextMinHeight"-->
+      <!--          [maxHeight]="eqTextMaxHeight"-->
+      <!--        ></eq-text>-->
+      <!--      </div>-->
+    </div>
+  </mat-tab>
+  <mat-tab label="eq-m2o">
+    <div class="equal__layout">
     </div>
   </mat-tab>
   <mat-tab label="eq-date">
@@ -159,7 +212,7 @@
     <code>Current date : <strong>{{ dateIso8601Utc0 }}</strong></code>
 
     <div class="equal__layout">
-      <div style="width: min-content; height: min-content; border: 1px solid aqua">
+      <div>
         <eq-date
           hint="mon hint"
           [defaultValue]="dateIso8601Utc0"
@@ -175,7 +228,7 @@
   </mat-tab>
   <mat-tab label="eq-date-range">
     <div class="equal__layout">
-      <div style="width: min-content; height: min-content; border: 1px solid aqua">
+      <div>
         <!--        <eq-date-range-->
 
         <!--        >-->
@@ -185,7 +238,7 @@
   </mat-tab>
   <mat-tab label="eq-date-time">
     <div class="equal__layout">
-      <div style="width: min-content; height: min-content; border: 1px solid aqua">
+      <div>
         <!--        <eq-date-time-->
 
         <!--        >-->

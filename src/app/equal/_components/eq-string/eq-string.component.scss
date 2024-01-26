@@ -1,107 +1,116 @@
 :host {
-    display: inline-block;
-    width: 100%;
-    height: 65px;
-    max-height: 65px;
-    overflow: hidden;
+  display: inline-block;
+  width: 100%;
+  height: 88px;
+  max-height: 88px;
+  overflow: hidden;
 
-    .eq-string {
-        display: flex;
-        flex-direction: row;
-        align-items: baseline;
-        height: 100%;
-        box-sizing: content-box;
+  .eq-string {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+    height: 100%;
+    box-sizing: content-box;
 
-        &.cursor {
-            cursor: text;
+    &.cursor {
+      cursor: text;
+    }
+
+    .text {
+      position: relative;
+      display: block;
+      width: 100%;
+      height: 100%;
+      font-size: 16px;
+
+      span {
+        position: absolute;
+        //top: 17px;
+        left: 12px;
+        vertical-align: baseline;
+      }
+
+      &.small {
+        span {
+          top: 29px;
+          font-size: 85%;
         }
+      }
 
-        .text {
-            position: relative;
-            display: block;
-            width: 100%;
-            height: 100%;
-            font-size: 16px;
-
-            span {
-                position: absolute;
-                top: 17px;
-                vertical-align: baseline;
-            }
-
-            &.small {
-                span {
-                    top: 20px;
-                    font-size: 85%;
-                }
-            }
-
-            &.large {
-                span {
-                    top: 12px;
-                    font-size: 125%;
-                }
-            }
-
-            &.extra {
-                span {
-                    top: 6.5px;
-                    font-size: 150%;
-                }
-            }
-
+      &.normal {
+        span {
+          top: 25.5px;
         }
+      }
 
-        mat-form-field {
-            width: calc(100% - 80px);
-
-            &.disabled {
-                width: 100%;
-            }
-
-            mat-label {
-                font-size: 16px;
-            }
-
-            input {
-                font-size: 16px;
-
-                &.is_null {
-                    font-style: italic;
-                }
-
-                &.small {
-                    font-size: 85%;
-                }
-
-                &.large {
-                    margin-top: -5px;
-                    font-size: 125%;
-                }
-
-                &.extra {
-                    margin-top: -10px;
-                    font-size: 150%;
-                }
-            }
-
-            /* hack to prevent default width of 180px */
-            &::ng-deep .mat-form-field-flex > .mat-form-field-infix {
-                width: 100% !important;
-            }
-
-            mat-hint {
-                width: 100%;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            button {
-                position: relative;
-            }
+      &.large {
+        span {
+          top: 21px;
+          font-size: 125%;
         }
+      }
+
+      &.extra {
+        span {
+          top: 15px;
+          font-size: 150%;
+        }
+      }
 
     }
 
+    mat-form-field {
+      width: calc(100% - 80px);
+
+      &.disabled {
+        width: 100%;
+      }
+
+      mat-label {
+        font-size: 16px;
+      }
+
+      input {
+        font-size: 16px;
+
+        &.is_null {
+          font-style: italic;
+        }
+
+        &.small {
+          font-size: 85%;
+        }
+
+        &.large {
+          margin-top: -5px;
+          font-size: 125%;
+        }
+
+        &.extra {
+          margin-top: -10px;
+          font-size: 150%;
+        }
+      }
+
+      /* hack to prevent default width of 180px */
+      &::ng-deep .mat-form-field-flex > .mat-form-field-infix {
+        width: 100% !important;
+      }
+
+      mat-hint {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      button {
+        position: relative;
+      }
+    }
+
+    & .action {
+      bottom: 4px;
+    }
+  }
 }
