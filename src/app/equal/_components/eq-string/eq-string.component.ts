@@ -51,6 +51,7 @@ export class EqStringComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     this.initFormControl();
+    this.initNullableValue();
   }
 
   ngDoCheck(): void {
@@ -63,6 +64,16 @@ export class EqStringComponent implements OnInit, DoCheck {
       this.formControl.markAsTouched({onlySelf: true});
 
       this.formControl.enable();
+    }
+
+    if (this.is_null) {
+      this.formControl.disable();
+    }
+  }
+
+  public initNullableValue(): void {
+    if (this.value === null || this.value === '[null]') {
+      this.toggleIsNull(true);
     }
   }
 
