@@ -1,42 +1,93 @@
 <div
-  class="eq-date"
   #eqDate
-  (click)="onEdit()"
-  (focusout)="onFocusOut($event)"
+  class="eq-date"
+  (click)="activate()"
+  [class.cursor]="mode == 'edit' && !disabled"
+  [style.padding-right.px]="is_active ? 0 : 80"
 >
-  <mat-form-field appearance="fill">
-    <mat-label *ngIf="title">{{ title }}</mat-label>
+    <span class="text" [class]="size" *ngIf="mode == 'view' && !is_null">
+            <span>{{ formControl.value }}</span>
+    </span>
+  <mat-form-field *ngIf="mode == 'edit'" [class.disabled]="disabled" appearance="outline">
+    <mat-label *ngIf="title && mode == 'edit'">{{ title }}</mat-label>
+
     <input
+      *ngIf="!is_null"
       #input
       matInput
-      [style.pointer-events]="!isEditable() ? 'none' : 'auto'"
-      [formControl]="value"
       [matDatepicker]="datePicker"
-      [placeholder]="placeholder"
-      (dateChange)="edit()"
-      date
+      [disabled]="disabled"
+      [formControl]="formControl"
+      [placeholder]="mode == 'edit' ? placeholder: ''"
+      (blur)="onBlur($event)"
     >
-    <mat-hint *ngIf="hint && !value.invalid">{{ hint }}</mat-hint>
-    <mat-datepicker-toggle
-      class="eq-date__schedule"
-      #scheduleButton
-      matSuffix
-      [for]="datePicker"
-    ></mat-datepicker-toggle>
+    <input
+      #nullableInput
+      *ngIf="is_null"
+      matInput
+      [class.is_null]="is_null"
+      [disabled]="disabled"
+      [formControl]="formControl"
+      [placeholder]="mode == 'edit' ? placeholder: ''"
+    >
+
+    <mat-hint *ngIf="!formControl.invalid" [title]="hint">{{ hint }}</mat-hint>
+
+    <mat-datepicker-toggle [style.visibility]="is_active ? 'visible' : 'hidden'" matSuffix
+                           [for]="datePicker"></mat-datepicker-toggle>
     <button
-      [disabled]="value.invalid || !isEditable()"
-      [class.eq-date__check--invalid]="!isEditable() || value.invalid"
-      [style.pointer-events]="value.invalid ? 'none' : 'auto'"
+      *ngIf="is_active && !is_null && inputValue !== undefined && inputValue.length > 0"
       mat-icon-button
       matSuffix
-      (click)="onSave($event)"
-      class="eq-date__check"
+      (click)="onClear($event)"
     >
-      <!--    *ngIf="isEditable()"-->
-      <mat-icon>check_small</mat-icon>
+      <mat-icon>close</mat-icon>
+    </button>
+    <button
+      *ngIf="nullable && !is_null && !inputValue?.length"
+      color="accent"
+      mat-icon-button
+      matSuffix
+      (click)="toggleIsNull(true)"
+    >
+      <mat-icon>toggle_off</mat-icon>
+    </button>
+    <button
+      *ngIf="nullable && is_null && !inputValue?.length"
+      mat-icon-button
+      matSuffix
+      (click)="toggleIsNull(false)"
+    >
+      <mat-icon>toggle_on</mat-icon>
     </button>
     <mat-datepicker #datePicker></mat-datepicker>
-    <mat-error *ngIf="value.invalid">{{ getErrorMessage() }}</mat-error>
+    <mat-error *ngIf="formControl.invalid">{{ getErrorMessage() }}</mat-error>
   </mat-form-field>
+  <button
+    mat-icon-button
+    class="action"
+    color="primary"
+    *ngIf="is_active"
+    [disabled]="formControl.invalid || nullableInput && ![null, '[null]'].includes(nullableInput.nativeElement.value)"
+    (click)="onSave($event)"
+  >
+    <mat-icon>check_small</mat-icon>
+  </button>
+  <button
+    mat-icon-button
+    class="action"
+    color="accent"
+    *ngIf="is_active"
+    (click)="onCancel($event)"
+  >
+    <mat-icon>cancel</mat-icon>
+  </button>
 </div>
-{{value.value}}
+
+<dl>
+  <dt>Value</dt>
+  <dd>{{value}}</dd>
+
+  <dt>Form Control</dt>
+  <dd>{{formControl.value}}</dd>
+</dl>

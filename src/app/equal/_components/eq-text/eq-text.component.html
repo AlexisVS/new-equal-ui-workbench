@@ -23,7 +23,8 @@
               [disabled]="disabled"
               [formControl]="formControl"
               [placeholder]="mode === 'edit' ? placeholder: ''"
-              (blur)="onBlur($event); setTextHeight()"
+              (blur)="onBlur($event);"
+              (input)="setTextHeight()"
     ></textarea>
     <button
       class="suffix-button"
