@@ -30,6 +30,10 @@
         vertical-align: baseline;
       }
 
+      &.is_null {
+        font-style: italic;
+      }
+
       &.small {
         span {
           top: 29px;

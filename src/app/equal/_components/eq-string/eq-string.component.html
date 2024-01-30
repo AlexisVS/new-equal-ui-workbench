@@ -1,9 +1,9 @@
 <div #eqString
      class="eq-string"
-     (click)="activate()"
+     (click)="mode == 'edit' && activate()"
      [class.cursor]="mode == 'edit' && !disabled"
 >
-        <span class="text" [class]="size" *ngIf="mode == 'view' && !is_null">
+        <span class="text" [class.is_null]="is_null" [class]="size" *ngIf="mode == 'view'">
             <span>{{ formControl.value }}</span>
         </span>
   <mat-form-field *ngIf="mode == 'edit'" [class.disabled]="disabled" appearance="outline">

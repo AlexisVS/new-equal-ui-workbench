@@ -48,12 +48,12 @@ export class EqDateComponent implements OnInit, DoCheck {
 
   @ViewChild('eqDate') eqDate: ElementRef<HTMLDivElement>;
   @ViewChild('input') input: ElementRef<HTMLInputElement>;
-  @ViewChild('nullableInput') nullableInput: ElementRef<HTMLInputElement>;
 
   get inputValue(): string | undefined {
     return this.input?.nativeElement.value;
   }
 
+  @ViewChild('nullableInput') nullableInput: ElementRef<HTMLInputElement>;
 
   constructor(
     private changeDetectorRef: ChangeDetectorRef
@@ -67,7 +67,6 @@ export class EqDateComponent implements OnInit, DoCheck {
 
   ngDoCheck(): void {
     if (this.is_null) {
-      console.log('ngDoCheck: ', this.is_null);
       this.formControl.disable();
     }
   }
@@ -81,16 +80,16 @@ export class EqDateComponent implements OnInit, DoCheck {
 
     const validators: ValidatorFn[] = [];
 
-    // if (this.required) {
-    //   validators.push(Validators.required);
-    // }
-    //
-    // if (!this.nullable) {
-    //   validators.push(
-    //     Validators.minLength(10),
-    //     Validators.maxLength(10)
-    //   );
-    // }
+    if (this.required) {
+      validators.push(Validators.required);
+    }
+
+    if (!this.nullable) {
+      validators.push(
+        Validators.minLength(10),
+        Validators.maxLength(10)
+      );
+    }
 
     this.formControl.setValidators(validators);
   }
@@ -113,9 +112,12 @@ export class EqDateComponent implements OnInit, DoCheck {
       this.is_null = true;
       this.formControl.setValue('[null]');
     } else {
-      console.log('updateValue: ', value);
       this.is_null = false;
-      this.formControl.setValue(this.setInputDate(value));
+      if (new Date(value).toString() !== 'Invalid Date') {
+        this.formControl.setValue(new Date(value));
+      } else {
+        this.formControl.setValue('');
+      }
     }
   }
 
@@ -178,12 +180,7 @@ export class EqDateComponent implements OnInit, DoCheck {
     if (this.is_null) {
       this.updateValue(null);
     } else {
-      console.log('toogleIsNull: ', this.value);
-      if (this.value === null) {
-        this.updateValue('');
-      } else {
-        this.updateValue(this.setInputDate(this.value));
-      }
+      this.updateValue('');
       this.formControl.enable();
       this.changeDetectorRef.detectChanges();
     }
@@ -195,9 +192,4 @@ export class EqDateComponent implements OnInit, DoCheck {
   //   const offsetTz: number = newDate.getTimezoneOffset() * 60 * 1000;
   //   return new Date(timestamp + offsetTz).toISOString().substring(0, 10) + 'T00:00:00Z';
   // }
-
-  private setInputDate(date: string): string {
-    console.log('setInputDate: ', date, new Date(date).toString());
-    return new Date(date).toString();
-  }
 }
