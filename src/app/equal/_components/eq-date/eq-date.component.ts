@@ -181,8 +181,8 @@ export class EqDateComponent implements OnInit, DoCheck {
     if (this.is_null) {
       this.valueChange.emit(null);
     } else if (this.formControl.valid) {
-      if (this.formatDate(this.formControl.value))
-        this.valueChange.emit(this.formControl.value);
+      const date: string = this.formatDate(this.formControl.value)
+      this.valueChange.emit(date);
     }
     this.toggleActive(false);
   }
