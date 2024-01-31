@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {ChangeDetectorRef, Component} from '@angular/core';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-equal',
@@ -18,6 +19,16 @@ export class EqualComponent {
   public eqTextMaxHeight: number | undefined = undefined;
   public dateTypeFormats: string[] = ['date.short.day', 'date.short', 'date.medium', 'date.long', 'date.full'];
   public dateTypeFormatSelected: string = this.dateTypeFormats[0];
+  public reloadByBoolean: boolean = true;
+
+  constructor(private changeDetectorRef: ChangeDetectorRef) {
+  }
+
+  public refreshByBoolean(): void {
+    this.reloadByBoolean = false;
+    this.changeDetectorRef.detectChanges();
+    this.reloadByBoolean = true;
+  }
 
   public toggleMode(): void {
     this.mode = this.mode === 'view' ? 'edit' : 'view';

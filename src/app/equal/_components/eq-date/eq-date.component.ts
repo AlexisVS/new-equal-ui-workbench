@@ -22,19 +22,19 @@ type dateUsage = 'date.short.day' | 'date.short' | 'date.medium' | 'date.long' |
 
 type dateFormatOptions = {
   weekday?: 'short' | 'long' | 'narrow' | undefined;
-  day: "numeric" | "2-digit" | undefined;
-  month: "short" | "long" | "narrow" | "numeric" | "2-digit" | undefined
+  day: 'numeric' | '2-digit' | undefined;
+  month: 'short' | 'long' | 'narrow' | 'numeric' | '2-digit' | undefined
   year: 'numeric' | '2-digit' | undefined;
-}
+};
 
 type dateFormat = Record<dateUsage, dateFormatOptions>;
 
 const dateFormat: dateFormat = {
-  "date.short.day": {weekday: 'short', day: 'numeric', month: 'numeric', year: '2-digit'},
-  "date.short": {day: 'numeric', month: 'numeric', year: '2-digit'},
-  "date.medium": {day: 'numeric', month: 'short', year: 'numeric'},
-  "date.long": {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'},
-  "date.full": {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'},
+  'date.short.day': {weekday: 'short', day: 'numeric', month: 'numeric', year: '2-digit'},
+  'date.short': {day: 'numeric', month: 'numeric', year: '2-digit'},
+  'date.medium': {day: 'numeric', month: 'short', year: 'numeric'},
+  'date.long': {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'},
+  'date.full': {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'},
 
 };
 
@@ -94,6 +94,11 @@ export class EqDateComponent implements OnInit, DoCheck {
   ngOnInit(): void {
     this.initFormControl();
     this.initNullableValue();
+
+    if (!this.checkDateValidity(this.formControl.value)) {
+      this.formControl.setErrors({invalid: true});
+      this.formControl.markAsTouched({onlySelf: true});
+    }
   }
 
   ngDoCheck(): void {
@@ -103,7 +108,7 @@ export class EqDateComponent implements OnInit, DoCheck {
   }
 
   public initFormControl(): void {
-    if (this.value) {
+    if (this.value && !['[null]', ''].includes(this.value)) {
       this.formControl = new FormControl(new Date(this.value));
     } else {
       this.formControl = new FormControl('');
@@ -181,7 +186,7 @@ export class EqDateComponent implements OnInit, DoCheck {
     if (this.is_null) {
       this.valueChange.emit(null);
     } else if (this.formControl.valid) {
-      const date: string = this.formatDate(this.formControl.value)
+      const date: string = this.formatDate(this.formControl.value);
       this.valueChange.emit(date);
     }
     this.toggleActive(false);
@@ -190,6 +195,10 @@ export class EqDateComponent implements OnInit, DoCheck {
   public formatDate(date: string): string {
     const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat(this.locale, dateFormat[this.usage as dateUsage]);
     return formatter.format(new Date(date));
+  }
+
+  public checkDateValidity(date: string): boolean {
+    return !isNaN(Date.parse(date));
   }
 
   public onBlur(event: FocusEvent): void {
