@@ -20,14 +20,7 @@ import {FormControl, ValidatorFn, Validators} from '@angular/forms';
 // }
 type dateUsage = 'date.short.day' | 'date.short' | 'date.medium' | 'date.long' | 'date.full';
 
-type dateFormatOptions = {
-  weekday?: 'short' | 'long' | 'narrow' | undefined;
-  day: 'numeric' | '2-digit' | undefined;
-  month: 'short' | 'long' | 'narrow' | 'numeric' | '2-digit' | undefined
-  year: 'numeric' | '2-digit' | undefined;
-};
-
-type dateFormat = Record<dateUsage, dateFormatOptions>;
+type dateFormat = Record<dateUsage, Intl.DateTimeFormatOptions>;
 
 const dateFormat: dateFormat = {
   'date.short.day': {weekday: 'short', day: 'numeric', month: 'numeric', year: '2-digit'},
