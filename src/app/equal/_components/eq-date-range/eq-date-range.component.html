@@ -1,23 +1,82 @@
 <div
-  class="eq-date-range"
-  #eqDateRange
+    #eqDateRange
+    class="eq-date-range"
+    (click)="activate()"
+    [class.cursor]="mode == 'edit' && !disabled"
+    [style.padding-right.px]="is_active ? 0 : 80"
 >
-  <!--  (click)="onEdit()"-->
-  <!--  (focusout)="onFocusOut($event)"-->
-  <mat-form-field appearance="fill">
-    <mat-label *ngIf="title">{{ title }}</mat-label>
-    <mat-date-range-input [formGroup]="value" [rangePicker]="dateRangePicker">
-      <input matStartDate formControlName="start">
-      <input matEndDate formControlName="end">
-    </mat-date-range-input>
-    <mat-hint *ngIf="hint">{{ hint }}</mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
+  <span class="text" [class.is-null]="is_null" [class]="size" *ngIf="mode == 'view'">
+            <span>{{ formatDate(formGroup.value.start) + ' - ' + formatDate(formGroup.value.end) }}</span>
+    </span>
+    <mat-form-field appearance="outline">
+        <mat-label *ngIf="title">{{ title }}</mat-label>
+        <mat-date-range-input
+            [formGroup]="formGroup"
+            [rangePicker]="dateRangePicker"
+            [disabled]="disabled"
+        >
+            <!--            (blur)="onBlur($event)"-->
+            <input #InputStart matStartDate formControlName="start">
+            <input #InputEnd matEndDate formControlName="end">
+        </mat-date-range-input>
 
+        <mat-hint *ngIf="!formGroup.invalid" [title]="hint">{{ hint }}</mat-hint>
+        <mat-datepicker-toggle
+            [style.visibility]="is_active && formGroup.value !== '[null]' ? 'visible' : 'hidden'"
+            matSuffix
+            [for]="dateRangePicker"
+        ></mat-datepicker-toggle>
 
-    <mat-error *ngIf="value.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
-    <mat-error *ngIf="value.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+        <button
+            *ngIf="is_active && !is_null && inputValue !== undefined && inputValue.length > 0"
+            mat-icon-button
+            matSuffix
+        >
+<!--            (click)="onClear($event)"-->
+            <mat-icon>close</mat-icon>
+        </button>
+        <button
+            *ngIf="!disabled && nullable && !is_null && formGroup.value == ''"
+            color="accent"
+            mat-icon-button
+            matSuffix
+        >
+<!--            (click)="toggleIsNull(true)"-->
+            <mat-icon>toggle_off</mat-icon>
+        </button>
+        <button
+            *ngIf="!disabled && nullable && is_null && formGroup.value == '[null]'"
+            mat-icon-button
+            matSuffix
+        >
+<!--            (click)="toggleIsNull(false)"-->
+            <mat-icon>toggle_on</mat-icon>
+        </button>
 
+        <mat-error *ngIf="formGroup.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+        <mat-error *ngIf="formGroup.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error>
 
-    <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
-  </mat-form-field>
+        <mat-date-range-picker #dateRangePicker></mat-date-range-picker>
+    </mat-form-field>
+    <button
+        mat-icon-button
+        class="action"
+        color="primary"
+        *ngIf="is_active && !disabled"
+        [disabled]="formGroup.invalid || nullableInput && ![null, '[null]'].includes(nullableInput.nativeElement.value) || formGroup.value == ''"
+        [style.visibility]="is_active && value !== '[null]' ? 'visible' : 'hidden'"
+    >
+<!--        (click)="onSave($event)"-->
+        <mat-icon>check_small</mat-icon>
+    </button>
+    <button
+        mat-icon-button
+        class="action"
+        color="accent"
+        *ngIf="is_active && !disabled"
+        [style.visibility]="is_active && value !== '[null]' ? 'visible' : 'hidden'"
+    >
+<!--        (click)="onCancel($event)"-->
+        <mat-icon>cancel</mat-icon>
+    </button>
 </div>
