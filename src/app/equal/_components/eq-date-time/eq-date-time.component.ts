@@ -1,15 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'eq-date-time',
-  templateUrl: './eq-date-time.component.html',
-  styleUrls: ['./eq-date-time.component.scss']
+    selector: 'eq-date-time',
+    templateUrl: './eq-date-time.component.html',
+    styleUrls: ['./eq-date-time.component.scss']
 })
 export class EqDateTimeComponent implements OnInit {
 
-  constructor() { }
+    constructor() {
+    }
 
-  ngOnInit(): void {
-  }
+    ngOnInit(): void {
+    }
 
 }
