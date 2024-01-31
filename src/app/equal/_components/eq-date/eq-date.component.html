@@ -6,7 +6,7 @@
   [style.padding-right.px]="is_active ? 0 : 80"
 >
     <span class="text" [class.is-null]="is_null" [class]="size" *ngIf="mode == 'view'">
-            <span>{{ formControl.value }}</span>
+            <span>{{ formatDate(formControl.value) }}</span>
     </span>
   <mat-form-field *ngIf="mode == 'edit'" [class.disabled]="disabled" appearance="outline">
     <mat-label *ngIf="title && mode == 'edit'">{{ title }}</mat-label>

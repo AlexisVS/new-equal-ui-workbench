@@ -16,6 +16,8 @@ export class EqualComponent {
   public eqTextAutoGrow: boolean = false;
   public eqTextMinHeight: number = 97;
   public eqTextMaxHeight: number | undefined = undefined;
+  public dateTypeFormats: string[] = ['date.short.day', 'date.short', 'date.medium', 'date.long', 'date.full'];
+  public dateTypeFormatSelected: string = this.dateTypeFormats[0];
 
   public toggleMode(): void {
     this.mode = this.mode === 'view' ? 'edit' : 'view';

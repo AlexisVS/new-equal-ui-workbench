@@ -12,6 +12,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import {EqDateModule} from './_components/eq-date/eq-date.module';
 import { EqDateRangeComponent } from './_components/eq-date-range/eq-date-range.component';
 import { EqDateTimeComponent } from './_components/eq-date-time/eq-date-time.component';
+import {MatSelectModule} from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -23,7 +24,8 @@ import { EqDateTimeComponent } from './_components/eq-date-time/eq-date-time.com
     ReactiveFormsModule,
     MatDatepickerModule,
     EqDateModule,
-    FormsModule
+    FormsModule,
+    MatSelectModule
   ],
     declarations: [
         EqualComponent,

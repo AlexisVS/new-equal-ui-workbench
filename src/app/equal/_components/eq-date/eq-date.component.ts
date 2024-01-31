@@ -3,12 +3,40 @@ import {
   Component, DoCheck,
   ElementRef,
   EventEmitter,
-  Input,
+  Inject,
+  Input, LOCALE_ID,
   OnInit,
   Output,
   ViewChild
 } from '@angular/core';
 import {FormControl, ValidatorFn, Validators} from '@angular/forms';
+
+// const DateFormats: Record<dateUsage, string> = {
+//   "date.short.day": "ddd DD/MM/YY",
+//   "date.short": "DD/MM/YY",
+//   "date.medium": "DD/MMM/YYYY",
+//   "date.long": "ddd DD MMM YYYY",
+//   "date.full": "dddd DD MMMM YYYY",
+// }
+type dateUsage = 'date.short.day' | 'date.short' | 'date.medium' | 'date.long' | 'date.full';
+
+type dateFormatOptions = {
+  weekday?: 'short' | 'long' | 'narrow' | undefined;
+  day: "numeric" | "2-digit" | undefined;
+  month: "short" | "long" | "narrow" | "numeric" | "2-digit" | undefined
+  year: 'numeric' | '2-digit' | undefined;
+}
+
+type dateFormat = Record<dateUsage, dateFormatOptions>;
+
+const dateFormat: dateFormat = {
+  "date.short.day": {weekday: 'short', day: 'numeric', month: 'numeric', year: '2-digit'},
+  "date.short": {day: 'numeric', month: 'numeric', year: '2-digit'},
+  "date.medium": {day: 'numeric', month: 'short', year: 'numeric'},
+  "date.long": {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'},
+  "date.full": {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'},
+
+};
 
 @Component({
   selector: 'eq-date',
@@ -41,6 +69,8 @@ export class EqDateComponent implements OnInit, DoCheck {
 
   @Input() error?: string;
 
+  @Input() usage: string | dateUsage;
+
   // used for marking the input as being edited
   public is_active: boolean = false;
 
@@ -56,7 +86,8 @@ export class EqDateComponent implements OnInit, DoCheck {
   @ViewChild('nullableInput') nullableInput: ElementRef<HTMLInputElement>;
 
   constructor(
-    private changeDetectorRef: ChangeDetectorRef
+    private changeDetectorRef: ChangeDetectorRef,
+    @Inject(LOCALE_ID) public locale: string
   ) {
   }
 
@@ -150,9 +181,15 @@ export class EqDateComponent implements OnInit, DoCheck {
     if (this.is_null) {
       this.valueChange.emit(null);
     } else if (this.formControl.valid) {
-      this.valueChange.emit(this.formControl.value);
+      if (this.formatDate(this.formControl.value))
+        this.valueChange.emit(this.formControl.value);
     }
     this.toggleActive(false);
+  }
+
+  public formatDate(date: string): string {
+    const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat(this.locale, dateFormat[this.usage as dateUsage]);
+    return formatter.format(new Date(date));
   }
 
   public onBlur(event: FocusEvent): void {
