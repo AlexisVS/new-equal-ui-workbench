@@ -51,7 +51,7 @@
     class="action"
     color="primary"
     [disabled]="formControl.invalid"
-    *ngIf="is_active"
+    *ngIf="is_active && mode == 'edit'"
     (click)="onSave($event)"
   >
     <mat-icon>check_small</mat-icon>
@@ -60,7 +60,7 @@
     mat-icon-button
     class="action"
     color="accent"
-    *ngIf="is_active"
+    *ngIf="is_active && mode == 'edit'"
     (click)="onCancel($event)"
   >
     <mat-icon>cancel</mat-icon>

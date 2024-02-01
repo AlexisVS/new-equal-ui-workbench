@@ -24,7 +24,7 @@ type dateFormat = Record<dateUsage, Intl.DateTimeFormatOptions>;
 
 const dateFormat: dateFormat = {
     'date.short.day': {weekday: 'short', day: 'numeric', month: 'numeric', year: '2-digit'},
-    'date.short': {day: 'numeric', month: 'numeric', year: '2-digit'},
+    'date.short': {day: 'numeric', month: '2-digit', year: '2-digit'},
     'date.medium': {day: 'numeric', month: 'short', year: 'numeric'},
     'date.long': {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'},
     'date.full': {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'},
@@ -94,9 +94,9 @@ export class EqDateComponent implements OnInit, DoCheck {
     }
 
     ngDoCheck(): void {
-        if (this.is_null) {
-            this.formControl.disable();
-        }
+        // if (this.is_null) {
+        //     this.formControl.disable();
+        // }
     }
 
     public initFormControl(): void {
@@ -182,15 +182,19 @@ export class EqDateComponent implements OnInit, DoCheck {
             this.valueChange.emit(null);
         }
         else if (this.formControl.valid) {
-            const date: string = this.formatDate(this.formControl.value);
+            const date: string = this.sanitizeDate(this.formControl.value);
             this.valueChange.emit(date);
         }
         this.toggleActive(false);
     }
 
     public formatDate(date: string): string {
-        const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat(this.locale, dateFormat[this.usage as dateUsage]);
-        return formatter.format(new Date(date));
+        if (date !== '[null]') {
+            const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat(this.locale, dateFormat[this.usage as dateUsage]);
+            return formatter.format(new Date(date));
+        }
+
+        return '[null]'
     }
 
     public checkDateValidity(date: string): boolean {
