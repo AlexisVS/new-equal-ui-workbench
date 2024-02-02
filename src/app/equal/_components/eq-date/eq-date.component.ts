@@ -246,58 +246,26 @@ export class EqDateComponent implements OnInit, DoCheck {
 
                 const format: string = DateFormats[this.usage as dateUsage];
 
-                const needToTranslateParts: string[] = [];
-
                 // split format into parts for space or / characters
-                const formatParts: string[] = format.split(/[\s/]/g);
 
                 // take only the parts that are more or equal than 3 characters long but not Y characters
-                formatParts.forEach((part: string): void => {
-                    if (part.length >= 3 && !part.includes('Y')) {
-                        needToTranslateParts.push(part);
-                    }
-                });
 
-                const transformedDate: string = format
-                    .replace('dddd', date.toLocaleDateString('en-US', {weekday: 'long'}))
-                    .replace('ddd', date.toLocaleDateString('en-US', {weekday: 'long'}))
-                    .replace('DD', date.toLocaleDateString('en-US', {day: '2-digit'}))
-                    .replace('MMMM', date.toLocaleDateString('en-US', {month: 'long'}))
-                    .replace('MMM', date.toLocaleDateString('en-US', {month: 'long'}))
-                    .replace('MM', date.toLocaleDateString('en-US', {month: '2-digit'}))
-                    .replace('YYYY', date.toLocaleDateString('en-US', {year: 'numeric'}))
-                    .replace('YY', date.toLocaleDateString('en-US', {year: '2-digit'}));
+                // #todo : verifier que 'en-US' est disponible
+                const name_month: string = date.toLocaleDateString('en-US', {month: 'long'});
+                const name_day: string = date.toLocaleDateString('en-US', {weekday: 'long'});
+                const index_day: number = date.getDate();
+                const index_month: number = date.getMonth() + 1;
+                const index_year: number = date.getFullYear();
 
-                const splitTranslatedDate: string[] = transformedDate.split(/[\s/]/);
-
-                if (needToTranslateParts.length) {
-                    for (let i: number = 0; i < formatParts.length; i++) {
-                        if (formatParts[i][0] === 'd') {
-                            if (formatParts[i].length === 4) {
-                                splitTranslatedDate[i] = dateNameDictionary[`day.${splitTranslatedDate[i].toLowerCase()}`];
-                            }
-                            else if (formatParts[i].length === 3) {
-                                splitTranslatedDate[i] = dateNameDictionary[`day.${splitTranslatedDate[i].toLowerCase()}.short`];
-                            }
-                        }
-                        else if (formatParts[i][0] === 'M') {
-                            if (formatParts[i].length === 4) {
-                                splitTranslatedDate[i] = dateNameDictionary[`month.${splitTranslatedDate[i].toLowerCase()}`];
-                            }
-                            else if (formatParts[i].length === 3) {
-                                splitTranslatedDate[i] = dateNameDictionary[`month.${splitTranslatedDate[i].toLowerCase()}.short`];
-                            }
-                        }
-                    }
-                }
-
-                let translatedDate: string = format.replace(/([a-zA-Z])\1*/g, '?');
-
-                splitTranslatedDate.forEach((part: string): void => {
-                    translatedDate = translatedDate.replace('?', part);
-                });
-
-                return translatedDate;
+                return format
+                    .replace('dddd', dateNameDictionary['day.' + name_day.toLowerCase()])
+                    .replace('ddd', dateNameDictionary['day.' + name_day.toLowerCase() + '.short'])
+                    .replace('DD', index_day.toString().padStart(2, '0'))
+                    .replace('MMMM', dateNameDictionary['month.' + name_month.toLowerCase()])
+                    .replace('MMM', dateNameDictionary['month.' + name_month.toLowerCase() + '.short'])
+                    .replace('MM', index_month.toString().padStart(2, '0'))
+                    .replace('YYYY', index_year.toString().padStart(4, '0'))
+                    .replace('YY', (index_year % 100).toString().padStart(2, '0'));
             }
         }
 
