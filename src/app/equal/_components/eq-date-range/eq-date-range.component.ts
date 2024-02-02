@@ -1,17 +1,17 @@
 import {
     ChangeDetectorRef,
-    Component, DoCheck,
+    Component,
     ElementRef,
     EventEmitter,
     Inject,
     Input, LOCALE_ID, OnChanges,
     OnInit,
-    Output, Renderer2,
+    Output,
     SimpleChanges,
     ViewChild
 } from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
-import {DateRange, MatDateRangeInput} from "@angular/material/datepicker";
+import {DateRange, MatDateRangeInput} from '@angular/material/datepicker';
 
 type dateUsage = 'date.short.day' | 'date.short' | 'date.medium' | 'date.long' | 'date.full';
 
@@ -25,7 +25,7 @@ const dateFormat: dateFormat = {
     'date.full': {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'},
 };
 
-type dateRange = 'start' | 'end';
+// type dateRange = 'start' | 'end';
 
 @Component({
     selector: 'eq-date-range',
@@ -75,7 +75,7 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         if (this.inputRange && this.inputRange.value instanceof DateRange) {
             const inputsValue: string | null = this.inputRange.value.start;
             if (inputsValue) {
-                const date = new Date(inputsValue).toLocaleDateString()
+                const date = new Date(inputsValue).toLocaleDateString();
                 if (date) {
                     return date;
                 }
@@ -89,7 +89,7 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         if (this.inputRange && this.inputRange.value instanceof DateRange) {
             const inputsValue: string | null = this.inputRange.value.end;
             if (inputsValue) {
-                const date = new Date(inputsValue).toLocaleDateString()
+                const date = new Date(inputsValue).toLocaleDateString();
                 if (date) {
                     return date;
                 }
@@ -107,10 +107,8 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         return null;
     }
 
-
     constructor(
         private changeDetectorRef: ChangeDetectorRef,
-        private renderer2: Renderer2,
         @Inject(LOCALE_ID) public locale: string
     ) {
     }
@@ -131,10 +129,7 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         this.initFormGroup();
     }
 
-
-    private splitDateRange(dateRange: string): string[] {
-        return dateRange.split(' - ');
-    }
+    private splitDateRange = (dateRange: string): string[] => dateRange.split(' - ');
 
     public initFormGroup(): void {
         if (this.value !== null) {
@@ -301,13 +296,13 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         }
     }
 
-    public formatDate(date: string): string {
-        if (date !== '[null]') {
+    public formatDate(): string {
+        if (this.formGroup.value.start !== '[null]' && this.formGroup.value.end !== '[null]') {
             const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat(this.locale, dateFormat[this.usage as dateUsage]);
-            return formatter.format(new Date(date));
+            return formatter.format(new Date(this.formGroup.value.start)) + ' – ' + formatter.format(new Date(this.formGroup.value.end));
         }
 
-        return '[null]'
+        return '[null] – [null]';
     }
 
     public checkDateValidity(date: string): boolean {

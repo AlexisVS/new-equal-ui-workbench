@@ -16,7 +16,6 @@
     <textarea #textarea
               [readonly]="disabled"
               matInput
-              rows="1"
               [class]="size"
               [style.padding-right.px]="is_active ? 40 : 0"
               [class.is_null]="is_null"
@@ -24,7 +23,6 @@
               [formControl]="formControl"
               [placeholder]="mode === 'edit' ? placeholder: ''"
               (blur)="onBlur($event);"
-              (input)="setTextHeight()"
     ></textarea>
     <button
       class="suffix-button"

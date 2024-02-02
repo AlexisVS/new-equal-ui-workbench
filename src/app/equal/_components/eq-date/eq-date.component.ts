@@ -1,34 +1,27 @@
 import {
     ChangeDetectorRef,
-    Component, DoCheck,
+    Component,
+    DoCheck,
     ElementRef,
     EventEmitter,
-    Inject,
-    Input, LOCALE_ID,
+    Input,
     OnInit,
     Output,
     ViewChild
 } from '@angular/core';
 import {FormControl, ValidatorFn, Validators} from '@angular/forms';
 
-// const DateFormats: Record<dateUsage, string> = {
-//   "date.short.day": "ddd DD/MM/YY",
-//   "date.short": "DD/MM/YY",
-//   "date.medium": "DD/MMM/YYYY",
-//   "date.long": "ddd DD MMM YYYY",
-//   "date.full": "dddd DD MMMM YYYY",
-// }
 type dateUsage = 'date.short.day' | 'date.short' | 'date.medium' | 'date.long' | 'date.full';
 
-type dateFormat = Record<dateUsage, Intl.DateTimeFormatOptions>;
+// type dateFormat = Record<dateUsage, Intl.DateTimeFormatOptions>;
 
-const dateFormat: dateFormat = {
-    'date.short.day': {weekday: 'short', day: 'numeric', month: 'numeric', year: '2-digit'},
-    'date.short': {day: 'numeric', month: '2-digit', year: '2-digit'},
-    'date.medium': {day: 'numeric', month: 'short', year: 'numeric'},
-    'date.long': {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'},
-    'date.full': {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'},
-};
+// const dateFormat: dateFormat = {
+//     'date.short.day': {weekday: 'short', day: 'numeric', month: 'numeric', year: '2-digit'},
+//     'date.short': {day: 'numeric', month: '2-digit', year: '2-digit'},
+//     'date.medium': {day: 'numeric', month: 'short', year: 'numeric'},
+//     'date.long': {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'},
+//     'date.full': {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'},
+// };
 
 @Component({
     selector: 'eq-date',
@@ -79,7 +72,6 @@ export class EqDateComponent implements OnInit, DoCheck {
 
     constructor(
         private changeDetectorRef: ChangeDetectorRef,
-        @Inject(LOCALE_ID) public locale: string
     ) {
     }
 
@@ -188,13 +180,128 @@ export class EqDateComponent implements OnInit, DoCheck {
         this.toggleActive(false);
     }
 
-    public formatDate(date: string): string {
-        if (date !== '[null]') {
-            const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat(this.locale, dateFormat[this.usage as dateUsage]);
-            return formatter.format(new Date(date));
+    public formatDate(): string {
+        if (this.formControl.value !== '[null]') {
+            const dateNameDictionary: Record<string, string> = {
+                'day.monday': 'lundi',
+                'day.tuesday': 'mardi',
+                'day.wednesday': 'mercredi',
+                'day.thursday': 'jeudi',
+                'day.friday': 'vendredi',
+                'day.saturday': 'samedi',
+                'day.sunday': 'dimanche',
+
+                // 3 characters : ddd
+                'day.monday.short': 'lun',
+                'day.tuesday.short': 'mar',
+                'day.wednesday.short': 'mer',
+                'day.thursday.short': 'jeu',
+                'day.friday.short': 'ven',
+                'day.saturday.short': 'sam',
+                'day.sunday.short': 'dim',
+
+                'month.january': 'janvier',
+                'month.february': 'février',
+                'month.march': 'mars',
+                'month.april': 'avril',
+                'month.may': 'mai',
+                'month.june': 'juin',
+                'month.july': 'juillet',
+                'month.august': 'aout',
+                'month.september': 'septembre',
+                'month.october': 'octobre',
+                'month.november': 'novembre',
+                'month.december': 'décembre',
+
+
+                // 3 characters : MMM
+                'month.january.short': 'jan',
+                'month.february.short': 'fév',
+                'month.march.short': 'mar',
+                'month.april.short': 'avr',
+                'month.may.short': 'mai',
+                'month.june.short': 'juin',
+                'month.july.short': 'juil',
+                'month.august.short': 'aou',
+                'month.september.short': 'sep',
+                'month.october.short': 'oct',
+                'month.november.short': 'nov',
+                'month.december.short': 'déc'
+            };
+
+            // const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat(this.locale, dateFormat[this.usage as dateUsage]);
+            // return formatter.format(new Date(this.formControl.value));
+
+            const DateFormats: Record<dateUsage, string> = {
+                'date.short.day': 'ddd DD/MM/YY',
+                'date.short': 'DD/MM/YY',
+                'date.medium': 'DD/MM/YYYY',
+                'date.long': 'ddd DD MMM YYYY',
+                'date.full': 'dddd DD MMMM YYYY',
+            };
+
+            const date: Date = new Date(this.formControl.value);
+
+            if (DateFormats.hasOwnProperty(this.usage as dateUsage)) {
+
+                const format: string = DateFormats[this.usage as dateUsage];
+
+                const needToTranslateParts: string[] = [];
+
+                // split format into parts for space or / characters
+                const formatParts: string[] = format.split(/[\s/]/g);
+
+                // take only the parts that are more or equal than 3 characters long but not Y characters
+                formatParts.forEach((part: string) => {
+                    if (part.length >= 3 && !part.includes('Y')) {
+                        needToTranslateParts.push(part);
+                    }
+                });
+
+                const transformedDate: string = format
+                    .replace('dddd', date.toLocaleDateString('en-US', {weekday: 'long'}))
+                    .replace('ddd', date.toLocaleDateString('en-US', {weekday: 'long'}))
+                    .replace('DD', date.toLocaleDateString('en-US', {day: '2-digit'}))
+                    .replace('MMMM', date.toLocaleDateString('en-US', {month: 'long'}))
+                    .replace('MMM', date.toLocaleDateString('en-US', {month: 'long'}))
+                    .replace('MM', date.toLocaleDateString('en-US', {month: '2-digit'}))
+                    .replace('YYYY', date.toLocaleDateString('en-US', {year: 'numeric'}))
+                    .replace('YY', date.toLocaleDateString('en-US', {year: '2-digit'}));
+
+                const splitTranslatedDate: string[] = transformedDate.split(/[\s/]/);
+
+                if (needToTranslateParts.length) {
+                    for (let i: number = 0; i < formatParts.length; i++) {
+                        if (formatParts[i][0] === 'd') {
+                            if (formatParts[i].length === 4) {
+                                splitTranslatedDate[i] = dateNameDictionary[`day.${splitTranslatedDate[i].toLowerCase()}`];
+                            }
+                            else if (formatParts[i].length === 3) {
+                                splitTranslatedDate[i] = dateNameDictionary[`day.${splitTranslatedDate[i].toLowerCase()}.short`];
+                            }
+                        }
+                        else if (formatParts[i][0] === 'M') {
+                            if (formatParts[i].length === 4) {
+                                splitTranslatedDate[i] = dateNameDictionary[`month.${splitTranslatedDate[i].toLowerCase()}`];
+                            }
+                            else if (formatParts[i].length === 3) {
+                                splitTranslatedDate[i] = dateNameDictionary[`month.${splitTranslatedDate[i].toLowerCase()}.short`];
+                            }
+                        }
+                    }
+                }
+
+                let translatedDate: string = format.replace(/([a-zA-Z])\1*/g, '?');
+
+                splitTranslatedDate.forEach((part: string): void => {
+                    translatedDate = translatedDate.replace('?', part);
+                });
+
+                return translatedDate;
+            }
         }
 
-        return '[null]'
+        return '[null]';
     }
 
     public checkDateValidity(date: string): boolean {
