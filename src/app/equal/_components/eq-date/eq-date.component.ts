@@ -252,7 +252,7 @@ export class EqDateComponent implements OnInit, DoCheck {
                 const formatParts: string[] = format.split(/[\s/]/g);
 
                 // take only the parts that are more or equal than 3 characters long but not Y characters
-                formatParts.forEach((part: string) => {
+                formatParts.forEach((part: string): void => {
                     if (part.length >= 3 && !part.includes('Y')) {
                         needToTranslateParts.push(part);
                     }
