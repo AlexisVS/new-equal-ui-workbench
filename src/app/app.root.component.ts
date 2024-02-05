@@ -20,6 +20,7 @@ declare global {
   }
 }
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.root.component.html',

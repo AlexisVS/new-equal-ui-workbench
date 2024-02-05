@@ -13,20 +13,22 @@ import {EqDateModule} from './_components/eq-date/eq-date.module';
 import { EqDateRangeComponent } from './_components/eq-date-range/eq-date-range.component';
 import { EqDateTimeComponent } from './_components/eq-date-time/eq-date-time.component';
 import {MatSelectModule} from '@angular/material/select';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 @NgModule({
-  imports: [
-    MatTabsModule,
-    CommonModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatDatepickerModule,
-    EqDateModule,
-    FormsModule,
-    MatSelectModule
-  ],
+    imports: [
+        MatTabsModule,
+        CommonModule,
+        MatInputModule,
+        MatIconModule,
+        MatButtonModule,
+        ReactiveFormsModule,
+        MatDatepickerModule,
+        FormsModule,
+        MatSelectModule,
+        EqDateModule,
+        NgxMaterialTimepickerModule
+    ],
     declarations: [
         EqualComponent,
         EqStringComponent,
@@ -34,6 +36,7 @@ import {MatSelectModule} from '@angular/material/select';
         EqDateRangeComponent,
         EqDateTimeComponent,
         EqTextComponent,
+        EqDateTimeComponent,
     ],
   exports: [
     EqualComponent

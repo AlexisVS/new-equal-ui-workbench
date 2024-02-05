@@ -13,11 +13,11 @@ export class EqualComponent {
     public littleText: string | null = null;
     public dateIso8601Utc0: string | null = '2024-01-17T12:38:46+0000';
     public dateIso8601Utc0_2: string | null = '2025-02-28T12:38:46+0000';
-    public dateRange: string | null = `${this.dateIso8601Utc0} - ${this.dateIso8601Utc0_2}`
+    public dateRange: string | null = `${this.dateIso8601Utc0} - ${this.dateIso8601Utc0_2}`;
 
     public nullable: boolean = true;
     public disabled: boolean = false;
-    public mode: 'view' | 'edit' = 'view';
+    public mode: 'view' | 'edit' = 'edit';
     public eqTextAutoGrow: boolean = false;
     public eqTextMinHeight: number = 97;
     public eqTextMaxHeight: number | undefined = undefined;

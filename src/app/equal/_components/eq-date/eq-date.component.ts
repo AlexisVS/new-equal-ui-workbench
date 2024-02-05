@@ -190,8 +190,6 @@ export class EqDateComponent implements OnInit, DoCheck {
                 'day.friday': 'vendredi',
                 'day.saturday': 'samedi',
                 'day.sunday': 'dimanche',
-
-                // 3 characters : ddd
                 'day.monday.short': 'lun',
                 'day.tuesday.short': 'mar',
                 'day.wednesday.short': 'mer',
@@ -199,7 +197,6 @@ export class EqDateComponent implements OnInit, DoCheck {
                 'day.friday.short': 'ven',
                 'day.saturday.short': 'sam',
                 'day.sunday.short': 'dim',
-
                 'month.january': 'janvier',
                 'month.february': 'février',
                 'month.march': 'mars',
@@ -212,9 +209,6 @@ export class EqDateComponent implements OnInit, DoCheck {
                 'month.october': 'octobre',
                 'month.november': 'novembre',
                 'month.december': 'décembre',
-
-
-                // 3 characters : MMM
                 'month.january.short': 'jan',
                 'month.february.short': 'fév',
                 'month.march.short': 'mar',
@@ -228,9 +222,6 @@ export class EqDateComponent implements OnInit, DoCheck {
                 'month.november.short': 'nov',
                 'month.december.short': 'déc'
             };
-
-            // const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat(this.locale, dateFormat[this.usage as dateUsage]);
-            // return formatter.format(new Date(this.formControl.value));
 
             const DateFormats: Record<dateUsage, string> = {
                 'date.short.day': 'ddd DD/MM/YY',
@@ -246,11 +237,6 @@ export class EqDateComponent implements OnInit, DoCheck {
 
                 const format: string = DateFormats[this.usage as dateUsage];
 
-                // split format into parts for space or / characters
-
-                // take only the parts that are more or equal than 3 characters long but not Y characters
-
-                // #todo : verifier que 'en-US' est disponible
                 const name_month: string = date.toLocaleDateString('en-US', {month: 'long'});
                 const name_day: string = date.toLocaleDateString('en-US', {weekday: 'long'});
                 const index_day: number = date.getDate();

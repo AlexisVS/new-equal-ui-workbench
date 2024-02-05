@@ -109,7 +109,6 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
 
     constructor(
         private changeDetectorRef: ChangeDetectorRef,
-        @Inject(LOCALE_ID) public locale: string
     ) {
     }
 
@@ -298,7 +297,7 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
 
     public formatDate(): string {
         if (this.formGroup.value.start !== '[null]' && this.formGroup.value.end !== '[null]') {
-            const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat(this.locale, dateFormat[this.usage as dateUsage]);
+            const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat('fr', dateFormat[this.usage as dateUsage]);
             return formatter.format(new Date(this.formGroup.value.start)) + ' – ' + formatter.format(new Date(this.formGroup.value.end));
         }
 

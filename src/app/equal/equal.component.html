@@ -18,7 +18,7 @@
 </div>
 <br>
 
-<mat-tab-group [selectedIndex]="3">
+<mat-tab-group [selectedIndex]="5">
     <mat-tab label="eq-string">
         <div class="equal__layout">
             <div style="width: 250px">
@@ -316,12 +316,46 @@
         </div>
     </mat-tab>
     <mat-tab label="eq-date-time">
+        <code>Based on date: <strong>2024-01-17T12:38:46+0000</strong></code>
+        <br>
+        <code>returned date : <strong>{{ dateIso8601Utc0 }}</strong></code>
+        <br>
+        <div class="command-panel">
+            <mat-form-field appearance="fill">
+                <mat-label>dateIso8601Utc0</mat-label>
+                <input matInput type="string" [(ngModel)]="dateIso8601Utc0" (input)="refreshByBoolean()">
+            </mat-form-field>
+
+
+            <mat-form-field appearance="fill">
+                <mat-label>Cars</mat-label>
+                <mat-select [(value)]="dateTypeFormatSelected" required>
+                    <mat-option
+                        *ngFor="let dateFormat of dateTypeFormats"
+                        [value]="dateFormat"
+                    >
+                        {{ dateFormat }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+        </div>
+        <br>
         <div class="equal__layout">
             <div>
-                <!--        <eq-date-time-->
-
-                <!--        >-->
-                <!--        </eq-date-time>-->
+                <eq-date-time
+                    *ngIf="reloadByBoolean"
+                    [(value)]="dateIso8601Utc0"
+                    title="My title"
+                    placeholder="My placeholder"
+                    [nullable]="true"
+                    hint="My hint"
+                    error="My error"
+                    [mode]="mode"
+                    [disabled]="disabled"
+                    [usage]="dateTypeFormatSelected"
+                >
+                </eq-date-time>
             </div>
         </div>
     </mat-tab>
