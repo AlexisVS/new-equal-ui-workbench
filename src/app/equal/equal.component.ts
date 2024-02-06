@@ -22,7 +22,9 @@ export class EqualComponent {
     public eqTextMinHeight: number = 97;
     public eqTextMaxHeight: number | undefined = undefined;
     public dateTypeFormats: string[] = ['date.short.day', 'date.short', 'date.medium', 'date.long', 'date.full'];
-    public dateTypeFormatSelected: string = this.dateTypeFormats[0];
+    public dateTypeFormatSelected: string = this.dateTypeFormats[1];
+    public dateTimeTypeFormats: string[] = ['datetime.short', 'datetime.medium', 'datetime.long', 'datetime.full'];
+    public dateTimeTypeFormatSelected: string = this.dateTimeTypeFormats[1];
     public reloadByBoolean: boolean = true;
 
     constructor(private changeDetectorRef: ChangeDetectorRef) {

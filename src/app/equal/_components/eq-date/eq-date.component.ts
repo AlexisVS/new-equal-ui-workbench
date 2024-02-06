@@ -13,16 +13,6 @@ import {FormControl, ValidatorFn, Validators} from '@angular/forms';
 
 type dateUsage = 'date.short.day' | 'date.short' | 'date.medium' | 'date.long' | 'date.full';
 
-// type dateFormat = Record<dateUsage, Intl.DateTimeFormatOptions>;
-
-// const dateFormat: dateFormat = {
-//     'date.short.day': {weekday: 'short', day: 'numeric', month: 'numeric', year: '2-digit'},
-//     'date.short': {day: 'numeric', month: '2-digit', year: '2-digit'},
-//     'date.medium': {day: 'numeric', month: 'short', year: 'numeric'},
-//     'date.long': {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'},
-//     'date.full': {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'},
-// };
-
 @Component({
     selector: 'eq-date',
     templateUrl: './eq-date.component.html',
@@ -231,7 +221,7 @@ export class EqDateComponent implements OnInit, DoCheck {
                 'date.full': 'dddd DD MMMM YYYY',
             };
 
-            const date: Date = new Date(this.formControl.value);
+            const date: Date = new Date(this.sanitizeDate(this.formControl.value));
 
             if (DateFormats.hasOwnProperty(this.usage as dateUsage)) {
 
@@ -239,19 +229,19 @@ export class EqDateComponent implements OnInit, DoCheck {
 
                 const name_month: string = date.toLocaleDateString('en-US', {month: 'long'});
                 const name_day: string = date.toLocaleDateString('en-US', {weekday: 'long'});
-                const index_day: number = date.getDate();
+                const index_day: number = date.getUTCDate();
                 const index_month: number = date.getMonth() + 1;
                 const index_year: number = date.getFullYear();
 
                 return format
-                    .replace('dddd', dateNameDictionary['day.' + name_day.toLowerCase()])
-                    .replace('ddd', dateNameDictionary['day.' + name_day.toLowerCase() + '.short'])
-                    .replace('DD', index_day.toString().padStart(2, '0'))
+                    .replace('YYYY', index_year.toString().padStart(4, '0'))
+                    .replace('YY', (index_year % 100).toString().padStart(2, '0'))
                     .replace('MMMM', dateNameDictionary['month.' + name_month.toLowerCase()])
                     .replace('MMM', dateNameDictionary['month.' + name_month.toLowerCase() + '.short'])
                     .replace('MM', index_month.toString().padStart(2, '0'))
-                    .replace('YYYY', index_year.toString().padStart(4, '0'))
-                    .replace('YY', (index_year % 100).toString().padStart(2, '0'));
+                    .replace('DD', index_day.toString().padStart(2, '0'))
+                    .replace('dddd', dateNameDictionary['day.' + name_day.toLowerCase()])
+                    .replace('ddd', dateNameDictionary['day.' + name_day.toLowerCase() + '.short']);
             }
         }
 
@@ -298,6 +288,6 @@ export class EqDateComponent implements OnInit, DoCheck {
         const newDate: Date = new Date(date);
         const timestamp: number = newDate.getTime();
         const offsetTz: number = newDate.getTimezoneOffset() * 60 * 1000;
-        return new Date(timestamp + offsetTz).toISOString().substring(0, 10) + 'T00:00:00Z';
+        return new Date(timestamp - offsetTz).toISOString().substring(0, 10) + 'T00:00:00+0000';
     }
 }

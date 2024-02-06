@@ -221,7 +221,7 @@
 
 
             <mat-form-field appearance="fill">
-                <mat-label>Cars</mat-label>
+                <mat-label>Date format</mat-label>
                 <mat-select [(value)]="dateTypeFormatSelected" required>
                     <mat-option
                         *ngFor="let dateFormat of dateTypeFormats"
@@ -281,7 +281,7 @@
 
 
             <mat-form-field appearance="fill">
-                <mat-label>Cars</mat-label>
+                <mat-label>Date format</mat-label>
                 <mat-select [(value)]="dateTypeFormatSelected" required>
                     <mat-option
                         *ngFor="let dateFormat of dateTypeFormats"
@@ -328,13 +328,13 @@
 
 
             <mat-form-field appearance="fill">
-                <mat-label>Cars</mat-label>
-                <mat-select [(value)]="dateTypeFormatSelected" required>
+                <mat-label>Date time format</mat-label>
+                <mat-select [(value)]="dateTimeTypeFormatSelected" required>
                     <mat-option
-                        *ngFor="let dateFormat of dateTypeFormats"
-                        [value]="dateFormat"
+                        *ngFor="let dateTimeFormat of dateTimeTypeFormats"
+                        [value]="dateTimeFormat"
                     >
-                        {{ dateFormat }}
+                        {{ dateTimeFormat }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -353,7 +353,7 @@
                     error="My error"
                     [mode]="mode"
                     [disabled]="disabled"
-                    [usage]="dateTypeFormatSelected"
+                    [usage]="dateTimeTypeFormatSelected"
                 >
                 </eq-date-time>
             </div>

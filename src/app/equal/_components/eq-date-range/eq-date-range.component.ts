@@ -3,8 +3,8 @@ import {
     Component,
     ElementRef,
     EventEmitter,
-    Inject,
-    Input, LOCALE_ID, OnChanges,
+    Input,
+    OnChanges,
     OnInit,
     Output,
     SimpleChanges,
@@ -14,18 +14,6 @@ import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {DateRange, MatDateRangeInput} from '@angular/material/datepicker';
 
 type dateUsage = 'date.short.day' | 'date.short' | 'date.medium' | 'date.long' | 'date.full';
-
-type dateFormat = Record<dateUsage, Intl.DateTimeFormatOptions>;
-
-const dateFormat: dateFormat = {
-    'date.short.day': {weekday: 'short', day: 'numeric', month: 'numeric', year: '2-digit'},
-    'date.short': {day: 'numeric', month: '2-digit', year: '2-digit'},
-    'date.medium': {day: 'numeric', month: 'short', year: 'numeric'},
-    'date.long': {weekday: 'short', day: 'numeric', month: 'short', year: 'numeric'},
-    'date.full': {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'},
-};
-
-// type dateRange = 'start' | 'end';
 
 @Component({
     selector: 'eq-date-range',
@@ -295,13 +283,82 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         }
     }
 
-    public formatDate(): string {
-        if (this.formGroup.value.start !== '[null]' && this.formGroup.value.end !== '[null]') {
-            const formatter: Intl.DateTimeFormat = new Intl.DateTimeFormat('fr', dateFormat[this.usage as dateUsage]);
-            return formatter.format(new Date(this.formGroup.value.start)) + ' – ' + formatter.format(new Date(this.formGroup.value.end));
+    public formatDate(dateValue: string): string {
+        if (dateValue !== '[null]') {
+            const dateNameDictionary: Record<string, string> = {
+                'day.monday': 'lundi',
+                'day.tuesday': 'mardi',
+                'day.wednesday': 'mercredi',
+                'day.thursday': 'jeudi',
+                'day.friday': 'vendredi',
+                'day.saturday': 'samedi',
+                'day.sunday': 'dimanche',
+                'day.monday.short': 'lun',
+                'day.tuesday.short': 'mar',
+                'day.wednesday.short': 'mer',
+                'day.thursday.short': 'jeu',
+                'day.friday.short': 'ven',
+                'day.saturday.short': 'sam',
+                'day.sunday.short': 'dim',
+                'month.january': 'janvier',
+                'month.february': 'février',
+                'month.march': 'mars',
+                'month.april': 'avril',
+                'month.may': 'mai',
+                'month.june': 'juin',
+                'month.july': 'juillet',
+                'month.august': 'aout',
+                'month.september': 'septembre',
+                'month.october': 'octobre',
+                'month.november': 'novembre',
+                'month.december': 'décembre',
+                'month.january.short': 'jan',
+                'month.february.short': 'fév',
+                'month.march.short': 'mar',
+                'month.april.short': 'avr',
+                'month.may.short': 'mai',
+                'month.june.short': 'juin',
+                'month.july.short': 'juil',
+                'month.august.short': 'aou',
+                'month.september.short': 'sep',
+                'month.october.short': 'oct',
+                'month.november.short': 'nov',
+                'month.december.short': 'déc'
+            };
+
+            const DateFormats: Record<dateUsage, string> = {
+                'date.short.day': 'ddd DD/MM/YY',
+                'date.short': 'DD/MM/YY',
+                'date.medium': 'DD/MM/YYYY',
+                'date.long': 'ddd DD MMM YYYY',
+                'date.full': 'dddd DD MMMM YYYY',
+            };
+
+            const date: Date = new Date(this.sanitizeDate(dateValue));
+
+            if (DateFormats.hasOwnProperty(this.usage as dateUsage)) {
+
+                const format: string = DateFormats[this.usage as dateUsage];
+
+                const name_month: string = date.toLocaleDateString('en-US', {month: 'long'});
+                const name_day: string = date.toLocaleDateString('en-US', {weekday: 'long'});
+                const index_day: number = date.getUTCDate();
+                const index_month: number = date.getMonth() + 1;
+                const index_year: number = date.getFullYear();
+
+                return format
+                    .replace('YYYY', index_year.toString().padStart(4, '0'))
+                    .replace('YY', (index_year % 100).toString().padStart(2, '0'))
+                    .replace('MMMM', dateNameDictionary['month.' + name_month.toLowerCase()])
+                    .replace('MMM', dateNameDictionary['month.' + name_month.toLowerCase() + '.short'])
+                    .replace('MM', index_month.toString().padStart(2, '0'))
+                    .replace('DD', index_day.toString().padStart(2, '0'))
+                    .replace('dddd', dateNameDictionary['day.' + name_day.toLowerCase()])
+                    .replace('ddd', dateNameDictionary['day.' + name_day.toLowerCase() + '.short']);
+            }
         }
 
-        return '[null] – [null]';
+        return '[null]';
     }
 
     public checkDateValidity(date: string): boolean {
@@ -312,6 +369,6 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         const newDate: Date = new Date(date);
         const timestamp: number = newDate.getTime();
         const offsetTz: number = newDate.getTimezoneOffset() * 60 * 1000;
-        return new Date(timestamp + offsetTz).toISOString().substring(0, 10) + 'T00:00:00Z';
+        return new Date(timestamp - offsetTz).toISOString().substring(0, 10) + 'T00:00:00Z';
     }
 }

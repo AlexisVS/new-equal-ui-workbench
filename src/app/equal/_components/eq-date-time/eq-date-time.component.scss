@@ -1,8 +1,8 @@
 :host {
     display: inline-block;
-    width: 364px;
-    height: 88px;
-    max-height: 88px;
+    width: 370px;
+    height: 110px;
+    max-height: 110px;
     overflow: hidden;
 
     .eq-date-time {
@@ -21,8 +21,7 @@
 
             span {
                 position: absolute;
-                //top: 17px;
-                top: 26px;
+                top: 37px;
                 left: 12px;
                 vertical-align: baseline;
             }
@@ -44,8 +43,23 @@
                 width: calc(100% + 80px);
             }
 
-            &::ng-deep .mat-form-field-suffix {
-                width: 80px;
+            &::ng-deep {
+                .mat-form-field-suffix {
+                    width: 80px;
+                    position: relative;
+                    top: 7px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: baseline;
+                }
+
+                .mat-form-field-infix {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    align-items: baseline;
+                }
             }
 
             mat-label {
@@ -54,10 +68,16 @@
 
             input {
                 font-size: 16px;
+                position: relative;
+                top: 1px;
 
                 &.is_null {
                     font-style: italic;
                 }
+            }
+
+            .input-time {
+                width: 50px;
             }
 
             mat-hint {
@@ -74,7 +94,7 @@
         }
 
         & .action {
-            bottom: 5px;
+            bottom: 1px;
         }
 
     }
