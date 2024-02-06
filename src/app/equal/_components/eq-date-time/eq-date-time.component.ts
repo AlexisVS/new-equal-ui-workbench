@@ -94,8 +94,12 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.hasOwnProperty('value') && !changes.value.firstChange && this.value !== null) {
-            const [date, time] = this.splitDateTimeValue(changes.value.currentValue);
-            this.updateValue(date, time);
+            const date: string = this.convertToUTC(this.formGroup.value.date, this.formGroup.value.time).slice(0, -5) + '+0000';
+            const time: Date = new Date(date);
+            this.formGroup.setValue({
+                date: new Date(date),
+                time: time.getHours() + ':' + time.getMinutes()
+            });
         }
 
         if (changes.hasOwnProperty('mode') && !changes.mode.firstChange && this.value === null) {
@@ -298,14 +302,7 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
             this.isValidTimeFormat(this.inputTimeValue)
         ) {
             const date: string = this.convertToUTC(this.formGroup.value.date, this.formGroup.value.time).slice(0, -5) + '+0000';
-            const time: Date = new Date(date);
             this.valueChange.emit(date);
-
-            // ! Problem onSave for init the new saved value
-            this.formGroup.setValue({
-                date: new Date(date),
-                time: time.getHours() + ':' + time.getMinutes()
-            });
             this.toggleActive(false);
         }
     }
