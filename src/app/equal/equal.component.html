@@ -18,7 +18,7 @@
 </div>
 <br>
 
-<mat-tab-group [selectedIndex]="5">
+<mat-tab-group [selectedIndex]="4">
     <mat-tab label="eq-string">
         <div class="equal__layout">
             <div style="width: 250px">
@@ -204,12 +204,8 @@
             </div>
         </div>
     </mat-tab>
-    <mat-tab label="eq-m2o">
-        <div class="equal__layout">
-        </div>
-    </mat-tab>
     <mat-tab label="eq-date">
-        <code>Based on date: <strong>2024-01-17T12:38:46+0000</strong></code>
+        <code>Based on date: <strong>2024-12-31T23:38:46+0000</strong></code>
         <br>
         <code>returned date : <strong>{{ dateIso8601Utc0 }}</strong></code>
         <br>
@@ -254,7 +250,7 @@
         </div>
     </mat-tab>
     <mat-tab label="eq-date-range">
-        <code>Based on date start: <strong>2024-01-17T12:38:46+0000</strong></code>
+        <code>Based on date start: <strong>2024-12-31T23:38:46+0000</strong></code>
         <br>
         <code>Based on date end: <strong>2025-02-28T12:38:46+0000</strong></code>
         <br>
@@ -264,7 +260,7 @@
         <code>returned date 2 : <strong>{{ dateIso8601Utc0_2 }}</strong></code>
         <br>
         <br>
-        <code>Default value: <strong>2024-01-17T12:38:46+0000 - 2025-02-28T12:38:46+0000</strong></code>
+        <code>Default value: <strong>2024-12-31T23:38:46+0000 - 2025-02-28T12:38:46+0000</strong></code>
         <br>
         <code>Current value: <strong>{{ dateRange | json }}</strong></code>
         <br>
@@ -316,7 +312,7 @@
         </div>
     </mat-tab>
     <mat-tab label="eq-date-time">
-        <code>Based on date: <strong>2024-01-17T12:38:46+0000</strong></code>
+        <code>Based on date: <strong>2024-12-31T23:38:46+0000</strong></code>
         <br>
         <code>returned date : <strong>{{ dateIso8601Utc0 }}</strong></code>
         <br>
@@ -356,6 +352,15 @@
                     [usage]="dateTimeTypeFormatSelected"
                 >
                 </eq-date-time>
+            </div>
+        </div>
+    </mat-tab>
+    <mat-tab label="eq-m2o">
+        <div class="equal__layout">
+            <div>
+                <eq-m2o>
+
+                </eq-m2o>
             </div>
         </div>
     </mat-tab>

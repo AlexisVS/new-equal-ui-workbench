@@ -14,6 +14,7 @@ import { EqDateRangeComponent } from './_components/eq-date-range/eq-date-range.
 import { EqDateTimeComponent } from './_components/eq-date-time/eq-date-time.component';
 import {MatSelectModule} from '@angular/material/select';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { EqM2oComponent } from './_components/eq-m2o/eq-m2o.component';
 
 @NgModule({
     imports: [
@@ -37,6 +38,7 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
         EqDateTimeComponent,
         EqTextComponent,
         EqDateTimeComponent,
+        EqM2oComponent,
     ],
   exports: [
     EqualComponent

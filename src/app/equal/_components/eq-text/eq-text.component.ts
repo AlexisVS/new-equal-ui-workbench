@@ -115,18 +115,17 @@ export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked {
     public setTextHeight(): void {
         // auto grow and max height
         if (this.autoGrow && typeof this.maxHeight === 'number') {
-            console.log('auto grow and max height');
             this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', this.maxHeight + 'px');
-
-            this.changeDetector.detectChanges();
-            if (this.mode === 'edit') {
-                if (this.textarea.nativeElement.scrollHeight > this.maxHeight) {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
-                }
-                else {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
-                }
-            }
+            //
+            // this.changeDetector.detectChanges();
+            // if (this.mode === 'edit') {
+            //     if (this.textarea.nativeElement.scrollHeight > this.maxHeight) {
+            //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
+            //     }
+            //     else {
+            //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
+            //     }
+            // }
 
             if (this.mode === 'view') {
                 if (this.text.nativeElement.scrollHeight > this.maxHeight) {
@@ -143,23 +142,23 @@ export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked {
             this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', 'none');
             this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
 
-            if (this.mode === 'edit') {
-                this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
-                this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
-                console.log(this.textarea.nativeElement.scrollHeight, this.textarea.nativeElement.clientHeight);
-
-                if (this.is_active) {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
-                }
-                else if (this.textarea.nativeElement.scrollHeight > this.textarea.nativeElement.clientHeight) {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
-                }
-                else {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
-                }
-
-                this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'hidden');
-            }
+            // if (this.mode === 'edit') {
+            //     this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
+            //     this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+            //     console.log(this.textarea.nativeElement.scrollHeight, this.textarea.nativeElement.clientHeight);
+            //
+            //     if (this.is_active) {
+            //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
+            //     }
+            //     else if (this.textarea.nativeElement.scrollHeight > this.textarea.nativeElement.clientHeight) {
+            //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
+            //     }
+            //     else {
+            //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
+            //     }
+            //
+            //     this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'hidden');
+            // }
 
             if (this.mode === 'view') {
                 console.log('view');
@@ -186,7 +185,6 @@ export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked {
             this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
             this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', this.maxHeight + 'px');
             if (this.mode === 'edit') {
-                console.log('this.textarea.nativeElement.scrollHeight > this.maxHeight', this.textarea.nativeElement.scrollHeight > this.maxHeight);
                 if (this.textarea.nativeElement.scrollHeight > this.maxHeight || this.textarea.nativeElement.clientHeight > this.maxHeight) {
                     this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
                 }

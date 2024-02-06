@@ -11,7 +11,7 @@ export class EqualComponent {
     public bigText: string | null = 'lorem ipsum dolor sit amet, consectetur adipiscing elit. sed non risus. suspendisse lectus tortor, dignissim sit amet, adipiscing nec, ultricies sed, dolor.';
     public smallText: string | null = 'lorem ipsum dolor sit amet, consectetur adipiscing elit. sed non risus.';
     public littleText: string | null = null;
-    public dateIso8601Utc0: string | null = '2024-01-17T12:38:46+0000';
+    public dateIso8601Utc0: string | null = '2024-12-31T23:38:46+0000';
     public dateIso8601Utc0_2: string | null = '2025-02-28T12:38:46+0000';
     public dateRange: string | null = `${this.dateIso8601Utc0} - ${this.dateIso8601Utc0_2}`;
 

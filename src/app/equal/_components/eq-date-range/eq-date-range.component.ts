@@ -369,6 +369,6 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         const newDate: Date = new Date(date);
         const timestamp: number = newDate.getTime();
         const offsetTz: number = newDate.getTimezoneOffset() * 60 * 1000;
-        return new Date(timestamp - offsetTz).toISOString().substring(0, 10) + 'T00:00:00Z';
+        return new Date(timestamp - offsetTz).toISOString().substring(0, 10) + 'T00:00:00+0000';
     }
 }

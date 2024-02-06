@@ -107,16 +107,10 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
         this.initFormGroup();
     }
 
-    private splitDateTimeValue = (dateTime: string): string[] => {
-        const [date, timeWithUtc] = dateTime.split('T');
-        const time = timeWithUtc.split('+')[0].slice(0, 5);
-
-        return [date, time];
-    }
-
     public initFormGroup(): void {
         if (this.value !== null) {
             const [date, time] = this.splitDateTimeValue(this.value);
+            const dateTime = new Date(this.value);
 
             this.formGroup = new FormGroup({
                 date: new FormControl(''),
@@ -125,16 +119,15 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
 
             if (this.checkDateValidity(date) && this.isValidTimeFormat(time)) {
                 this.formGroup.setValue({
-                    date: new Date(date),
-                    time
+                    date: new Date(this.value),
+                    time: dateTime.getHours() + ':' + dateTime.getMinutes()
                 });
             }
         }
-
-        else if (this.nullable && [null, '[null]'].includes(this.value)) {
+        else if (this.nullable) {
             this.updateValue(null, null);
         }
-
+        // #todo - check this
         else {
             this.formGroup.setValue({
                 date: '',
@@ -143,7 +136,6 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
         }
 
         this.changeDetectorRef.detectChanges();
-
 
         if (this.required) {
             this.formGroup.addValidators(Validators.required);
@@ -305,13 +297,22 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
             this.inputTimeValue &&
             this.isValidTimeFormat(this.inputTimeValue)
         ) {
-            const date: string = this.sanitizeDate(this.formGroup.value.date, this.formGroup.value.time);
+            const date: string = this.convertToUTC(this.formGroup.value.date, this.formGroup.value.time).slice(0, -5) + '+0000';
+            const time: Date = new Date(date);
             this.valueChange.emit(date);
+
+            // ! Problem onSave for init the new saved value
+            this.formGroup.setValue({
+                date: new Date(date),
+                time: time.getHours() + ':' + time.getMinutes()
+            });
             this.toggleActive(false);
         }
     }
 
     public formatDate(): string {
+
+        // autre verification sur base de la validité de la date (après parsing)
         if (this.formGroup.value.date !== '[null]' && this.formGroup.value.time !== '[null]') {
             const dateNameDictionary: Record<string, string> = {
                 'day.monday': 'lundi',
@@ -360,10 +361,9 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
                 'datetime.long': 'ddd DD MMM YYYY HH:mm',
                 'datetime.full': 'dddd DD MMMM YYYY HH:mm'
             };
-            const isoDate = this.formGroup.value.date.toISOString().split(' ')[0].split('T')[0];
-            const constructedDate: string = isoDate + 'T' + this.formGroup.value.time + ':00' + '+0000';
-            const date: Date = new Date(this.sanitizeDate(isoDate, this.formGroup.value.time));
-            console.log('isoDate =>', isoDate, 'constructedDate =>', constructedDate, 'date => ', date);
+
+            // Converted to UTZ at init, so we need to convert it back to UTC
+            const date: Date = new Date(this.convertToUTC(this.formGroup.value.date, this.formGroup.value.time));
 
             if (DateTimeFormats.hasOwnProperty(this.usage as dateUsage)) {
 
@@ -371,10 +371,10 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
 
                 const name_month: string = date.toLocaleDateString('en-US', {month: 'long'});
                 const name_day: string = date.toLocaleDateString('en-US', {weekday: 'long'});
-                const index_day: number = date.getUTCDate();
-                const index_month: number = date.getUTCMonth() + 1;
+                const index_day: number = date.getDate();
+                const index_month: number = date.getMonth() + 1;
                 const index_year: number = date.getFullYear();
-                const index_hour: number = date.getUTCHours();
+                const index_hour: number = date.getHours();
                 const index_minute: number = date.getMinutes();
                 const index_second: number = date.getSeconds();
 
@@ -412,10 +412,26 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
         return !(hours < 0 || hours > 23 || minutes < 0 || minutes > 59);
     }
 
-    private sanitizeDate(date: string, time: string): string {
-        const newDate: Date = new Date(date);
-        const timestamp: number = newDate.getTime();
-        const offsetTz: number = newDate.getTimezoneOffset() * 60 * 1000;
-        return new Date(timestamp - offsetTz).toISOString().substring(0, 10) + 'T' + time + ':00' + '+0000';
+    private splitDateTimeValue = (dateTime: string): string[] => {
+        const [date, timeWithUtc] = dateTime.split('T');
+        const time = timeWithUtc.split('+')[0].slice(0, 5);
+
+        return [date, time];
+    }
+
+    private convertToUTC(date: Date, time: string): string {
+        const [hours, minutes] = time.split(':');
+        const dateObj: Date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), +hours, +minutes);
+        // console.log('convertToUTC', dateObj.toISOString() + '+0000');
+        // const timestamp: number = dateObj.getTime();
+        // const offset_tz: number = dateObj.getTimezoneOffset() * 60 * 1000;
+        return dateObj.toISOString();
+    }
+
+    private convertToUTZ(date: string): Array<any> {
+        const dateObj: Date = new Date(date);
+        const str_time: string = dateObj.toISOString().split('T')[1];
+        const time_parts: string[] = str_time.split(':');
+        return [dateObj, time_parts[0] + ':' + time_parts[1]];
     }
 }

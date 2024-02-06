@@ -14,7 +14,7 @@ Documentation Requirements:
 Please provide comprehensive documentation for the specified Angular Material component, covering the following aspects:
 
     Overview: A brief introduction to the component and its primary purpose.
-    Usage: Clear and concise examples demonstrating how to use the component in various scenarios.
+    Usage: Clear and concise examples demonstrating how to use the component in various scenarios. Give me te properties inside a markdown table.
     API Reference: A detailed breakdown of the component's properties, methods, and events.
     Styling: Guidance on how to style and customize the component to suit different design requirements.
     Best Practices: Recommendations and best practices for effective utilization of the component.
@@ -47,17 +47,11 @@ component HTML file:
   [Provide the component HTML file]
   ```
 
-Deadline:
-We kindly request that the documentation be completed by [provide a reasonable deadline].
-
 Preferred Format:
 Please provide the documentation in Markdown format.
-
-Contact Person:
-In case of any queries or for further clarification, feel free to reach out to [provide contact person's name and email].
 
 Thank you for your assistance. We appreciate your commitment to delivering high-quality documentation.
 
 Best regards,
 
-[Your Name]
+AlexisVS
