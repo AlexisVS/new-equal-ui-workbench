@@ -101,12 +101,6 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-
-        if (changes.hasOwnProperty('value') && !changes.value.firstChange && this.value !== null) {
-            const [dateStart, dateEnd] = this.splitDateRange(changes.value.currentValue);
-            this.updateValue(dateStart, dateEnd);
-        }
-
         if (changes.hasOwnProperty('mode') && !changes.mode.firstChange && this.value === null) {
             this.updateValue(null, null);
         }
@@ -212,9 +206,14 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
                 (valueStart && new Date(valueStart).toString() !== 'Invalid Date') &&
                 (valueEnd && new Date(valueEnd).toString() !== 'Invalid Date')
             ) {
+                const UTZDateStart: Date = new Date(valueStart);
+                const UTCDateStart: Date = new Date(UTZDateStart.getUTCFullYear(), UTZDateStart.getUTCMonth(), UTZDateStart.getUTCDate());
+
+                const UTZDateEnd: Date = new Date(valueEnd);
+                const UTCDateEnd: Date = new Date(UTZDateEnd.getUTCFullYear(), UTZDateEnd.getUTCMonth(), UTZDateEnd.getUTCDate());
                 this.formGroup.setValue({
-                    start: new Date(valueStart),
-                    end: new Date(valueEnd)
+                    start: UTCDateStart,
+                    end: UTCDateEnd
                 });
             }
             else {
@@ -224,13 +223,6 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
                 });
             }
         }
-    }
-
-    public getErrorMessage(): string {
-        if (this.error) {
-            return this.error;
-        }
-        return '';
     }
 
     public onBlur(event: FocusEvent): void {

@@ -1,7 +1,6 @@
 import {
     ChangeDetectorRef,
     Component,
-    DoCheck,
     ElementRef,
     EventEmitter,
     Input,
@@ -18,7 +17,7 @@ type dateUsage = 'date.short.day' | 'date.short' | 'date.medium' | 'date.long' |
     templateUrl: './eq-date.component.html',
     styleUrls: ['./eq-date.component.scss']
 })
-export class EqDateComponent implements OnInit, DoCheck {
+export class EqDateComponent implements OnInit {
     @Output() valueChange: EventEmitter<string | null> = new EventEmitter<string | null>();
 
     @Input() value: string | null;
@@ -75,12 +74,6 @@ export class EqDateComponent implements OnInit, DoCheck {
         }
     }
 
-    ngDoCheck(): void {
-        // if (this.is_null) {
-        //     this.formControl.disable();
-        // }
-    }
-
     public initFormControl(): void {
         if (this.value && ![null, '[null]', ''].includes(this.value)) {
             const UTZDate: Date = new Date(this.value);
@@ -127,7 +120,9 @@ export class EqDateComponent implements OnInit, DoCheck {
         else {
             this.is_null = false;
             if (new Date(value).toString() !== 'Invalid Date') {
-                this.formControl.setValue(new Date(value));
+                const UTZDate: Date = new Date(value);
+                const UTCDate: Date = new Date(UTZDate.getUTCFullYear(), UTZDate.getUTCMonth(), UTZDate.getUTCDate());
+                this.formControl.setValue(UTCDate);
             }
             else {
                 this.formControl.setValue('');
@@ -165,7 +160,7 @@ export class EqDateComponent implements OnInit, DoCheck {
             this.valueChange.emit(null);
         }
         else if (this.formControl.valid) {
-            const date: string = this.convertToUTC(this.formControl.value).slice(0, -5) + '+0000';
+            const date: string = this.convertToUTC(this.formControl.value);
             this.valueChange.emit(date);
         }
         this.toggleActive(false);
@@ -222,7 +217,7 @@ export class EqDateComponent implements OnInit, DoCheck {
                 'date.full': 'dddd DD MMMM YYYY',
             };
 
-            const date: Date = new Date(this.convertToUTC(this.formControl.value));
+            const date: Date = this.formControl.value;
 
             if (DateFormats.hasOwnProperty(this.usage as dateUsage)) {
 

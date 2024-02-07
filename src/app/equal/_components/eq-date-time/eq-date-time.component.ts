@@ -93,15 +93,6 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.hasOwnProperty('value') && !changes.value.firstChange && this.value !== null) {
-            const date: string = this.convertToUTC(this.formGroup.value.date, this.formGroup.value.time).slice(0, -5) + '+0000';
-            const time: Date = new Date(date);
-            this.formGroup.setValue({
-                date: new Date(date),
-                time: time.getHours() + ':' + time.getMinutes()
-            });
-        }
-
         if (changes.hasOwnProperty('mode') && !changes.mode.firstChange && this.value === null) {
             this.updateValue(null, null);
         }
@@ -121,6 +112,7 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
                 time: new FormControl('')
             });
 
+
             if (this.checkDateValidity(date) && this.isValidTimeFormat(time)) {
                 this.formGroup.setValue({
                     date: new Date(this.value),
@@ -130,13 +122,6 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
         }
         else if (this.nullable) {
             this.updateValue(null, null);
-        }
-        // #todo - check this
-        else {
-            this.formGroup.setValue({
-                date: '',
-                time: ''
-            });
         }
 
         this.changeDetectorRef.detectChanges();
@@ -203,7 +188,6 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
         else {
             this.formGroup.enable();
             this.updateValue('', '');
-            // this.inputTime.nativeElement.value = '';
         }
         this.changeDetectorRef.detectChanges();
     }
@@ -220,8 +204,6 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
                 date: '[null]',
                 time: '[null]',
             });
-            // this.inputDate.nativeElement.value = '[null]';
-            // this.inputTime.nativeElement.value = '[null]';
             this.formGroup.markAsUntouched({onlySelf: true});
         }
         else {
@@ -230,8 +212,10 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
                 (dateValue && new Date(dateValue).toString() !== 'Invalid Date') &&
                 (timeValue && this.isValidTimeFormat(timeValue))
             ) {
+                const UTZDate: Date = new Date(dateValue);
+                const UTCDate: Date = new Date(UTZDate.getFullYear(), UTZDate.getMonth(), UTZDate.getDate());
                 this.formGroup.setValue({
-                    date: new Date(dateValue),
+                    date: UTCDate,
                     time: timeValue
                 });
             }
@@ -253,9 +237,13 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
             !this.eqDateRange.nativeElement.contains(event.relatedTarget as Node)
         ) {
             this.toggleIsNull(false);
-            if (![null, '[null]', ''].includes(this.value)) {
-                const [date, time] = this.splitDateTimeValue(this.value as string);
-                this.updateValue(date, time);
+            if (this.value && ![null, '[null]', ''].includes(this.value)) {
+                const dateTime: Date = new Date(this.value);
+                this.formGroup.setValue({
+                    date: new Date(this.value),
+                    time: dateTime.getHours() + ':' + dateTime.getMinutes()
+                });
+
             }
 
             if (this.matFormField._elementRef.nativeElement instanceof HTMLElement) {
@@ -280,7 +268,6 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
         event.stopImmediatePropagation();
         event.preventDefault();
         this.updateValue('', '');
-        // this.inputTime.nativeElement.value = '';
         this.formGroup.markAsPending({onlySelf: true});
         if (this.inputDate.nativeElement instanceof HTMLInputElement) {
             this.inputDate.nativeElement.focus();
@@ -419,16 +406,13 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
     private convertToUTC(date: Date, time: string): string {
         const [hours, minutes] = time.split(':');
         const dateObj: Date = new Date(date.getFullYear(), date.getMonth(), date.getDate(), +hours, +minutes);
-        // console.log('convertToUTC', dateObj.toISOString() + '+0000');
-        // const timestamp: number = dateObj.getTime();
-        // const offset_tz: number = dateObj.getTimezoneOffset() * 60 * 1000;
         return dateObj.toISOString();
     }
 
-    private convertToUTZ(date: string): Array<any> {
-        const dateObj: Date = new Date(date);
-        const str_time: string = dateObj.toISOString().split('T')[1];
-        const time_parts: string[] = str_time.split(':');
-        return [dateObj, time_parts[0] + ':' + time_parts[1]];
-    }
+    // private convertToUTZ(date: string): Array<any> {
+    //     const dateObj: Date = new Date(date);
+    //     const str_time: string = dateObj.toISOString().split('T')[1];
+    //     const time_parts: string[] = str_time.split(':');
+    //     return [dateObj, time_parts[0] + ':' + time_parts[1]];
+    // }
 }
