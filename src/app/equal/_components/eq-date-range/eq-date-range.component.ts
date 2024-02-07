@@ -63,7 +63,7 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         if (this.inputRange && this.inputRange.value instanceof DateRange) {
             const inputsValue: string | null = this.inputRange.value.start;
             if (inputsValue) {
-                const date = new Date(inputsValue).toLocaleDateString();
+                const date: string = new Date(inputsValue).toLocaleDateString();
                 if (date) {
                     return date;
                 }
@@ -77,7 +77,7 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         if (this.inputRange && this.inputRange.value instanceof DateRange) {
             const inputsValue: string | null = this.inputRange.value.end;
             if (inputsValue) {
-                const date = new Date(inputsValue).toLocaleDateString();
+                const date: string = new Date(inputsValue).toLocaleDateString();
                 if (date) {
                     return date;
                 }
@@ -129,8 +129,8 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
 
             if (this.checkDateValidity(dateStart) && this.checkDateValidity(dateEnd)) {
                 this.formGroup.setValue({
-                    start: new Date(dateStart),
-                    end: new Date(dateEnd)
+                    start: this.convertToUTC(new Date(dateStart)),
+                    end: this.convertToUTC(new Date(dateEnd))
                 });
             }
         }
@@ -370,5 +370,9 @@ export class EqDateRangeComponent implements OnInit, OnChanges {
         const timestamp: number = newDate.getTime();
         const offsetTz: number = newDate.getTimezoneOffset() * 60 * 1000;
         return new Date(timestamp - offsetTz).toISOString().substring(0, 10) + 'T00:00:00+0000';
+    }
+
+    private convertToUTC(date: Date): Date {
+        return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     }
 }

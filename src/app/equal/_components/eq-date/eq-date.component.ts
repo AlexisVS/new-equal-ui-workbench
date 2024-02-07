@@ -82,8 +82,9 @@ export class EqDateComponent implements OnInit, DoCheck {
     }
 
     public initFormControl(): void {
-        if (this.value && !['[null]', ''].includes(this.value)) {
-            this.formControl = new FormControl(new Date(this.value));
+        if (this.value && ![null, '[null]', ''].includes(this.value)) {
+            const UTZDate: Date = new Date(this.value);
+            this.formControl = new FormControl(new Date(UTZDate.getUTCFullYear(), UTZDate.getUTCMonth(), UTZDate.getUTCDate()));
         }
         else {
             this.formControl = new FormControl('');
@@ -164,7 +165,7 @@ export class EqDateComponent implements OnInit, DoCheck {
             this.valueChange.emit(null);
         }
         else if (this.formControl.valid) {
-            const date: string = this.sanitizeDate(this.formControl.value);
+            const date: string = this.convertToUTC(this.formControl.value).slice(0, -5) + '+0000';
             this.valueChange.emit(date);
         }
         this.toggleActive(false);
@@ -221,7 +222,7 @@ export class EqDateComponent implements OnInit, DoCheck {
                 'date.full': 'dddd DD MMMM YYYY',
             };
 
-            const date: Date = new Date(this.sanitizeDate(this.formControl.value));
+            const date: Date = new Date(this.convertToUTC(this.formControl.value));
 
             if (DateFormats.hasOwnProperty(this.usage as dateUsage)) {
 
@@ -229,7 +230,7 @@ export class EqDateComponent implements OnInit, DoCheck {
 
                 const name_month: string = date.toLocaleDateString('en-US', {month: 'long'});
                 const name_day: string = date.toLocaleDateString('en-US', {weekday: 'long'});
-                const index_day: number = date.getUTCDate();
+                const index_day: number = date.getDate();
                 const index_month: number = date.getMonth() + 1;
                 const index_year: number = date.getFullYear();
 
@@ -284,10 +285,9 @@ export class EqDateComponent implements OnInit, DoCheck {
         }
     }
 
-    private sanitizeDate(date: string): string {
-        const newDate: Date = new Date(date);
-        const timestamp: number = newDate.getTime();
-        const offsetTz: number = newDate.getTimezoneOffset() * 60 * 1000;
-        return new Date(timestamp - offsetTz).toISOString().substring(0, 10) + 'T00:00:00+0000';
+    private convertToUTC(date: Date): string {
+        const timestamp: number = date.getTime();
+        const offset_tz: number = date.getTimezoneOffset() * 60 * 1000;
+        return (new Date(timestamp - offset_tz).toISOString().substring(0, 10)) + 'T00:00:00+0000';
     }
 }
