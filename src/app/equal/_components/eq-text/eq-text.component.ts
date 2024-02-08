@@ -79,7 +79,10 @@ export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked {
     }
 
     ngAfterViewChecked(): void {
-        this.setTextHeight();
+        // this.setTextHeight();
+        if (this.autoGrow) {
+            this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'hidden');
+        }
     }
 
     ngOnInit(): void {
@@ -112,116 +115,116 @@ export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked {
      * use node cloned for calculate the height of the textarea. I think it's the best solution for this problem because
      * for them, it works.
      */
-    public setTextHeight(): void {
-        // auto grow and max height
-        if (this.autoGrow && typeof this.maxHeight === 'number') {
-            this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', this.maxHeight + 'px');
-            //
-            // this.changeDetector.detectChanges();
-            // if (this.mode === 'edit') {
-            //     if (this.textarea.nativeElement.scrollHeight > this.maxHeight) {
-            //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
-            //     }
-            //     else {
-            //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
-            //     }
-            // }
-
-            if (this.mode === 'view') {
-                if (this.text.nativeElement.scrollHeight > this.maxHeight) {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
-                }
-                else {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.scrollHeight + 'px');
-                }
-            }
-        }
-        // auto grow and no max height
-        else if (this.autoGrow && typeof this.maxHeight !== 'number') {
-            console.log('auto grow and no max height');
-            this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', 'none');
-            this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
-
-            // if (this.mode === 'edit') {
-            //     this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
-            //     this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
-            //     console.log(this.textarea.nativeElement.scrollHeight, this.textarea.nativeElement.clientHeight);
-            //
-            //     if (this.is_active) {
-            //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
-            //     }
-            //     else if (this.textarea.nativeElement.scrollHeight > this.textarea.nativeElement.clientHeight) {
-            //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
-            //     }
-            //     else {
-            //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
-            //     }
-            //
-            //     this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'hidden');
-            // }
-
-            if (this.mode === 'view') {
-                console.log('view');
-                this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
-                this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
-                console.log('view ==> ', this.text.nativeElement.scrollHeight > this.text.nativeElement.clientHeight);
-                if (this.text.nativeElement.scrollHeight > this.text.nativeElement.clientHeight) {
-                    console.log('VIEW => scrollHeight > clientHeight');
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.scrollHeight + 'px');
-                }
-                else {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.clientHeight + 'px');
-                }
-                this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'hidden');
-            }
-            this.changeDetector.detectChanges();
-        }
-            // no auto grow and max height
-        // * OK
-        else if (!this.autoGrow && typeof this.maxHeight === 'number') {
-            console.log('no auto grow and max height');
-
-            this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
-            this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
-            this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', this.maxHeight + 'px');
-            if (this.mode === 'edit') {
-                if (this.textarea.nativeElement.scrollHeight > this.maxHeight || this.textarea.nativeElement.clientHeight > this.maxHeight) {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
-                }
-                else {
-                    // if (this.textarea.nativeElement.scrollHeight > this.textarea.nativeElement.clientHeight) {
-                    //   this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
-                    // } else {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
-                    // }
-                }
-            }
-
-            if (this.mode === 'view') {
-                console.log('this.text.nativeElement.scrollHeight > this.maxHeight', this.text.nativeElement.scrollHeight > this.maxHeight);
-                if (this.text.nativeElement.scrollHeight > this.maxHeight || this.text.nativeElement.clientHeight > this.maxHeight) {
-                    this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
-                }
-                else {
-                    if (this.text.nativeElement.scrollHeight > this.text.nativeElement.clientHeight) {
-                        this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.scrollHeight + 'px');
-                    }
-                    else {
-                        this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.clientHeight + 'px');
-                    }
-                }
-            }
-
-        }
-        // no auto grow and no max height
-        else if (!this.autoGrow && typeof this.maxHeight !== 'number') {
-            console.log('no auto grow and no max height');
-
-            this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
-            this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', 'none');
-            this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
-        }
-    }
+    // public setTextHeight(): void {
+    //     // auto grow and max height
+    //     if (this.autoGrow && typeof this.maxHeight === 'number') {
+    //         this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', this.maxHeight + 'px');
+    //         //
+    //         // this.changeDetector.detectChanges();
+    //         // if (this.mode === 'edit') {
+    //         //     if (this.textarea.nativeElement.scrollHeight > this.maxHeight) {
+    //         //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
+    //         //     }
+    //         //     else {
+    //         //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
+    //         //     }
+    //         // }
+    //
+    //         if (this.mode === 'view') {
+    //             if (this.text.nativeElement.scrollHeight > this.maxHeight) {
+    //                 this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
+    //             }
+    //             else {
+    //                 this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.scrollHeight + 'px');
+    //             }
+    //         }
+    //     }
+    //     // auto grow and no max height
+    //     else if (this.autoGrow && typeof this.maxHeight !== 'number') {
+    //         console.log('auto grow and no max height');
+    //         this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', 'none');
+    //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+    //
+    //         // if (this.mode === 'edit') {
+    //         //     this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
+    //         //     this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+    //         //     console.log(this.textarea.nativeElement.scrollHeight, this.textarea.nativeElement.clientHeight);
+    //         //
+    //         //     if (this.is_active) {
+    //         //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
+    //         //     }
+    //         //     else if (this.textarea.nativeElement.scrollHeight > this.textarea.nativeElement.clientHeight) {
+    //         //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
+    //         //     }
+    //         //     else {
+    //         //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
+    //         //     }
+    //         //
+    //         //     this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'hidden');
+    //         // }
+    //
+    //         if (this.mode === 'view') {
+    //             console.log('view');
+    //             this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
+    //             this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+    //             console.log('view ==> ', this.text.nativeElement.scrollHeight > this.text.nativeElement.clientHeight);
+    //             if (this.text.nativeElement.scrollHeight > this.text.nativeElement.clientHeight) {
+    //                 console.log('VIEW => scrollHeight > clientHeight');
+    //                 this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.scrollHeight + 'px');
+    //             }
+    //             else {
+    //                 this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.clientHeight + 'px');
+    //             }
+    //             this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'hidden');
+    //         }
+    //         this.changeDetector.detectChanges();
+    //     }
+    //         // no auto grow and max height
+    //     // * OK
+    //     else if (!this.autoGrow && typeof this.maxHeight === 'number') {
+    //         console.log('no auto grow and max height');
+    //
+    //         this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
+    //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+    //         this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', this.maxHeight + 'px');
+    //         if (this.mode === 'edit') {
+    //             if (this.textarea.nativeElement.scrollHeight > this.maxHeight || this.textarea.nativeElement.clientHeight > this.maxHeight) {
+    //                 this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
+    //             }
+    //             else {
+    //                 // if (this.textarea.nativeElement.scrollHeight > this.textarea.nativeElement.clientHeight) {
+    //                 //   this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.scrollHeight + 'px');
+    //                 // } else {
+    //                 this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.textarea.nativeElement.clientHeight + 'px');
+    //                 // }
+    //             }
+    //         }
+    //
+    //         if (this.mode === 'view') {
+    //             console.log('this.text.nativeElement.scrollHeight > this.maxHeight', this.text.nativeElement.scrollHeight > this.maxHeight);
+    //             if (this.text.nativeElement.scrollHeight > this.maxHeight || this.text.nativeElement.clientHeight > this.maxHeight) {
+    //                 this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.maxHeight + 'px');
+    //             }
+    //             else {
+    //                 if (this.text.nativeElement.scrollHeight > this.text.nativeElement.clientHeight) {
+    //                     this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.scrollHeight + 'px');
+    //                 }
+    //                 else {
+    //                     this.elementRef.nativeElement.style.setProperty('--eq-text-height', this.text.nativeElement.clientHeight + 'px');
+    //                 }
+    //             }
+    //         }
+    //
+    //     }
+    //     // no auto grow and no max height
+    //     else if (!this.autoGrow && typeof this.maxHeight !== 'number') {
+    //         console.log('no auto grow and no max height');
+    //
+    //         this.elementRef.nativeElement.style.setProperty('--eq-text-overflow-y', 'auto');
+    //         this.elementRef.nativeElement.style.setProperty('--eq-text-max-height', 'none');
+    //         this.elementRef.nativeElement.style.setProperty('--eq-text-height', 'auto');
+    //     }
+    // }
 
     private setTextMinHeight(): void {
         if (this.elementRef.nativeElement.style instanceof CSSStyleDeclaration) {

@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 
 import Menu from '../assets/menu.json';
 
+// @ts-ignore
 import {ApiService, AuthService, ContextService, EnvService} from 'sb-shared-lib';
 
 // import * as $ from 'jquery';

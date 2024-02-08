@@ -7,6 +7,7 @@
   <span #text class="text" [class]="size" *ngIf="mode == 'view' && !is_null">
       <span>{{ formControl.value }}</span>
   </span>
+
     <mat-form-field
         *ngIf="mode == 'edit'"
         [class.disabled]="disabled || !is_active"
@@ -20,13 +21,13 @@
                   [matAutosizeMaxRows]="9999"
                   [matAutosizeMinRows]="1"
                   [class]="size"
-                  [style.padding-right.px]="is_active ? 40 : 0"
                   [class.is_null]="is_null"
                   [disabled]="disabled"
                   [formControl]="formControl"
                   [placeholder]="mode === 'edit' ? placeholder: ''"
                   (blur)="onBlur($event);"
         ></textarea>
+
         <button
             class="suffix-button"
             *ngIf="is_active && formControl.value.length && !is_null"
@@ -52,6 +53,7 @@
         >
             <mat-icon>toggle_on</mat-icon>
         </button>
+
         <mat-hint *ngIf="!formControl.invalid && mode == 'edit'" [title]="hint">{{ hint }}</mat-hint>
         <mat-error *ngIf="formControl.invalid">{{ getErrorMessage() }}</mat-error>
     </mat-form-field>
@@ -61,7 +63,7 @@
         color="primary"
         [disabled]="formControl.invalid"
         *ngIf="is_active"
-        (click)="onSave($event); setTextHeight()"
+        (click)="onSave($event)"
     >
         <mat-icon>check_small</mat-icon>
     </button>
@@ -69,7 +71,7 @@
         mat-icon-button
         color="accent"
         *ngIf="is_active"
-        (click)="onCancel($event); setTextHeight()"
+        (click)="onCancel($event)"
     >
         <mat-icon>cancel</mat-icon>
     </button>
