@@ -7,13 +7,17 @@ import {MatInputModule} from '@angular/material/input';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import { EqTextComponent } from './_components/eq-text/eq-text.component';
+import {EqTextComponent} from './_components/eq-text/eq-text.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {EqDateModule} from './_components/eq-date/eq-date.module';
-import { EqDateRangeComponent } from './_components/eq-date-range/eq-date-range.component';
-import { EqDateTimeComponent } from './_components/eq-date-time/eq-date-time.component';
+import {EqDateRangeComponent} from './_components/eq-date-range/eq-date-range.component';
+import {EqDateTimeComponent} from './_components/eq-date-time/eq-date-time.component';
 import {MatSelectModule} from '@angular/material/select';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import {EqDateComponent} from './_components/eq-date/eq-date.component';
+import {EqM2oComponent} from './_components/eq-m2o/eq-m2o.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+// @ts-ignore
+import {SharedLibModule} from 'sb-shared-lib';
 
 @NgModule({
     imports: [
@@ -26,21 +30,22 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
         MatDatepickerModule,
         FormsModule,
         MatSelectModule,
-        EqDateModule,
-        NgxMaterialTimepickerModule
+        NgxMaterialTimepickerModule,
+        MatAutocompleteModule,
+        SharedLibModule
     ],
     declarations: [
         EqualComponent,
         EqStringComponent,
         EqTextComponent,
+        EqDateComponent,
+        EqDateTimeComponent,
         EqDateRangeComponent,
-        EqDateTimeComponent,
-        EqTextComponent,
-        EqDateTimeComponent,
+        EqM2oComponent,
     ],
-  exports: [
-    EqualComponent
-  ]
+    exports: [
+        EqualComponent
+    ]
 })
 export class EqualModule {
 }

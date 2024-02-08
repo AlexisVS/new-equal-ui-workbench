@@ -9,7 +9,7 @@ import {
     EventEmitter,
     SimpleChanges,
     SimpleChange,
-    ViewChild
+    ViewChild,
 } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {MatAutocomplete} from '@angular/material/autocomplete';
@@ -17,8 +17,10 @@ import {MatAutocomplete} from '@angular/material/autocomplete';
 import {Observable, ReplaySubject} from 'rxjs';
 import {map, mergeMap, debounceTime} from 'rxjs/operators';
 
-import {ApiService} from '../../services/api.service';
-import {Condition, Domain} from '../../classes/domain.class';
+// @ts-ignore
+import {ApiService} from 'sb-shared-lib';
+import {Condition, Domain} from './domain.class';
+
 
 @Component({
     selector: 'eq-m2o',
@@ -66,9 +68,11 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
     @Input() displayWith?: (a: any) => string;
 
     /* css value for panel width (dropdown) */
-    @Input() panelWidth?: string = 'auto';
+    @Input() panelWidth: string = 'auto';
 
     @Output() itemSelected: EventEmitter<number> = new EventEmitter<number>();
+
+    // tslint:disable-next-line:no-output-native
     @Output() blur: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('inputControl') inputControl: ElementRef;
@@ -87,7 +91,7 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
         this.inputQuery = new ReplaySubject(1);
     }
 
-    ngAfterViewInit() {
+    ngAfterViewInit(): void {
         if (!this.disabled && this.autofocus) {
             setTimeout(() => this.inputControl.nativeElement.focus());
         }
@@ -97,7 +101,7 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
 
         // watch changes made on input
         this.inputFormControl.valueChanges.subscribe((value: string) => {
-            if (!this.item || this.item != value) {
+            if (!this.item || this.item !== value) {
                 this.inputQuery.next(value);
             }
         });
@@ -106,15 +110,13 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
         this.resultList = this.inputQuery.pipe(
             debounceTime(300),
             map((value: any) => (typeof value === 'string' ? value : ((value == null) ? '' : value.name))),
-            mergeMap(async (name: string): Promise => await this.filterResults(name))
+            mergeMap(async (name: string): Promise<any> => await this.filterResults(name))
         );
 
     }
 
     /**
      * Update component based on changes received from parent.
-     *
-     * @param changes
      */
     ngOnChanges(changes: SimpleChanges): void {
         let has_changed: boolean = false;
@@ -130,11 +132,11 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
             this.inputFormControl.updateValueAndValidity();
         }
 
-        if (currentId && currentId.currentValue && currentId.currentValue != currentId.previousValue) {
+        if (currentId && currentId.currentValue && currentId.currentValue !== currentId.previousValue) {
             has_changed = true;
         }
 
-        if (currentEntity && currentEntity.currentValue && currentEntity.currentValue != currentEntity.previousValue) {
+        if (currentEntity && currentEntity.currentValue && currentEntity.currentValue !== currentEntity.previousValue) {
             has_changed = true;
         }
 
@@ -149,9 +151,9 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
      *
      */
     private async load(): Promise<void> {
-        if (this.id && this.id > 0 && this.entity && this.entity.length) {
+        if (this.id && this.id > 0 && this.entity && this.entity.length && this.fields) {
             try {
-                const result: Array<any> = <Array<any>>await this.api.read(this.entity, [this.id], ['id', 'name', ...this.fields]);
+                const result: Array<any> = await this.api.read(this.entity, [this.id], ['id', 'name', ...this.fields]) as Array<any>;
                 if (result && result.length) {
                     this.item = result[0];
                     this.inputFormControl.setValue(this.item);
@@ -164,24 +166,26 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
 
     private async filterResults(name: string): Promise<any[]> {
         let filtered: any[] = [];
-        if (this.entity.length && (!this.item || this.item.name != name)) {
+        if (this.entity.length && (!this.item || this.item.name !== name)) {
             try {
-                let tmpDomain = new Domain([]);
+                const tmpDomain: Domain = new Domain([]);
                 if (name.length) {
-                    let parts = name.split(' ', 4);
-                    for (let part of parts) {
+                    const parts: string[] = name.split(' ', 4);
+                    for (const part of parts) {
                         tmpDomain.addCondition(new Condition('name', 'ilike', '%' + part + '%'));
                     }
                 }
-                let domain = (new Domain(this.domain)).merge(tmpDomain).toArray();
-
+                // @ts-ignore
+                const domain: any[] = (new Domain(this.domain)).merge(tmpDomain).toArray();
                 let data: any[];
 
                 if (this.controller && this.controller.length) {
-                    let body: any = {
+                    const body: any = {
                         get: this.controller,
                         entity: this.entity,
-                        fields: ["id", "name", ...this.fields],
+                        // @ts-ignore
+                        fields: ['id', 'name', ...this.fields],
+                        // @ts-ignore
                         domain: JSON.stringify(domain),
                         ...this.params
                     };
@@ -190,7 +194,8 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
                     data = await this.api.fetch('/', body);
                 }
                 else {
-                    data = await this.api.collect(this.entity, domain, ["id", "name", ...this.fields], 'name', 'asc', 0, 25);
+                    // @ts-ignore
+                    data = await this.api.collect(this.entity, domain, ['id', 'name', ...this.fields], 'name', 'asc', 0, 25);
                 }
 
                 filtered = data;
@@ -202,7 +207,9 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     public itemDisplay = (item: any): string => {
-        if (!item) return '';
+        if (!item) {
+            return '';
+        }
         if (this.displayWith) {
             return this.displayWith(item);
         }
@@ -232,6 +239,7 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
             this.onRestore();
         }
         else {
+            // tslint:disable-next-line:no-console
             console.debug('eq-m2o: autocomplete open ignoring blur');
         }
     }

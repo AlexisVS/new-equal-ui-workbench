@@ -54,7 +54,7 @@ export class AppRootComponent implements OnInit {
   }
 
 
-  public async ngOnInit() {
+  public async ngOnInit(): Promise<void> {
 
     // try {
     //     await this.auth.authenticate();

@@ -6,7 +6,6 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {DateAdapter, MatNativeDateModule, MAT_DATE_LOCALE} from '@angular/material/core';
 import {Platform, PlatformModule} from '@angular/cdk/platform';
 
-// @ts-ignore
 import {SharedLibModule, AuthInterceptorService, CustomDateAdapter} from 'sb-shared-lib';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
@@ -43,6 +42,9 @@ registerLocaleData(localeFr);
     MatTableModule,
     EqualModule
   ],
+    exports: [
+        SharedLibModule
+        ],
   providers: [
     // add HTTP interceptor to inject AUTH header to any outgoing request
     {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},

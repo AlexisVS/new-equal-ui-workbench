@@ -13,7 +13,7 @@ import {
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatFormField} from '@angular/material/form-field';
 
-type dateUsage =
+type dateTimeUsage =
     | 'datetime.short'
     | 'datetime.medium'
     | 'datetime.long'
@@ -51,7 +51,7 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
 
     @Input() error?: string;
 
-    @Input() usage: string | dateUsage;
+    @Input() usage: string | dateTimeUsage;
 
     // used for marking the input as being edited
     public is_active: boolean = false;
@@ -339,7 +339,7 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
                 'month.december.short': 'déc'
             };
 
-            const DateTimeFormats: Record<dateUsage, string> = {
+            const DateTimeFormats: Record<dateTimeUsage, string> = {
                 'datetime.short': 'DD/MM/YY HH:mm',
                 'datetime.medium': 'DD/MMM/YYYY HH:mm',
                 'datetime.long': 'ddd DD MMM YYYY HH:mm',
@@ -349,9 +349,9 @@ export class EqDateTimeComponent implements OnInit, OnChanges {
             // Converted to UTZ at init, so we need to convert it back to UTC
             const date: Date = new Date(this.convertToUTC(this.formGroup.value.date, this.formGroup.value.time));
 
-            if (DateTimeFormats.hasOwnProperty(this.usage as dateUsage)) {
+            if (DateTimeFormats.hasOwnProperty(this.usage as dateTimeUsage)) {
 
-                const format: string = DateTimeFormats[this.usage as dateUsage];
+                const format: string = DateTimeFormats[this.usage as dateTimeUsage];
 
                 const name_month: string = date.toLocaleDateString('en-US', {month: 'long'});
                 const name_day: string = date.toLocaleDateString('en-US', {weekday: 'long'});

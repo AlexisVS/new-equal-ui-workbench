@@ -1,5 +1,4 @@
 import {ChangeDetectorRef, Component} from '@angular/core';
-import {Router} from "@angular/router";
 
 @Component({
     selector: 'app-equal',
@@ -27,7 +26,19 @@ export class EqualComponent {
     public dateTimeTypeFormatSelected: string = this.dateTimeTypeFormats[1];
     public reloadByBoolean: boolean = true;
 
-    constructor(private changeDetectorRef: ChangeDetectorRef) {
+    public ingredientListUrlFetch: string = 'http://equal.local/?get=model_collect&entity=cooking\\Ingredient';
+    public m2oFields = ['id', 'name', 'description'];
+    public m2oControllerParams = {
+        entity: 'cooking\\Ingredient',
+        fields: this.m2oFields,
+        domain: [
+            ['id', '>', 0]
+        ]
+    };
+
+    constructor(
+        private changeDetectorRef: ChangeDetectorRef,
+    ) {
     }
 
     public refreshByBoolean(): void {
