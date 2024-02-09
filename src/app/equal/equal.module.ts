@@ -11,7 +11,7 @@ import {EqTextComponent} from './_components/eq-text/eq-text.component';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {EqDateRangeComponent} from './_components/eq-date-range/eq-date-range.component';
 import {EqDateTimeComponent} from './_components/eq-date-time/eq-date-time.component';
-import {MatSelectModule} from '@angular/material/select';
+import {MAT_SELECT_CONFIG, MatSelectModule} from '@angular/material/select';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import {EqDateComponent} from './_components/eq-date/eq-date.component';
 import {EqM2oComponent} from './_components/eq-m2o/eq-m2o.component';
@@ -45,7 +45,7 @@ import {SharedLibModule} from 'sb-shared-lib';
     ],
     exports: [
         EqualComponent
-    ]
+    ],
 })
 export class EqualModule {
 }

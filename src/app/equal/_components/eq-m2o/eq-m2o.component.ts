@@ -9,7 +9,7 @@ import {
     EventEmitter,
     SimpleChanges,
     SimpleChange,
-    ViewChild,
+    ViewChild, ChangeDetectorRef, AfterViewChecked,
 } from '@angular/core';
 import {FormControl, Validators} from '@angular/forms';
 import {MatAutocomplete} from '@angular/material/autocomplete';
@@ -27,7 +27,25 @@ import {Condition, Domain} from './domain.class';
     templateUrl: './eq-m2o.component.html',
     styleUrls: ['./eq-m2o.component.scss']
 })
-export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
+export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit, AfterViewChecked {
+    /* mark the field as readonly */
+    @Input() disabled?: boolean = false;
+
+    /* mark the field as mandatory */
+    @Input() required?: boolean = false;
+
+    /* specific placeholder of the widget */
+    @Input() placeholder?: string = '';
+
+    /* specific title for the widget */
+    @Input() title?: string;
+
+    /* specific hint/helper for the widget */
+    @Input() hint?: string = '';
+
+    /**  Set the mode */
+    @Input() mode: 'view' | 'edit' = 'view';
+
     /* full name of the entity to load */
     @Input() entity: string = '';
 
@@ -46,23 +64,11 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
     /* extra parameter specific to the chosen controller */
     @Input() params?: any = {};
 
-    /* mark the field as mandatory */
-    @Input() required?: boolean = false;
-
-    /* specific placeholder of the widget */
-    @Input() placeholder?: string = '';
-
-    /* specific hint/helper for the widget */
-    @Input() hint?: string = '';
-
     /* specific hint/helper for the widget */
     @Input() autofocus?: boolean = false;
 
     /* message to display in case no match was found */
     @Input() noResult?: string = '';
-
-    /* mark the field as readonly */
-    @Input() disabled?: boolean = false;
 
     /* custom method for rendering the items */
     @Input() displayWith?: (a: any) => string;
@@ -75,19 +81,23 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
     // tslint:disable-next-line:no-output-native
     @Output() blur: EventEmitter<any> = new EventEmitter();
 
+    @ViewChild('eqM2o') eqM2o: ElementRef<HTMLDivElement>;
     @ViewChild('inputControl') inputControl: ElementRef;
     @ViewChild('inputAutocomplete') inputAutocomplete: MatAutocomplete;
 
     // currently selected item
-    public item: any = null;
+    @Input() initialSelectedItem: any = null;
 
-    public inputFormControl: FormControl;
+    public formControl: FormControl;
     public resultList: Observable<any>;
 
     private inputQuery: ReplaySubject<any>;
 
-    constructor(private api: ApiService) {
-        this.inputFormControl = new FormControl();
+    constructor(
+        private api: ApiService,
+        private changeDetectorRef: ChangeDetectorRef
+    ) {
+        this.formControl = new FormControl();
         this.inputQuery = new ReplaySubject(1);
     }
 
@@ -95,13 +105,24 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
         if (!this.disabled && this.autofocus) {
             setTimeout(() => this.inputControl.nativeElement.focus());
         }
+
+        if (this.initialSelectedItem !== null) {
+            this.formControl.setValue(this.initialSelectedItem);
+        }
+    }
+
+    ngAfterViewChecked(): void {
+        if (this.inputAutocomplete && this.inputAutocomplete.panel && this.inputAutocomplete.panel.nativeElement instanceof HTMLElement) {
+            this.inputAutocomplete.panel.nativeElement.style.transform = 'translateY(21px)';
+            this.inputAutocomplete.panel.nativeElement.style.width = this.eqM2o.nativeElement.clientWidth + 'px';
+        }
     }
 
     ngOnInit(): void {
 
         // watch changes made on input
-        this.inputFormControl.valueChanges.subscribe((value: string) => {
-            if (!this.item || this.item !== value) {
+        this.formControl.valueChanges.subscribe((value: string) => {
+            if (!this.initialSelectedItem || this.initialSelectedItem !== value) {
                 this.inputQuery.next(value);
             }
         });
@@ -126,10 +147,10 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
 
         if (changes.required) {
             if (this.required) {
-                this.inputFormControl.setValidators([Validators.required]);
-                this.inputFormControl.markAsTouched();
+                this.formControl.setValidators([Validators.required]);
+                this.formControl.markAsTouched();
             }
-            this.inputFormControl.updateValueAndValidity();
+            this.formControl.updateValueAndValidity();
         }
 
         if (currentId && currentId.currentValue && currentId.currentValue !== currentId.previousValue) {
@@ -145,7 +166,6 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
         }
     }
 
-
     /**
      * Load initial values, based on inputs assigned by parent component.
      *
@@ -154,9 +174,9 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
         if (this.id && this.id > 0 && this.entity && this.entity.length && this.fields) {
             try {
                 const result: Array<any> = await this.api.read(this.entity, [this.id], ['id', 'name', ...this.fields]) as Array<any>;
-                if (result && result.length) {
-                    this.item = result[0];
-                    this.inputFormControl.setValue(this.item);
+                if (result && result.length && this.initialSelectedItem === null) {
+                    this.formControl.setValue(result[0]);
+                    this.initialSelectedItem = result[0];
                 }
             } catch (error: any) {
                 console.warn('an unexpected error occured');
@@ -164,9 +184,12 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
         }
     }
 
+    /**
+     * Fetch objects from the server, based on the given name.
+     */
     private async filterResults(name: string): Promise<any[]> {
         let filtered: any[] = [];
-        if (this.entity.length && (!this.item || this.item.name !== name)) {
+        if (this.entity.length && (!this.initialSelectedItem || this.initialSelectedItem.name !== name)) {
             try {
                 const tmpDomain: Domain = new Domain([]);
                 if (name.length) {
@@ -206,6 +229,11 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
         return filtered;
     }
 
+    /**
+     * Display the given item.
+     *
+     * @param item
+     */
     public itemDisplay = (item: any): string => {
         if (!item) {
             return '';
@@ -216,25 +244,32 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
         return item.name;
     }
 
-    public onChange(event: any): void {
-        if (event && event.option && event.option.value) {
-            this.item = event.option.value;
-            this.inputFormControl.setValue(this.item);
-            this.itemSelected.emit(this.item);
+    public onFocus(): void {
+        // force triggering a list refresh
+        this.formControl.setValue('');
+    }
+
+    /**
+     * Clear the current value.
+     */
+    public onClear(): void {
+        this.formControl.setValue(null);
+        if (this.inputControl && this.inputControl.nativeElement instanceof HTMLInputElement) {
+            this.inputControl.nativeElement.focus();
         }
     }
 
-    public onFocus(): void {
-        // force triggering a list refresh
-        this.inputFormControl.setValue('');
-    }
-
-    public onReset(): void {
-        this.inputFormControl.setValue(null);
-    }
-
-    public onBlur(): void {
-        if (!this.inputAutocomplete.isOpen) {
+    /**
+     * Close the autocomplete panel.
+     *
+     * @param event
+     */
+    public onBlur(event: FocusEvent): void {
+        if (
+            !this.inputAutocomplete.isOpen &&
+            this.eqM2o.nativeElement instanceof Element &&
+            !this.eqM2o.nativeElement.contains(event.relatedTarget as Node)
+        ) {
             this.blur.emit();
             this.onRestore();
         }
@@ -244,20 +279,60 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit {
         }
     }
 
-    public onRestore(): void {
-        if (this.item) {
-            this.inputFormControl.setValue(this.item);
-        }
-        else {
-            this.inputFormControl.setValue(null);
+    /**
+     * Restore to the initial value.
+     *
+     * @param event
+     */
+    public onSelect(event: any): void {
+        if (event && event.option && event.option.value) {
+            this.formControl.setValue(event.option.value);
         }
     }
 
+    /**
+     * Restore to the initial value.
+     */
+    public onRestore(): void {
+        if (this.initialSelectedItem) {
+            this.formControl.setValue(this.initialSelectedItem);
+        }
+        else {
+            this.formControl.setValue(null);
+        }
+    }
+
+    /**
+     * Close the autocomplete panel.
+     */
     public oncloseAutocomplete(): void {
-        // #memo - input.onBlur is called before mat-autocomplete.onChange
-        if (!this.inputFormControl.value || !this.item) {
+        if (!this.formControl.value || !this.initialSelectedItem) {
             this.blur.emit();
         }
+    }
+
+
+    /**
+     * Restore to the initial value.
+     *
+     * @param event
+     */
+    public onCancel(event: MouseEvent): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.onRestore();
+    }
+
+    /**
+     * Save the current value.
+     *
+     * @param event
+     */
+    public onSave(event: MouseEvent): void {
+        event.preventDefault();
+        event.stopPropagation();
+        this.itemSelected.emit(this.formControl.value);
+        this.initialSelectedItem = this.formControl.value;
     }
 
 }

@@ -18,7 +18,7 @@
 </div>
 <br>
 
-<mat-tab-group [selectedIndex]="1">
+<mat-tab-group [selectedIndex]="5">
     <mat-tab label="eq-string">
         <div class="equal__layout">
             <div style="width: 250px">
@@ -144,7 +144,7 @@
                     [mode]="mode"
                     placeholder="My placeholder"
                     error="My error"
-                    [required]="true"
+                    [required]="false"
                     size="small"
                     [nullable]="true"
                     [hasError]="true"
@@ -367,12 +367,14 @@
         <div class="equal__layout">
             <div>
                 <eq-m2o
+                    [mode]="mode"
                     [entity]="'cooking\\Ingredient'"
                     [fields]="m2oFields"
                     [controller]="'model_collect'"
                     [placeholder]="'My placeholder'"
+                    [title]="'My title'"
                     [hint]="'My hint'"
-                    [autofocus]="true"
+                    [autofocus]="false"
                     [noResult]="'Il n\'y a pas de resultat'"
                 ></eq-m2o>
             </div>

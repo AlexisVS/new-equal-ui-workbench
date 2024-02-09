@@ -1,24 +1,51 @@
 :host {
-  mat-form-field {
-    width: 100%;
+    display: inline-block;
+    width: 260px;
 
-    button.suffix-action {
-        &.hidden {
-            visibility: hidden;
+    .eq-m2o {
+        display: flex;
+        flex-direction: row;
+        align-items: baseline;
+        height: 100%;
+        box-sizing: border-box;
+        width: 100%;
+
+        &.view {
+            width: 100%;
         }
-    
+
+        .eq-m2o-select-overlay {
+            transform: translateY(30px);
+        }
+
+
+        mat-form-field {
+            width: 100%;
+
+            button.suffix-action {
+                &.hidden {
+                    visibility: hidden;
+                }
+
+            }
+
+        }
     }
 
-  }
-}
 
-::ng-deep .mat-autocomplete-panel::-webkit-scrollbar {
-  width: 6px;
-  overflow-y: scroll;
-  background: transparent;
-}
+    /* hack to prevent default width of 180px */
+    ::ng-deep .mat-form-field-flex > .mat-form-field-infix {
+        width: 100% !important;
+    }
 
-::ng-deep .mat-autocomplete-panel::-webkit-scrollbar-thumb {
-  background: var(--mdc-theme-primary, #6200ee);
-  border-radius: 10px;
+    ::ng-deep .mat-autocomplete-panel::-webkit-scrollbar {
+        width: 6px;
+        overflow-y: scroll;
+        background: transparent;
+    }
+
+    ::ng-deep .mat-autocomplete-panel::-webkit-scrollbar-thumb {
+        background: var(--mdc-theme-primary, #6200ee);
+        border-radius: 10px;
+    }
 }
