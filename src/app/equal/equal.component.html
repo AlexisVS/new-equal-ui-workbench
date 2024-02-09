@@ -126,12 +126,17 @@
                     <mat-label>maxHeight</mat-label>
                     <input matInput type="number" [(ngModel)]="eqTextMaxHeight">
                 </mat-form-field>
+
+                <button mat-raised-button color="accent" (click)="refreshByBoolean()">
+                    Reload
+                </button>
             </div>
 
         </div>
         <div class="equal__layout">
-            <div style="width: 252px;">
+            <div style="width: 220px;">
                 <eq-text
+                    *ngIf="reloadByBoolean"
                     [hint]="'My hint'"
                     [(value)]="bigText"
                     title="My title"
@@ -151,6 +156,7 @@
 
             <div style="width: 180px;">
                 <eq-text
+                    *ngIf="reloadByBoolean"
                     [hint]="'My hint'"
                     [(value)]="bigText"
                     title="My title"
@@ -169,6 +175,7 @@
 
             <div style="width: 180px;">
                 <eq-text
+                    *ngIf="reloadByBoolean"
                     [hint]="'My hint'"
                     [(value)]="bigText"
                     title="My title"
@@ -187,6 +194,7 @@
 
             <div style="width: 400px">
                 <eq-text
+                    *ngIf="reloadByBoolean"
                     [hint]="'My hint'"
                     [(value)]="bigText"
                     title="My title"

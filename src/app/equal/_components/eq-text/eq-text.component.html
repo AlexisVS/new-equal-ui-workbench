@@ -4,19 +4,16 @@
     (click)="activate()"
     [class.cursor]="mode === 'edit' && !disabled"
 >
-  <span #text class="text" [class]="size" *ngIf="mode == 'view' && !is_null">
-      <span>{{ formControl.value }}</span>
-  </span>
-
     <mat-form-field
-        *ngIf="mode == 'edit'"
         [class.disabled]="disabled || !is_active"
         appearance="outline"
     >
         <mat-label *ngIf="title && mode === 'edit'">{{ title }}</mat-label>
         <textarea #textarea
                   [readonly]="disabled"
+                  [class.view]="mode === 'view'"
                   matInput
+                  class="textarea"
                   [matTextareaAutosize]="autoGrow"
                   [matAutosizeMaxRows]="9999"
                   [matAutosizeMinRows]="1"
@@ -62,7 +59,7 @@
         mat-icon-button
         color="primary"
         [disabled]="formControl.invalid"
-        *ngIf="is_active"
+        *ngIf="is_active && mode == 'edit'"
         (click)="onSave($event)"
     >
         <mat-icon>check_small</mat-icon>
@@ -70,7 +67,7 @@
     <button
         mat-icon-button
         color="accent"
-        *ngIf="is_active"
+        *ngIf="is_active && mode == 'edit'"
         (click)="onCancel($event)"
     >
         <mat-icon>cancel</mat-icon>
