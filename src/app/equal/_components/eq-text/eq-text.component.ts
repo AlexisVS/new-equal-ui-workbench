@@ -1,5 +1,5 @@
 import {
-    AfterViewChecked, AfterViewInit,
+    AfterViewChecked,
     ChangeDetectorRef,
     Component, DoCheck,
     ElementRef,
@@ -18,7 +18,7 @@ type size = 'small' | 'normal' | 'large' | 'extra';
     templateUrl: './eq-text.component.html',
     styleUrls: ['./eq-text.component.scss'],
 })
-export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked, AfterViewInit {
+export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked {
     @Output() valueChange: EventEmitter<string | null> = new EventEmitter<string | null>();
 
     @Input() value: string | null;
@@ -92,10 +92,6 @@ export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked, After
                 }
             }
         }
-    }
-
-    ngAfterViewInit(): void {
-
     }
 
     ngOnInit(): void {

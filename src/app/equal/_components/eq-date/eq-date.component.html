@@ -2,14 +2,14 @@
     #eqDate
     class="eq-date"
     (click)="activate()"
-    [class.cursor]="mode == 'edit' && !disabled"
+    [class.cursor]="mode === 'edit' && !disabled"
     [style.padding-right.px]="is_active ? 0 : 80"
 >
-    <span class="text" [class.is-null]="is_null" [class]="size" *ngIf="mode == 'view'">
+    <span class="text" [class.is-null]="is_null" [class]="size" *ngIf="mode === 'view'">
             <span>{{ formatDate() }}</span>
     </span>
-    <mat-form-field *ngIf="mode == 'edit'" [class.disabled]="disabled" appearance="outline">
-        <mat-label *ngIf="title && mode == 'edit'">{{ title }}</mat-label>
+    <mat-form-field *ngIf="mode === 'edit'" [class.disabled]="disabled" appearance="outline">
+        <mat-label *ngIf="title && mode === 'edit'">{{ title }}</mat-label>
 
         <input
             *ngIf="!is_null"
@@ -18,7 +18,7 @@
             [matDatepicker]="datePicker"
             [disabled]="disabled"
             [formControl]="formControl"
-            [placeholder]="mode == 'edit' ? placeholder: ''"
+            [placeholder]="mode === 'edit' ? placeholder: ''"
             (blur)="onBlur($event)"
         >
         <input
@@ -28,7 +28,7 @@
             [class.is_null]="is_null"
             [disabled]="disabled"
             [formControl]="formControl"
-            [placeholder]="mode == 'edit' ? placeholder: ''"
+            [placeholder]="mode === 'edit' ? placeholder: ''"
         >
 
         <mat-hint *ngIf="!formControl.invalid" [title]="hint">{{ hint }}</mat-hint>
@@ -45,7 +45,7 @@
             <mat-icon>close</mat-icon>
         </button>
         <button
-            *ngIf="!disabled && nullable && !is_null && formControl.value == ''"
+            *ngIf="!disabled && nullable && !is_null && formControl.value === ''"
             color="accent"
             mat-icon-button
             matSuffix
@@ -54,7 +54,7 @@
             <mat-icon>toggle_off</mat-icon>
         </button>
         <button
-            *ngIf="!disabled && nullable && is_null && formControl.value == '[null]'"
+            *ngIf="!disabled && nullable && is_null && formControl.value === '[null]'"
             mat-icon-button
             matSuffix
             (click)="toggleIsNull(false)"
@@ -68,8 +68,8 @@
         mat-icon-button
         class="action"
         color="primary"
-        *ngIf="is_active && !disabled && mode == 'edit'"
-        [disabled]="formControl.invalid || nullableInput && ![null, '[null]'].includes(nullableInput.nativeElement.value) || formControl.value == ''"
+        *ngIf="is_active && !disabled && mode === 'edit'"
+        [disabled]="formControl.invalid || nullableInput && ![null, '[null]'].includes(nullableInput.nativeElement.value) || formControl.value === ''"
         (click)="onSave($event)"
         [style.visibility]="is_active && value !== '[null]' ? 'visible' : 'hidden'"
     >
@@ -79,7 +79,7 @@
         mat-icon-button
         class="action"
         color="accent"
-        *ngIf="is_active && !disabled && mode == 'edit'"
+        *ngIf="is_active && !disabled && mode === 'edit'"
         (click)="onCancel($event)"
         [style.visibility]="is_active && value !== '[null]' ? 'visible' : 'hidden'"
     >

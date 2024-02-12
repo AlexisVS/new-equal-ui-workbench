@@ -2,15 +2,15 @@
     #eqDateTime
     class="eq-date-time"
     (click)="activate()"
-    [class.cursor]="mode == 'edit' && !disabled"
+    [class.cursor]="mode === 'edit' && !disabled"
     [style.padding-right.px]="is_active ? 0 : 80"
 >
-  <span class="text" [class.is-null]="is_null" [class]="size" *ngIf="mode == 'view'">
+  <span class="text" [class.is-null]="is_null" [class]="size" *ngIf="mode === 'view'">
             <span>{{ formatDate() }}</span>
     </span>
     <mat-form-field
         #matFormField
-        *ngIf="mode == 'edit'"
+        *ngIf="mode === 'edit'"
         [class.disabled]="disabled"
         appearance="outline"
         [formGroup]="formGroup"
@@ -81,7 +81,7 @@
             <mat-icon>close</mat-icon>
         </button>
         <button
-            *ngIf="!disabled && nullable && !is_null && (formGroup.value.date == '' && formGroup.value.time == '')"
+            *ngIf="!disabled && nullable && !is_null && (formGroup.value.date === '' && formGroup.value.time === '')"
             color="accent"
             mat-icon-button
             matSuffix
@@ -90,7 +90,7 @@
             <mat-icon>toggle_off</mat-icon>
         </button>
         <button
-            *ngIf="!disabled && nullable && is_null && (formGroup.value.date == '[null]' && formGroup.value.time == '[null]')"
+            *ngIf="!disabled && nullable && is_null && (formGroup.value.date === '[null]' && formGroup.value.time === '[null]')"
             mat-icon-button
             matSuffix
             (click)="toggleIsNull(false)"
@@ -106,7 +106,7 @@
         mat-icon-button
         class="action"
         color="primary"
-        *ngIf="is_active && !disabled && mode == 'edit'"
+        *ngIf="is_active && !disabled && mode === 'edit'"
         [disabled]="(formGroup.invalid || (inputDateValue?.length !== 10 || inputTimeValue?.length !== 5)) && (!is_null)"
         [style.visibility]="is_active ? 'visible' : 'hidden'"
         (mousedown)="formGroup.markAsPending({ onlySelf: true })"
@@ -118,7 +118,7 @@
         mat-icon-button
         class="action"
         color="accent"
-        *ngIf="is_active && !disabled && mode == 'edit'"
+        *ngIf="is_active && !disabled && mode === 'edit'"
         [style.visibility]="is_active ? 'visible' : 'hidden'"
         (click)="onCancel($event)"
     >

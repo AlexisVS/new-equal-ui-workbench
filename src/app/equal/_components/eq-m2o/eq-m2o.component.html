@@ -1,10 +1,10 @@
 <div
     #eqM2o
     class="eq-m2o"
-    [class.view]="mode == 'view'"
+    [class.view]="mode === 'view'"
 >
     <!-- view mode -->
-    <ng-container *ngIf="mode == 'view'">
+    <ng-container *ngIf="mode === 'view'">
         <mat-form-field>
             <mat-label *ngIf="title">{{ title }}</mat-label>
             <input matInput
@@ -47,7 +47,7 @@
                     <mat-option *ngFor="let item of list" [value]="item" [title]="item.name">
                         {{ itemDisplay(item) }}
                     </mat-option>
-                    <mat-option *ngIf="list.length == 0"><i>{{ noResult }}</i></mat-option>
+                    <mat-option *ngIf="list.length === 0"><i>{{ noResult }}</i></mat-option>
                 </div>
             </mat-autocomplete>
             <mat-hint [align]="'start'" style="opacity: 1">
@@ -55,7 +55,7 @@
             </mat-hint>
         </mat-form-field>
         <button
-            *ngIf="mode == 'edit'"
+            *ngIf="mode === 'edit'"
             mat-icon-button
             class="action"
             color="primary"
@@ -65,7 +65,7 @@
             <mat-icon>check_small</mat-icon>
         </button>
         <button
-            *ngIf="mode == 'edit'"
+            *ngIf="mode === 'edit'"
             mat-icon-button
             class="action"
             color="accent"

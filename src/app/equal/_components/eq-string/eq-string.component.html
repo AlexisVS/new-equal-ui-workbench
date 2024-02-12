@@ -1,20 +1,20 @@
 <div #eqString
      class="eq-string"
-     (click)="mode == 'edit' && activate()"
-     [class.cursor]="mode == 'edit' && !disabled"
+     (click)="mode === 'edit' && activate()"
+     [class.cursor]="mode === 'edit' && !disabled"
 >
-        <span class="text" [class.is_null]="is_null" [class]="size" *ngIf="mode == 'view'">
+        <span class="text" [class.is_null]="is_null" [class]="size" *ngIf="mode === 'view'">
             <span>{{ formControl.value }}</span>
         </span>
-  <mat-form-field *ngIf="mode == 'edit'" [class.disabled]="disabled" appearance="outline">
-    <mat-label *ngIf="title && mode == 'edit'">{{ title }}</mat-label>
+  <mat-form-field *ngIf="mode === 'edit'" [class.disabled]="disabled" appearance="outline">
+    <mat-label *ngIf="title && mode === 'edit'">{{ title }}</mat-label>
     <input #input
            matInput
            [class]="size"
            [class.is_null]="is_null"
            [disabled]="disabled"
            [formControl]="formControl"
-           [placeholder]="mode == 'edit' ? placeholder: ''"
+           [placeholder]="mode === 'edit' ? placeholder: ''"
            (blur)="onBlur($event)"
     />
     <button
@@ -51,7 +51,7 @@
     class="action"
     color="primary"
     [disabled]="formControl.invalid"
-    *ngIf="is_active && mode == 'edit'"
+    *ngIf="is_active && mode === 'edit'"
     (click)="onSave($event)"
   >
     <mat-icon>check_small</mat-icon>
@@ -60,7 +60,7 @@
     mat-icon-button
     class="action"
     color="accent"
-    *ngIf="is_active && mode == 'edit'"
+    *ngIf="is_active && mode === 'edit'"
     (click)="onCancel($event)"
   >
     <mat-icon>cancel</mat-icon>

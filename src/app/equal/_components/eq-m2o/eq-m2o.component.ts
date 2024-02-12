@@ -78,7 +78,7 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
 
     @Output() itemSelected: EventEmitter<number> = new EventEmitter<number>();
 
-    // tslint:disable-next-line:no-output-native
+    // eslint-disable-next-line @angular-eslint/no-output-native
     @Output() blur: EventEmitter<any> = new EventEmitter();
 
     @ViewChild('eqM2o') eqM2o: ElementRef<HTMLDivElement>;
@@ -274,7 +274,7 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
             this.onRestore();
         }
         else {
-            // tslint:disable-next-line:no-console
+            // eslint-disable-next-line no-console
             console.debug('eq-m2o: autocomplete open ignoring blur');
         }
     }

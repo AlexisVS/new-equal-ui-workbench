@@ -51,7 +51,7 @@
             <mat-icon>toggle_on</mat-icon>
         </button>
 
-        <mat-hint *ngIf="!formControl.invalid && mode == 'edit'" [title]="hint">{{ hint }}</mat-hint>
+        <mat-hint *ngIf="!formControl.invalid && mode === 'edit'" [title]="hint">{{ hint }}</mat-hint>
         <mat-error *ngIf="formControl.invalid">{{ getErrorMessage() }}</mat-error>
     </mat-form-field>
 
@@ -59,7 +59,7 @@
         mat-icon-button
         color="primary"
         [disabled]="formControl.invalid"
-        *ngIf="is_active && mode == 'edit'"
+        *ngIf="is_active && mode === 'edit'"
         (click)="onSave($event)"
     >
         <mat-icon>check_small</mat-icon>
@@ -67,7 +67,7 @@
     <button
         mat-icon-button
         color="accent"
-        *ngIf="is_active && mode == 'edit'"
+        *ngIf="is_active && mode === 'edit'"
         (click)="onCancel($event)"
     >
         <mat-icon>cancel</mat-icon>
