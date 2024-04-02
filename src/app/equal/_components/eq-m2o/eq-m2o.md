@@ -19,7 +19,7 @@ To use the `eq-m2o` component, simply include it in your Angular project's HTML 
     [title]="'My title'"
     [hint]="'My hint'"
     [autofocus]="true"
-    [noResult]="'Il n\'y a pas de resultat'"
+    [noResult]="'No match found"
     [initialSelectedItem]="{description: 'Onions are a nutrient-dense food, meaning that whi…y value for vitamin C, vitamin B-6 and manganese.', name: 'onion', id: 2, state: 'instance', modified: '2024-02-08T08:29:19+00:00'}"
 ></eq-m2o>
 ```

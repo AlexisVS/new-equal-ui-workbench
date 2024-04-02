@@ -1,37 +1,42 @@
-import {NgModule, LOCALE_ID} from '@angular/core';
+import { NgModule, LOCALE_ID } from "@angular/core";
 
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserModule } from "@angular/platform-browser";
+import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
-import {DateAdapter, MatNativeDateModule, MAT_DATE_LOCALE} from '@angular/material/core';
-import {Platform, PlatformModule} from '@angular/cdk/platform';
+import {
+    DateAdapter,
+    MatNativeDateModule,
+    MAT_DATE_LOCALE,
+} from "@angular/material/core";
+import { Platform, PlatformModule } from "@angular/cdk/platform";
 
+import {
+    SharedLibModule,
+    AuthInterceptorService,
+    CustomDateAdapter,
 // @ts-ignore
-import {SharedLibModule, AuthInterceptorService, CustomDateAdapter} from 'sb-shared-lib';
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+} from "sb-shared-lib";
+import { NgxMaterialTimepickerModule } from "ngx-material-timepicker";
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppRootComponent} from './app.root.component';
-import {AppComponent} from './in/app.component';
+import { AppRoutingModule } from "./app-routing.module";
+import { AppRootComponent } from "./app.root.component";
+import { AppComponent } from "./in/app.component";
 
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from "@angular/material/table";
 /* HTTP requests interception dependencies */
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import { HTTP_INTERCEPTORS } from "@angular/common/http";
 
-import {registerLocaleData} from '@angular/common';
-import {MAT_SNACK_BAR_DEFAULT_OPTIONS} from '@angular/material/snack-bar';
+import { registerLocaleData } from "@angular/common";
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from "@angular/material/snack-bar";
 
 // specific locale setting
-import localeFr from '@angular/common/locales/fr';
-import {EqualModule} from './equal/equal.module';
+import localeFr from "@angular/common/locales/fr";
+import { EqualModule } from "./equal/equal.module";
 
 registerLocaleData(localeFr);
 
 @NgModule({
-    declarations: [
-        AppRootComponent,
-        AppComponent,
-    ],
+    declarations: [AppRootComponent, AppComponent],
     imports: [
         AppRoutingModule,
         BrowserModule,
@@ -39,22 +44,30 @@ registerLocaleData(localeFr);
         SharedLibModule,
         MatNativeDateModule,
         PlatformModule,
-        NgxMaterialTimepickerModule.setLocale('fr-BE'),
+        NgxMaterialTimepickerModule.setLocale("fr-BE"),
         MatTableModule,
-        EqualModule
+        EqualModule,
     ],
-    exports: [
-        SharedLibModule
-    ],
+    exports: [SharedLibModule],
     providers: [
         // add HTTP interceptor to inject AUTH header to any outgoing request
-        {provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true},
-        {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 4000, horizontalPosition: 'start'}},
-        {provide: MAT_DATE_LOCALE, useValue: 'fr-BE'},
-        {provide: LOCALE_ID, useValue: 'fr-BE'},
-        {provide: DateAdapter, useClass: CustomDateAdapter, deps: [MAT_DATE_LOCALE, Platform]}
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptorService,
+            multi: true,
+        },
+        {
+            provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+            useValue: { duration: 4000, horizontalPosition: "start" },
+        },
+        { provide: MAT_DATE_LOCALE, useValue: "fr-BE" },
+        { provide: LOCALE_ID, useValue: "fr-BE" },
+        {
+            provide: DateAdapter,
+            useClass: CustomDateAdapter,
+            deps: [MAT_DATE_LOCALE, Platform],
+        },
     ],
-    bootstrap: [AppRootComponent]
+    bootstrap: [AppRootComponent],
 })
-export class AppModule {
-}
+export class AppModule {}

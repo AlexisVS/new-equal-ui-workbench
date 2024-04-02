@@ -1,11 +1,11 @@
-<br>
+<br />
 <div class="button__layout">
     <button
         mat-raised-button
         [color]="'primary'"
         (click)="disabled = !disabled"
     >
-        property disabled = {{ disabled ? 'true' : 'false' }}
+        property disabled = {{ disabled ? "true" : "false" }}
     </button>
 
     <button mat-raised-button color="accent" (click)="toggleMode()">
@@ -16,7 +16,7 @@
         nullable = {{ nullable }}
     </button>
 </div>
-<br>
+<br />
 
 <mat-tab-group [selectedIndex]="5">
     <mat-tab label="eq-string">
@@ -83,7 +83,6 @@
                 >
                 </eq-string>
             </div>
-
         </div>
         <div>
             <div style="width: 750px">
@@ -105,36 +104,63 @@
     </mat-tab>
     <mat-tab label="eq-text">
         <div class="command-panel">
-            <button mat-raised-button color="accent" (click)="eqTextAutoGrow = !eqTextAutoGrow">
+            <button
+                mat-raised-button
+                color="accent"
+                (click)="eqTextAutoGrow = !eqTextAutoGrow"
+            >
                 autoGrow = {{ eqTextAutoGrow }}
             </button>
 
             <div>
                 <mat-form-field>
                     <mat-label>minHeight</mat-label>
-                    <input matInput type="number" [(ngModel)]="eqTextMinHeight">
+                    <input
+                        matInput
+                        type="number"
+                        [(ngModel)]="eqTextMinHeight"
+                    />
                 </mat-form-field>
             </div>
 
             <div>
-                <button mat-raised-button color="accent"
-                        (click)="eqTextMaxHeight === undefined ? eqTextMaxHeight = 100 : eqTextMaxHeight = undefined">
-                    eqTextMaxHeight = {{ eqTextMaxHeight === undefined ? 'undefined' : eqTextMaxHeight }}
+                <button
+                    mat-raised-button
+                    color="accent"
+                    (click)="
+                        eqTextMaxHeight === undefined
+                            ? (eqTextMaxHeight = 100)
+                            : (eqTextMaxHeight = undefined)
+                    "
+                >
+                    eqTextMaxHeight =
+                    {{
+                        eqTextMaxHeight === undefined
+                            ? "undefined"
+                            : eqTextMaxHeight
+                    }}
                 </button>
 
                 <mat-form-field *ngIf="eqTextMaxHeight !== undefined">
                     <mat-label>maxHeight</mat-label>
-                    <input matInput type="number" [(ngModel)]="eqTextMaxHeight">
+                    <input
+                        matInput
+                        type="number"
+                        [(ngModel)]="eqTextMaxHeight"
+                    />
                 </mat-form-field>
 
-                <button mat-raised-button color="accent" (click)="refreshByBoolean()">
+                <button
+                    mat-raised-button
+                    color="accent"
+                    (click)="refreshByBoolean()"
+                >
                     Reload
                 </button>
             </div>
-
         </div>
         <div class="equal__layout">
-            <div style="width: 220px;">
+            <div style="width: 220px">
                 <eq-text
                     *ngIf="reloadByBoolean"
                     [hint]="'My hint'"
@@ -154,7 +180,7 @@
                 ></eq-text>
             </div>
 
-            <div style="width: 180px;">
+            <div style="width: 180px">
                 <eq-text
                     *ngIf="reloadByBoolean"
                     [hint]="'My hint'"
@@ -173,7 +199,7 @@
                 ></eq-text>
             </div>
 
-            <div style="width: 180px;">
+            <div style="width: 180px">
                 <eq-text
                     *ngIf="reloadByBoolean"
                     [hint]="'My hint'"
@@ -214,15 +240,21 @@
     </mat-tab>
     <mat-tab label="eq-date">
         <code>Based on date: <strong>2024-12-31T23:38:46+0000</strong></code>
-        <br>
-        <code>returned date : <strong>{{ dateIso8601Utc0 }}</strong></code>
-        <br>
+        <br />
+        <code
+            >returned date : <strong>{{ dateIso8601Utc0 }}</strong></code
+        >
+        <br />
         <div class="command-panel">
             <mat-form-field appearance="fill">
                 <mat-label>dateIso8601Utc0</mat-label>
-                <input matInput type="string" [(ngModel)]="dateIso8601Utc0" (input)="refreshByBoolean()">
+                <input
+                    matInput
+                    type="string"
+                    [(ngModel)]="dateIso8601Utc0"
+                    (input)="refreshByBoolean()"
+                />
             </mat-form-field>
-
 
             <mat-form-field appearance="fill">
                 <mat-label>Date format</mat-label>
@@ -235,9 +267,8 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-
         </div>
-        <br>
+        <br />
 
         <div class="equal__layout">
             <div>
@@ -258,31 +289,56 @@
         </div>
     </mat-tab>
     <mat-tab label="eq-date-range">
-        <code>Based on date start: <strong>2024-12-31T23:38:46+0000</strong></code>
-        <br>
-        <code>Based on date end: <strong>2025-02-28T12:38:46+0000</strong></code>
-        <br>
-        <br>
-        <code>returned date 1 : <strong>{{ dateIso8601Utc0 }}</strong></code>
-        <br>
-        <code>returned date 2 : <strong>{{ dateIso8601Utc0_2 }}</strong></code>
-        <br>
-        <br>
-        <code>Default value: <strong>2024-12-31T23:38:46+0000 - 2025-02-28T12:38:46+0000</strong></code>
-        <br>
-        <code>Current value: <strong>{{ dateRange | json }}</strong></code>
-        <br>
+        <code
+            >Based on date start:
+            <strong>2024-12-31T23:38:46+0000</strong></code
+        >
+        <br />
+        <code
+            >Based on date end: <strong>2025-02-28T12:38:46+0000</strong></code
+        >
+        <br />
+        <br />
+        <code
+            >returned date 1 : <strong>{{ dateIso8601Utc0 }}</strong></code
+        >
+        <br />
+        <code
+            >returned date 2 : <strong>{{ dateIso8601Utc0_2 }}</strong></code
+        >
+        <br />
+        <br />
+        <code
+            >Default value:
+            <strong
+                >2024-12-31T23:38:46+0000 - 2025-02-28T12:38:46+0000</strong
+            ></code
+        >
+        <br />
+        <code
+            >Current value: <strong>{{ dateRange | json }}</strong></code
+        >
+        <br />
         <div class="command-panel">
             <mat-form-field appearance="fill">
                 <mat-label>dateIso8601Utc0 <strong>date 1</strong></mat-label>
-                <input matInput type="string" [(ngModel)]="dateIso8601Utc0" (input)="refreshByBoolean()">
+                <input
+                    matInput
+                    type="string"
+                    [(ngModel)]="dateIso8601Utc0"
+                    (input)="refreshByBoolean()"
+                />
             </mat-form-field>
 
             <mat-form-field appearance="fill">
                 <mat-label>dateIso8601Utc0 <strong>date 2</strong></mat-label>
-                <input matInput type="string" [(ngModel)]="dateIso8601Utc0_2" (input)="refreshByBoolean()">
+                <input
+                    matInput
+                    type="string"
+                    [(ngModel)]="dateIso8601Utc0_2"
+                    (input)="refreshByBoolean()"
+                />
             </mat-form-field>
-
 
             <mat-form-field appearance="fill">
                 <mat-label>Date format</mat-label>
@@ -296,10 +352,15 @@
                 </mat-select>
             </mat-form-field>
 
-            <button mat-raised-button color="accent" (click)="refreshByBoolean()">Reload</button>
-
+            <button
+                mat-raised-button
+                color="accent"
+                (click)="refreshByBoolean()"
+            >
+                Reload
+            </button>
         </div>
-        <br>
+        <br />
 
         <div class="equal__layout">
             <div>
@@ -321,15 +382,21 @@
     </mat-tab>
     <mat-tab label="eq-date-time">
         <code>Based on date: <strong>2024-12-31T23:38:46+0000</strong></code>
-        <br>
-        <code>returned date : <strong>{{ dateIso8601Utc0 }}</strong></code>
-        <br>
+        <br />
+        <code
+            >returned date : <strong>{{ dateIso8601Utc0 }}</strong></code
+        >
+        <br />
         <div class="command-panel">
             <mat-form-field appearance="fill">
                 <mat-label>dateIso8601Utc0</mat-label>
-                <input matInput type="string" [(ngModel)]="dateIso8601Utc0" (input)="refreshByBoolean()">
+                <input
+                    matInput
+                    type="string"
+                    [(ngModel)]="dateIso8601Utc0"
+                    (input)="refreshByBoolean()"
+                />
             </mat-form-field>
-
 
             <mat-form-field appearance="fill">
                 <mat-label>Date time format</mat-label>
@@ -342,9 +409,8 @@
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-
         </div>
-        <br>
+        <br />
         <div class="equal__layout">
             <div>
                 <eq-date-time

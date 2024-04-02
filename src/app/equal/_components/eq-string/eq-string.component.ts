@@ -29,6 +29,8 @@ export class EqStringComponent implements OnInit, DoCheck {
 
     @Input() nullable: boolean = false;
 
+    @Input() hint_always: boolean = false;
+
     @Input() mode: 'view' | 'edit' = 'view';
 
     @Input() title?: string;
@@ -42,7 +44,7 @@ export class EqStringComponent implements OnInit, DoCheck {
     @ViewChild('eqString') eqString: ElementRef<HTMLDivElement>;
     @ViewChild('input') input: ElementRef<HTMLInputElement>;
 
-    // used for marking the input as being edited
+    // flag for marking the input as being edited
     public is_active: boolean = false;
 
     public formControl: FormControl;
@@ -64,10 +66,6 @@ export class EqStringComponent implements OnInit, DoCheck {
             this.formControl.markAsTouched({onlySelf: true});
 
             this.formControl.enable();
-        }
-
-        if (this.is_null) {
-            this.formControl.disable();
         }
     }
 
@@ -115,7 +113,6 @@ export class EqStringComponent implements OnInit, DoCheck {
         event.preventDefault();
         this.updateValue('');
         this.formControl.markAsPending({onlySelf: true});
-        this.input.nativeElement.focus();
     }
 
     public activate(): void {
@@ -160,7 +157,7 @@ export class EqStringComponent implements OnInit, DoCheck {
 
     private toggleActive(editable: boolean): void {
         this.is_active = editable;
-        if (editable) {
+        if (this.mode === 'edit' && editable) {
             this.input.nativeElement.focus();
         }
     }

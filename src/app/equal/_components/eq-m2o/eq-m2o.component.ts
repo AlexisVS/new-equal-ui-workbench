@@ -17,8 +17,7 @@ import {MatAutocomplete} from '@angular/material/autocomplete';
 import {Observable, ReplaySubject} from 'rxjs';
 import {map, mergeMap, debounceTime} from 'rxjs/operators';
 
-// @ts-ignore
-import {ApiService} from 'sb-shared-lib';
+import {ApiService} from '../../services/api.service';
 import {Condition, Domain} from './domain.class';
 
 
@@ -33,6 +32,8 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
 
     /* mark the field as mandatory */
     @Input() required?: boolean = false;
+
+    @Input() nullable: boolean = false;
 
     /* specific placeholder of the widget */
     @Input() placeholder?: string = '';
@@ -73,6 +74,10 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
     /* custom method for rendering the items */
     @Input() displayWith?: (a: any) => string;
 
+    @Input() hint_always: boolean = false;
+
+    @Input() size?: 'small' | 'normal' | 'large' | 'extra' = 'normal';
+
     /* css value for panel width (dropdown) */
     @Input() panelWidth: string = 'auto';
 
@@ -90,6 +95,11 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
 
     public formControl: FormControl;
     public resultList: Observable<any>;
+
+    // flag for marking the input as being edited
+    public is_active: boolean = false;
+
+    public is_null: boolean = false;
 
     private inputQuery: ReplaySubject<any>;
 
@@ -179,7 +189,7 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
                     this.initialSelectedItem = result[0];
                 }
             } catch (error: any) {
-                console.warn('an unexpected error occured');
+                console.warn('an unexpected error occurred');
             }
         }
     }
@@ -321,6 +331,7 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
         event.preventDefault();
         event.stopPropagation();
         this.onRestore();
+        this.toggleActive(false);
     }
 
     /**
@@ -333,6 +344,19 @@ export class EqM2oComponent implements OnInit, OnChanges, AfterViewInit, AfterVi
         event.stopPropagation();
         this.itemSelected.emit(this.formControl.value);
         this.initialSelectedItem = this.formControl.value;
+    }
+
+    public activate(): void {
+        if (this.mode === 'edit' && !this.disabled) {
+            this.toggleActive(true);
+        }
+    }
+
+    private toggleActive(editable: boolean): void {
+        this.is_active = editable;
+        if (this.mode === 'edit' && editable) {
+            this.inputControl.nativeElement.focus();
+        }
     }
 
 }

@@ -1,28 +1,31 @@
-import {NgModule} from '@angular/core';
-import {PreloadAllModules, RouterModule, Routes} from '@angular/router';
-import {AppComponent} from './in/app.component';
-import {EqualComponent} from './equal/equal.component';
+import { NgModule } from "@angular/core";
+import { PreloadAllModules, RouterModule, Routes } from "@angular/router";
+import { AppComponent } from "./in/app.component";
+import { EqualComponent } from "./equal/equal.component";
 
 const routes: Routes = [
-  /* routes specific to current app */
-  {
-    /*
+    /* routes specific to current app */
+    {
+        /*
      default route, for bootstrapping the App
       1) display a loader and try to authentify
       2) store user details (roles and permissions)
       3) redirect to applicable page (/apps or /auth)
      */
-    path: '',
-    component: AppComponent
-  },
-  {path: 'equal', component: EqualComponent}
+        path: "",
+        component: AppComponent,
+    },
+    { path: "equal", component: EqualComponent },
 ];
 
 @NgModule({
-  imports: [
-    RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules, onSameUrlNavigation: 'reload', useHash: true})
-  ],
-  exports: [RouterModule]
+    imports: [
+        RouterModule.forRoot(routes, {
+            preloadingStrategy: PreloadAllModules,
+            onSameUrlNavigation: "reload",
+            useHash: true,
+        }),
+    ],
+    exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

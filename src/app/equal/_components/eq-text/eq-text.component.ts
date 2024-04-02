@@ -78,18 +78,31 @@ export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked {
     }
 
     ngAfterViewChecked(): void {
-        if (this.textarea.nativeElement instanceof HTMLTextAreaElement) {
-            this.textarea.nativeElement.style.minHeight = this.minHeight + 'px';
+        if (this.mode == 'edit') {
+            if(this.textarea.nativeElement instanceof HTMLTextAreaElement) {
+                this.textarea.nativeElement.style.minHeight = this.minHeight + 'px';
 
-            if (this.maxHeight) {
-                this.textarea.nativeElement.style.maxHeight = this.maxHeight + 'px';
-            }
-
-            if (this.autoGrow && !this.maxHeight) {
-            }
-            else if (this.autoGrow && this.maxHeight) {
-                if (this.textarea.nativeElement.clientHeight < this.maxHeight) {
+                if (this.maxHeight) {
+                    this.textarea.nativeElement.style.maxHeight = this.maxHeight + 'px';
                 }
+
+                if (this.autoGrow && !this.maxHeight) {
+                }
+                else if (this.autoGrow && this.maxHeight) {
+                    if (this.textarea.nativeElement.clientHeight < this.maxHeight) {
+                    }
+                }
+            }
+        }
+        else {
+            if(this.minHeight) {
+                this.elementRef.nativeElement.style.setProperty('--min-height', this.minHeight+'px');
+            }
+            if(this.maxHeight) {
+                this.elementRef.nativeElement.style.setProperty('--max-height', this.maxHeight+'px');
+            }
+            else {
+                this.elementRef.nativeElement.style.setProperty('--max-height', 'none');
             }
         }
     }
@@ -192,10 +205,8 @@ export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked {
     public onBlur(event: FocusEvent): void {
         event.preventDefault();
         // we need to discard current instance because onblur event occurs before onSave
-        if (
-            this.eqText.nativeElement instanceof Element &&
-            !this.eqText.nativeElement.contains(event.relatedTarget as Node)
-        ) {
+        if( this.eqText.nativeElement instanceof Element &&
+            !this.eqText.nativeElement.contains(event.relatedTarget as Node) ) {
             this.toggleIsNull(false);
             this.updateValue(this.value);
             this.toggleActive(false);
@@ -204,7 +215,7 @@ export class EqTextComponent implements OnInit, DoCheck, AfterViewChecked {
 
     private toggleActive(editable: boolean): void {
         this.is_active = editable;
-        if (editable) {
+        if (this.mode == 'edit' && editable) {
             this.textarea.nativeElement.focus();
         }
     }
